@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You — The Premium Vault | ai-framework.io</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Your Premium Vault download.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23101317'/%3E%3Crect x='4' y='4' width='6' height='6' rx='1' fill='%23ece7da'/%3E%3Crect x='13' y='4' width='6' height='6' rx='1' fill='%23ece7da'/%3E%3Crect x='22' y='4' width='6' height='6' rx='1' fill='%23ece7da'/%3E%3Crect x='4' y='13' width='6' height='6' rx='1' fill='%23ece7da'/%3E%3Crect x='13' y='13' width='6' height='6' rx='1' fill='%23ece7da'/%3E%3Crect x='22' y='13' width='6' height='6' rx='1' fill='%23d0aa6d'/%3E%3Crect x='4' y='22' width='6' height='6' rx='1' fill='%23d0aa6d'/%3E%3Crect x='13' y='22' width='6' height='6' rx='1' fill='%23d0aa6d'/%3E%3Crect x='22' y='22' width='6' height='6' rx='1' fill='%23d0aa6d'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --void:#101317; --panel:#161b21; --line:#28303a; --line-bright:#3d4854;
+    --ivory:#ece7da; --dim:#96a0ac; --faint:#5b6570;
+    --brass:#d0aa6d; --brass-dim:#8a6f3e; --brass-glow:rgba(208,170,109,.13);
+    --display:"Big Shoulders Display",Impact,sans-serif;
+    --body:"Archivo",system-ui,sans-serif; --mono:"Spline Sans Mono",ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:
+      radial-gradient(ellipse 80% 500px at 50% 0%, var(--brass-glow), transparent 70%),
+      var(--void);
+    color:var(--ivory); font-family:var(--body); line-height:1.6;
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:24px; -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    max-width:560px; width:100%; text-align:center;
+    background:linear-gradient(160deg,#16150f,#111318);
+    border:1px solid var(--brass-dim); border-radius:16px;
+    padding:48px 40px;
+  }
+  .grid{
+    display:grid; grid-template-columns:repeat(5,14px); gap:5px;
+    justify-content:center; margin:0 auto 26px;
+  }
+  .cell{width:14px;height:14px;border-radius:2px;background:#1c2028;border:1px solid var(--line-bright)}
+  .cell.b{background:#171612;border-color:var(--brass-dim)}
+  .check{
+    width:56px;height:56px;border-radius:50%;
+    background:var(--brass-glow); border:1px solid var(--brass-dim);
+    display:flex;align-items:center;justify-content:center; margin:0 auto 22px;
+    color:var(--brass); font-size:26px;
+  }
+  .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--brass); margin-bottom:14px;
+  }
+  h1{
+    font-family:var(--display); font-weight:800; font-size:clamp(32px,6vw,48px);
+    text-transform:uppercase; line-height:.98; letter-spacing:.01em; margin-bottom:16px;
+  }
+  h1 span{color:var(--brass)}
+  p.lead{color:var(--dim); font-size:15.5px; margin-bottom:30px; max-width:44ch; margin-left:auto; margin-right:auto}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:13px; font-weight:500; letter-spacing:.08em;
+    text-transform:uppercase; text-decoration:none;
+    background:var(--brass); color:#14110a; border:1px solid var(--brass);
+    padding:16px 32px; border-radius:4px; transition:background .15s;
+  }
+  .btn:hover{background:#e0bd82}
+  .note{
+    margin-top:22px; font-family:var(--mono); font-size:11px; letter-spacing:.04em;
+    color:var(--faint); line-height:1.7;
+  }
+  .note a{color:var(--dim)}
+  .divider{height:1px;background:var(--line);margin:28px 0}
+  .back{
+    font-family:var(--mono); font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--faint); text-decoration:none;
+  }
+  .back:hover{color:var(--ivory)}
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="grid">
+      <span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span>
+      <span class="cell b"></span><span class="cell b"></span><span class="cell b"></span><span class="cell b"></span><span class="cell b"></span>
+    </div>
+    <div class="check">&#10003;</div>
+    <p class="eyebrow">Payment Complete</p>
+    <h1>Welcome to the <span>Vault.</span></h1>
+    <p class="lead">Thank you for your purchase. Your download is ready below &mdash; all 50 premium playbooks in one PDF. This is yours for life.</p>
+
+    <a class="btn" href="/vault/The-Premium-Vault.pdf" download>&#8595;&nbsp; Download the Vault (PDF)</a>
+
+    <p class="note">
+      Save the file somewhere safe &mdash; you can re-download from this page anytime you have the link.<br>
+      Trouble with the download? Email <a href="mailto:hello@ai-framework.io">hello@ai-framework.io</a> and we'll send it over.
+    </p>
+
+    <div class="divider"></div>
+    <a class="back" href="/">&#8592; Back to ai-framework.io</a>
+  </main>
+</body>
+</html>
