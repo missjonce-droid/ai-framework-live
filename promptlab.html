@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Prompt Lab — say it better, get better AI</title>
+<meta name="description" content="Type your rough idea and watch it become a real prompt. Plus the AI dictionary and the word upgrades that make any prompt sharper.">
+<link rel="canonical" href="https://ai-framework.io/prompt-lab">
+<meta name="theme-color" content="#0b1220">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Framework">
+<meta property="og:title" content="Prompt Lab — say it better, get better AI">
+<meta property="og:description" content="Turn a rough idea into a real prompt, free. Dictionary and word upgrades included.">
+
+<!-- Google Tag Manager (same container as the main site) -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0b1220; --surface:#111a2e; --line:#1e2b45;
+    --text:#e6ecf7; --muted:#8ea0bf; --mint:#4de0c0; --amber:#f2c14e;
+    --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+    --body:"Inter",ui-sans-serif,system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+
+  .nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,18,32,.86);backdrop-filter:blur(10px);z-index:20}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
+  .brand{font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:-.02em;text-decoration:none;color:var(--text)}
+  .brand span{color:var(--mint)}
+  .nav a.dir{font-size:13px;color:var(--muted);text-decoration:none}
+  .nav a.dir:hover{color:var(--text)}
+
+  .hero{padding:56px 0 8px;text-align:center}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);margin:0 0 16px}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,6.5vw,56px);line-height:1.04;letter-spacing:-.035em;margin:0 0 14px}
+  h1 em{font-style:normal;color:var(--mint)}
+  .lede{color:var(--muted);max-width:52ch;margin:0 auto 34px}
+
+  /* ---------- the fixer ---------- */
+  .fixer{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;text-align:left;
+         box-shadow:0 24px 60px rgba(0,0,0,.35)}
+  .fixer label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:10px}
+  .fixer textarea{width:100%;min-height:92px;resize:vertical;background:var(--bg);border:1px solid var(--line);
+                  color:var(--text);border-radius:12px;padding:14px;font:400 16px/1.5 var(--body)}
+  .fixer textarea:focus{outline:2px solid var(--mint);outline-offset:1px;border-color:transparent}
+  .fixer .bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+  .fixer button.go{background:var(--mint);color:#062018;border:0;border-radius:10px;padding:12px 22px;font:600 15px var(--body);cursor:pointer}
+  .fixer button.go:hover{filter:brightness(1.08)}
+  .try{font-size:13px;color:var(--muted)}
+  .try button{background:none;border:0;color:var(--mint);cursor:pointer;font:inherit;padding:0;text-decoration:underline;text-underline-offset:3px}
+
+  .result{margin-top:18px;display:none}
+  .result.show{display:block}
+  .result .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .result .intent{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+  .result button.copy{background:transparent;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:7px 14px;font:600 13px var(--body);cursor:pointer}
+  .result button.copy:hover{border-color:var(--mint);color:var(--mint)}
+  .out{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:18px;font-family:var(--mono);
+       font-size:13.5px;line-height:1.7;white-space:pre-wrap;word-wrap:break-word}
+  .out .ph{color:var(--amber)}
+  .upgrades{margin-top:14px}
+  .upgrades .k{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .chip{display:inline-block;margin:0 6px 8px 0;padding:7px 12px;border:1px solid var(--line);border-radius:999px;
+        font-size:13px;color:var(--muted);background:rgba(77,224,192,.04)}
+  .chip b{color:var(--mint);font-weight:600}
+  .chip s{color:var(--amber);text-decoration-color:rgba(242,193,78,.6)}
+  .note{font-size:12.5px;color:var(--muted);margin-top:12px}
+
+  /* ---------- sections ---------- */
+  section{padding:52px 0 8px}
+  h2{font-family:var(--display);font-weight:600;font-size:clamp(23px,3.4vw,29px);letter-spacing:-.02em;margin:0 0 8px}
+  .sub{color:var(--muted);margin:0 0 22px;max-width:60ch}
+
+  /* thesaurus table */
+  .swap-list{border-top:1px solid var(--line)}
+  .swap{display:grid;grid-template-columns:1fr 1.6fr;gap:6px 22px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .swap .weak{color:var(--amber);font-family:var(--mono);font-size:13.5px;padding-top:2px}
+  .swap .strong b{color:var(--mint);font-weight:600}
+  .swap .strong span{display:block;color:var(--muted);font-size:13.5px;margin-top:3px}
+
+  /* dictionary */
+  .dict-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .dict-controls input{flex:1 1 220px;background:var(--surface);border:1px solid var(--line);color:var(--text);
+                       border-radius:10px;padding:12px 14px;font:inherit;font-size:15px}
+  .dict-controls input:focus{outline:2px solid var(--mint);outline-offset:1px;border-color:transparent}
+  .cat{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:9px 15px;
+       font:500 13px var(--body);cursor:pointer}
+  .cat.on{border-color:var(--mint);color:var(--mint);background:rgba(77,224,192,.07)}
+  .terms{border-top:1px solid var(--line)}
+  .term{padding:16px 0;border-bottom:1px solid var(--line)}
+  .term .t{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .term h3{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em;margin:0}
+  .term .c{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+  .term p{margin:6px 0 0;color:var(--muted);font-size:14.5px}
+  .term p b{color:var(--text);font-weight:600}
+  .empty{padding:26px 0;color:var(--muted);font-size:14.5px}
+
+  /* upsell + capture */
+  .upsell{margin:56px 0;padding:28px;border:1px solid var(--line);border-radius:14px;
+          background:linear-gradient(160deg,rgba(77,224,192,.07),transparent 65%),var(--surface)}
+  .upsell h2{margin-bottom:8px}
+  .upsell p{color:var(--muted);margin:0 0 18px;max-width:56ch}
+  .upsell a.buy{display:inline-block;background:var(--mint);color:#062018;text-decoration:none;border-radius:10px;
+                padding:12px 22px;font:600 15px var(--body)}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:30px 0 56px;color:var(--muted);font-size:13px}
+  footer a{color:var(--mint)}
+  :focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+  @media (max-width:560px){.swap{grid-template-columns:1fr}.hero{padding:42px 0 4px}}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KFZ7N4LF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="/">AI<span>/</span>Framework</a>
+  <a class="dir" href="/">Browse 1,500+ tools →</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">Prompt Lab · free</p>
+  <h1>You know what you want.<br>Now <em>say it</em> so the AI does too.</h1>
+  <p class="lede">Type your idea the way you'd say it out loud. Prompt Lab rebuilds it into a structured prompt, flags the vague words, and shows you the vocabulary — so every prompt after this one is yours.</p>
+
+  <div class="fixer">
+    <label for="idea">Your rough idea</label>
+    <textarea id="idea" placeholder="e.g. write me a good email to my landlord about fixing the heater, make it professional but not mean"></textarea>
+    <div class="bar">
+      <button class="go" id="fix">Fix my prompt</button>
+      <span class="try">Try one:
+        <button data-ex="make me a short catchy caption for my new bakery instagram">bakery caption</button> ·
+        <button data-ex="explain how crypto works, keep it simple im a beginner">explain crypto</button> ·
+        <button data-ex="i need a logo image for my dog walking business, something nice">logo idea</button>
+      </span>
+    </div>
+
+    <div class="result" id="result">
+      <div class="head">
+        <span class="intent" id="intent"></span>
+        <button class="copy" id="copy">Copy prompt</button>
+      </div>
+      <div class="out" id="out"></div>
+      <div class="upgrades" id="upgrades" hidden>
+        <div class="k">Word upgrades found in your idea</div>
+        <div id="chips"></div>
+      </div>
+      <p class="note">Anything in [brackets] is yours to fill in — that's where the specifics go, and specifics are 80% of a good prompt.</p>
+    </div>
+  </div>
+</div></header>
+
+<section id="thesaurus"><div class="wrap">
+  <h2>The word upgrades</h2>
+  <p class="sub">AI does exactly what you say — so vague words get vague results. Swap the left column for the right and watch the output change.</p>
+  <div class="swap-list" id="swaps"></div>
+</div></section>
+
+<section id="dictionary"><div class="wrap">
+  <h2>The AI dictionary</h2>
+  <p class="sub">Every term you'll run into, in plain English, with how to actually use it in a prompt.</p>
+  <div class="dict-controls">
+    <input id="dsearch" type="search" placeholder="Search terms — try 'few-shot' or 'temperature'" aria-label="Search dictionary">
+    <button class="cat on" data-cat="all">All</button>
+    <button class="cat" data-cat="basics">Basics</button>
+    <button class="cat" data-cat="technique">Techniques</button>
+    <button class="cat" data-cat="settings">Settings</button>
+    <button class="cat" data-cat="image">Image &amp; video</button>
+  </div>
+  <div class="terms" id="terms"></div>
+  <div class="empty" id="dempty" hidden>Nothing matches that — try a shorter word, or browse a category above.</div>
+</div></section>
+
+<div class="wrap">
+  <div class="upsell">
+    <h2>Want the prompts already written?</h2>
+    <p><b>Prompt Alchemy</b> is the paid companion to this page — a full library of finished, field-tested prompts for business, creative work, and code, in the same style this tool builds. Learn the craft here free; skip straight to the results there.</p>
+    <a class="buy" id="buy" href="/prompt-alchemy">Get Prompt Alchemy</a>
+  </div>
+</div>
+
+<footer><div class="wrap">
+  <p>Prompt Lab is part of AI Framework — a curated directory of 1,500+ AI tools. <a href="/">Browse the directory →</a></p>
+</div></footer>
+
+<script>
+/* ==================== EDIT ZONE ====================
+   BUY_URL — where the Prompt Alchemy button points (Etsy listing,
+   Stripe link, or /vault). Everything else runs itself.            */
+var BUY_URL = '/prompt-alchemy';
+/* =================================================== */
+
+/* ---------------- THESAURUS DATA ---------------- */
+var SWAPS = [
+  ["make it good / better", "revise for clarity — cut filler, keep my voice", "\u201cGood\u201d has no meaning to a model. Name the change you want."],
+  ["short", "under 100 words / 3 sentences max", "Models count better than they guess. Give a number."],
+  ["long / detailed", "800\u20131,200 words with subheadings", "Same trick — a range beats an adjective."],
+  ["professional", "plain business English, warm but direct, no jargon", "\u201cProfessional\u201d often produces stiff corporate filler. Describe the voice instead."],
+  ["casual", "conversational, contractions fine, like texting a smart friend", "Give it a person to sound like, not a mood."],
+  ["catchy", "punchy, under 8 words, no puns or clich\u00e9s", "\u201cCatchy\u201d is where clich\u00e9s come from. Ban them explicitly."],
+  ["simple / easy to understand", "explain it to a smart 12-year-old, one idea per sentence", "An audience is the fastest way to set a reading level."],
+  ["creative / unique", "give me 5 options, each from a completely different angle", "Asking for one \u201ccreative\u201d thing gets the average. Asking for 5 different ones gets range."],
+  ["some ideas / a few", "exactly 7 options, ranked, one line on why for each", "Exact numbers force effort. Ranking forces judgment."],
+  ["tell me about X", "explain X: what it is, why it matters, and the mistake beginners make", "A shape for the answer beats an open question."],
+  ["help me with", "act as a [specific expert] and [specific verb] my [specific thing]", "Three blanks worth filling every time."],
+  ["fix this", "correct grammar and spelling only — do not change meaning or tone", "Unscoped \u201cfix\u201d invites a rewrite you didn't ask for."],
+  ["give feedback", "critique this: 3 strengths, 3 weaknesses, then rewrite the weakest part", "Structure turns \u201clooks good!\u201d into something usable."],
+  ["summarize", "summarize in 5 bullets: the main point first, then 4 supporting points", "Otherwise you get a shorter version of everything instead of the point."],
+  ["engaging / interesting", "open with a hook, one concrete example per point, end with a question", "Name the mechanics that make things engaging."],
+  ["realistic (images)", "photorealistic, 50mm lens, natural window light, shallow depth of field", "Camera language is the vocabulary image models actually trained on."],
+  ["nice looking (images)", "name a style: minimalist flat design / film photo / watercolor / 3D render", "\u201cNice\u201d averages every style into mush. Pick one."],
+  ["analyze this", "identify the 3 biggest drivers, rank by impact, and say what you'd do first", "\u201cAnalyze\u201d produces description. Verbs like rank and decide produce analysis."]
+];
+
+/* ---------------- DICTIONARY DATA ---------------- */
+var TERMS = [
+  ["Prompt","basics","Everything you type into an AI — the instruction, the context, the examples, all of it.","The prompt is the product. Better input, better output, every time."],
+  ["LLM (large language model)","basics","The type of AI behind ChatGPT, Claude, and Gemini — trained on text to predict and generate text.","When an article says \u201cthe model,\u201d this is what it means."],
+  ["Token","basics","The chunks a model reads and writes in — roughly \u00be of a word. Pricing and limits are counted in these.","\u201c4,000 tokens\u201d \u2248 3,000 words. That's what a limit actually limits."],
+  ["Context window","basics","The model's working memory — how much of the conversation and pasted material it can see at once.","If it \u201cforgot\u201d your earlier instructions, you likely scrolled out of the window. Re-paste what matters."],
+  ["Hallucination","basics","When a model states something false with total confidence — invented facts, fake citations, made-up tools.","Ask for sources, and verify anything that matters before you use it."],
+  ["System prompt","basics","Standing instructions that sit above the chat and shape every reply — the model's job description.","Custom instructions in ChatGPT and projects in Claude are you writing one."],
+  ["Knowledge cutoff","basics","The date the model's training data ends. Anything after it, the model doesn't know unless it can search.","If the answer must be current, say \u201csearch the web for this\u201d or check the date yourself."],
+  ["Multimodal","basics","A model that handles more than text — images, audio, sometimes video, in and out.","This is what lets you paste a screenshot and ask \u201cwhat's wrong with this?\u201d"],
+  ["AI agent","basics","AI that doesn't just answer but takes steps — browsing, running code, using tools, chaining actions toward a goal.","\u201cAgent\u201d is the word to search when you want AI to do a task, not discuss it."],
+  ["API","basics","The way software talks to a model directly, without a chat window — how apps put AI inside themselves.","\u201cAPI pricing\u201d means pay-per-use instead of a monthly subscription."],
+  ["RAG (retrieval-augmented generation)","basics","Letting a model look things up in your documents before answering, instead of relying on training memory.","\u201cChat with your PDF\u201d tools are RAG. It's the standard fix for hallucinated facts."],
+  ["Fine-tuning","basics","Additional training that specializes a model on your examples — expensive, and rarely what beginners actually need.","Nine times out of ten, a better prompt or RAG gets you there first."],
+  ["Open weights","basics","Models you can download and run yourself (Llama, Mistral) instead of renting through someone's app.","This is how \u201cfree and private\u201d setups like Ollama work."],
+
+  ["Zero-shot","technique","Asking with no examples — just the instruction. Fine for simple tasks, shaky for anything with a specific style.","\u201cWrite a product description\u201d is zero-shot. Works until you care how it sounds."],
+  ["Few-shot","technique","Showing 2\u20135 examples of what you want before asking. The single biggest quality upgrade for style and format.","\u201cHere are 3 captions I love. Write 5 more in exactly this style.\u201d"],
+  ["Chain of thought","technique","Asking the model to reason step by step before answering — sharply better for math, logic, and decisions.","Add \u201cthink through this step by step before giving your answer.\u201d"],
+  ["Role prompting","technique","Assigning an expert identity before the task, which pulls the model toward that expert's knowledge and standards.","\u201cYou are a landlord-tenant attorney. Review this lease clause.\u201d"],
+  ["Constraints","technique","The rules you set: length, banned words, required structure, tone. Constraints are where control comes from.","\u201cUnder 150 words. No exclamation points. Don't mention price.\u201d"],
+  ["Output format","technique","Telling the model the shape of the answer — table, bullets, JSON, email — instead of accepting a wall of text.","\u201cAnswer as a two-column table: option, tradeoff.\u201d"],
+  ["Delimiters","technique","Markers like triple quotes or ### that fence off pasted material from your instructions so they don't blur.","\u201cSummarize the text between ###\u201d — then the model never mistakes the text for a command."],
+  ["Prompt chaining","technique","Splitting a big job into sequential prompts, feeding each result into the next — outline, then draft, then edit.","One giant prompt does everything badly. Three small ones do it well."],
+  ["Iterating","technique","Treating the first answer as a draft and steering: \u201cwarmer,\u201d \u201chalve it,\u201d \u201cmore like the second one.\u201d","The pros' secret isn't the perfect first prompt. It's the third message."],
+  ["Self-critique","technique","Making the model grade its own answer before you accept it — surfaces weaknesses it won't volunteer.","\u201cNow critique your answer: what's the weakest part? Rewrite it.\u201d"],
+  ["Negative instruction","technique","Saying what NOT to do. Powerful — but phrase the positive version too, it steers better.","\u201cNo clich\u00e9s, no emojis\u201d + \u201cwrite like a human who's tired of ads.\u201d"],
+  ["Meta-prompting","technique","Asking the AI to write or improve the prompt itself — the tool on this page, done manually.","\u201cRewrite my request as a detailed prompt, then answer the improved version.\u201d"],
+
+  ["Temperature","settings","The randomness dial. Low = consistent and literal; high = varied and surprising. Chat apps hide it; APIs and image tools expose it.","Low for facts and code. High for brainstorms and taglines."],
+  ["Max tokens","settings","A hard cap on answer length. If replies keep cutting off mid-sentence, this is usually why.","Not the same as asking for \u201cshort\u201d — this one just truncates."],
+  ["Reasoning / thinking mode","settings","A slower mode where the model works through the problem before answering — much better on hard questions, slower on easy ones.","Toggle it for planning, math, and tricky decisions. Skip it for quick lookups."],
+  ["Rate limit","settings","The cap on how many messages or requests you get per hour or day on a given plan.","\u201cYou've hit your limit\u201d isn't the model being moody. It's this."],
+  ["Seed","settings","A number that makes image generation repeatable — same seed + same prompt = nearly the same picture.","Keep the seed, change one word, and you can A/B test prompts properly."],
+
+  ["Negative prompt","image","In image tools, the list of what to keep OUT of the picture — extra fingers, text, watermarks, clutter.","\u201cNegative: text, watermark, blurry, extra limbs\u201d fixes half of bad AI art."],
+  ["Aspect ratio","image","The shape of the output — 1:1 square, 16:9 wide, 9:16 vertical for phones and Reels.","Say it in the prompt (\u201c--ar 9:16\u201d in Midjourney) instead of cropping after."],
+  ["Style reference","image","Feeding an example image so the model copies the look — palette, lighting, mood — not the content.","\u201cIn the style of the attached image\u201d beats 50 adjectives."],
+  ["Inpainting","image","Regenerating just one selected region of an image while leaving the rest untouched.","Fix the hands without rerolling the whole picture."],
+  ["Upscaling","image","AI-enlarging an image while adding believable detail, so it prints or displays sharp.","Generate small and cheap, upscale the one you love."],
+  ["Text-to-video","image","Generating video from a written description — the newest, most expensive frontier of this vocabulary.","Everything on this page about specificity applies double here."]
+];
+
+/* ---------------- FIXER ---------------- */
+var INTENTS = [
+  {id:"email", label:"Email / message", test:/\b(email|e-mail|message|reply|respond|letter|dm|note to|text to|landlord|boss|client|coworker)\b/i,
+   build:function(s){return [
+    "You are a sharp communication coach who writes messages people actually send.",
+    "Write " + (s.article||"an email") + " about: " + s.core + ".",
+    "Context you should know: [who you're writing to, your relationship, and what's happened so far].",
+    "The one outcome I want from this message: [what should happen after they read it].",
+    "Tone: " + s.tone + ".",
+    "Format: subject line + body under 150 words. No corporate filler phrases.",
+    "Then give me one alternate version that takes a slightly different approach."];}},
+  {id:"image", label:"Image prompt", test:/\b(image|picture|logo|photo|art|drawing|illustration|poster|thumbnail|wallpaper|icon)\b/i,
+   build:function(s){return [
+    "Create an image: " + s.core + ".",
+    "Style: [pick one: minimalist flat design / photorealistic / watercolor / 3D render / vintage poster].",
+    "Composition: [main subject], [background], [what's in focus].",
+    "Lighting & mood: [e.g. warm natural light, playful / moody, dramatic].",
+    "Color palette: [2\u20134 colors, or \u2018brand colors: \u2026\u2019].",
+    "Aspect ratio: [1:1 for profile \u00b7 16:9 for banner \u00b7 9:16 for phone].",
+    "Avoid: text in the image, watermarks, clutter, extra limbs."];}},
+  {id:"summarize", label:"Summarize", test:/\b(summar|tldr|tl;dr|shorten|condense|key points|main points)\b/i,
+   build:function(s){return [
+    "Summarize the text below.",
+    "Format: 5 bullets \u2014 the single main point first, then the 4 most important supporting points.",
+    "Then add one line: \u201cWhat this means for me: \u2026\u201d based on my situation: [your situation].",
+    "Keep every bullet under 20 words. Don't add information that isn't in the text.",
+    "###", "[paste the text here]", "###"];}},
+  {id:"code", label:"Code / build", test:/\b(code|python|javascript|html|css|website|web app|app|script|function|bug|error|api|spreadsheet formula|excel formula)\b/i,
+   build:function(s){return [
+    "You are a senior developer who writes clean, commented code and explains decisions briefly.",
+    "Task: " + s.core + ".",
+    "Environment: [language/framework and where it runs \u2014 e.g. plain HTML on Netlify, Python 3 script].",
+    "What I have already: [paste existing code or write \u2018starting from scratch\u2019].",
+    "Requirements: [list the 2\u20135 things it must do].",
+    "Output: complete working code in one block, then a short \u2018how to run it\u2019 and the one thing most likely to break.",
+    "If anything about my setup is ambiguous, ask before writing code."];}},
+  {id:"explain", label:"Explain / learn", test:/\b(explain|what is|what are|how does|how do|teach|understand|learn|beginner|eli5)\b/i,
+   build:function(s){return [
+    "You are a patient expert teacher.",
+    "Explain: " + s.core + ".",
+    "My level: [total beginner / know the basics / just rusty].",
+    "Explain it to a smart 12-year-old first \u2014 one idea per sentence, one everyday analogy.",
+    "Then go one level deeper for an adult, including the mistake beginners always make.",
+    "End with 3 questions I should be able to answer if I understood \u2014 then quiz me."];}},
+  {id:"brainstorm", label:"Brainstorm", test:/\b(ideas?|brainstorm|names?|options|suggestions|come up with|think of)\b/i,
+   build:function(s){return [
+    "You are a creative strategist who hates clich\u00e9s.",
+    "Brainstorm for: " + s.core + ".",
+    "Give me exactly 10 options across 3 different angles: [safe / clever / unexpected].",
+    "For each: one line on why it works.",
+    "Constraints: " + s.tone + ", no puns unless they're genuinely good, nothing that sounds like everyone else in this space.",
+    "Then tell me which ONE you'd pick and defend it in two sentences."];}},
+  {id:"rewrite", label:"Rewrite / edit", test:/\b(rewrite|edit|improve|proofread|grammar|polish|revise|clean up)\b/i,
+   build:function(s){return [
+    "You are a precise editor.",
+    "Edit the text below. Scope: [grammar & spelling only / tighten but keep my voice / full rewrite].",
+    "Goal: " + s.core + ".",
+    "Tone to preserve: " + s.tone + ".",
+    "Show me: the edited version, then a 3-bullet list of what you changed and why.",
+    "###", "[paste your text here]", "###"];}},
+  {id:"analyze", label:"Analyze / decide", test:/\b(analy|compare|review|feedback|critique|pros and cons|should i|which is better|decide)\b/i,
+   build:function(s){return [
+    "You are a clear-eyed analyst who gives real opinions, not both-sides mush.",
+    "Question: " + s.core + ".",
+    "My context that changes the answer: [budget, timeline, skills, what you're optimizing for].",
+    "Identify the 3 factors that matter most and rank them by impact.",
+    "Format: short comparison table, then a verdict \u2014 \u201cIf I were you I'd \u2026 because \u2026\u201d",
+    "Then tell me the strongest argument AGAINST your own recommendation."];}},
+  {id:"write", label:"Write content", test:/\b(write|blog|post|article|caption|bio|headline|story|script|description|about page)\b/i,
+   build:function(s){return [
+    "You are a skilled writer who sounds human, not AI.",
+    "Write: " + s.core + ".",
+    "Audience: [who reads this and what they care about].",
+    "Length: [e.g. under 100 words / ~800 words with subheadings].",
+    "Tone: " + s.tone + ".",
+    "Include: [one specific detail, story, or number that only you can provide \u2014 this is what makes it yours].",
+    "Avoid: clich\u00e9s, \u201cIn today's fast-paced world\u201d openings, exclamation points.",
+    "Give me 2 versions with different openings."];}}
+];
+var FALLBACK = {id:"general", label:"General task", build:function(s){return [
+  "You are an expert in [the field this belongs to].",
+  "Task: " + s.core + ".",
+  "Context: [everything you know that the AI doesn't \u2014 situation, constraints, what you've tried].",
+  "What a great answer looks like: [format, length, level of detail].",
+  "Tone: " + s.tone + ".",
+  "If any part of this is ambiguous, ask me up to 3 clarifying questions before answering."];}};
+
+var TONES = [
+  [/\b(professional|formal|business)\b/i, "plain business English \u2014 warm but direct, zero jargon"],
+  [/\b(funny|humor|witty|playful)\b/i, "playful and quick \u2014 humor from specificity, never from puns"],
+  [/\b(casual|friendly|chill|informal)\b/i, "conversational \u2014 contractions fine, like texting a smart friend"],
+  [/\b(not mean|kind|nice|polite|gentle)\b/i, "firm but kind \u2014 direct about the ask, generous in tone"],
+  [/\b(serious|urgent)\b/i, "serious and direct \u2014 no softening, no filler"]
+];
+
+var WEAK = [
+  [/\bgood|better|great\b/i, "good/better", "name the exact change you want"],
+  [/\bshort\b/i, "short", "a number: \u201cunder 100 words\u201d"],
+  [/\bcatchy\b/i, "catchy", "\u201cpunchy, under 8 words, no clich\u00e9s\u201d"],
+  [/\bprofessional\b/i, "professional", "\u201cplain business English, warm but direct\u201d"],
+  [/\bsimple|easy\b/i, "simple", "\u201cexplain it to a smart 12-year-old\u201d"],
+  [/\bcreative|unique\b/i, "creative", "\u201c5 options, each a different angle\u201d"],
+  [/\bnice|cool|pretty\b/i, "nice", "name a style, a mood, and a palette"],
+  [/\bsome|a few\b/i, "some", "an exact number \u2014 exact numbers force effort"],
+  [/\bdetailed\b/i, "detailed", "a length range with subheadings"],
+  [/\brealistic\b/i, "realistic", "\u201cphotorealistic, 50mm lens, natural light\u201d"],
+  [/\binteresting|engaging\b/i, "engaging", "\u201chook first, one concrete example per point\u201d"],
+  [/\bhelp me\b/i, "help me", "\u201cact as [expert] and [specific verb] my [thing]\u201d"]
+];
+
+function detectTone(t){for(var i=0;i<TONES.length;i++){if(TONES[i][0].test(t))return TONES[i][1];}return "[describe the voice \u2014 e.g. \u2018warm but direct\u2019, \u2018like a friendly expert\u2019]";}
+function cleanCore(t){
+  return t.replace(/^\s*(please\s+)?(can you|could you|i need( you)? to|i want( you)? to|i need|i want|help me( with)?|make me|write me|give me|create)\s*/i,"")
+          .replace(/\s+/g," ").trim().replace(/[.?!]+$/,"") || t.trim();
+}
+
+var $=function(id){return document.getElementById(id);};
+function runFix(){
+  var raw=$("idea").value.trim();
+  if(!raw){$("idea").focus();return;}
+  var intent=null;
+  for(var i=0;i<INTENTS.length;i++){if(INTENTS[i].test.test(raw)){intent=INTENTS[i];break;}}
+  if(!intent)intent=FALLBACK;
+  var s={core:cleanCore(raw),tone:detectTone(raw),article:/\breply|respond\b/i.test(raw)?"a reply":"an email"};
+  var lines=intent.build(s);
+  $("intent").textContent="Detected: "+intent.label;
+  $("out").innerHTML=lines.join("\n").replace(/\[([^\]]+)\]/g,'[<span class="ph">$1</span>]');
+  var chips=[];
+  for(var w=0;w<WEAK.length;w++){if(WEAK[w][0].test(raw)){chips.push('<span class="chip"><s>'+WEAK[w][1]+'</s> \u2192 <b>'+WEAK[w][2]+'</b></span>');}}
+  $("chips").innerHTML=chips.join("");
+  $("upgrades").hidden=chips.length===0;
+  $("result").classList.add("show");
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({event:"prompt_fixed",intent:intent.id,weak_words_found:chips.length});
+}
+$("fix").addEventListener("click",runFix);
+$("idea").addEventListener("keydown",function(e){if(e.key==="Enter"&&(e.metaKey||e.ctrlKey))runFix();});
+document.querySelectorAll(".try button").forEach(function(b){
+  b.addEventListener("click",function(){$("idea").value=b.getAttribute("data-ex");runFix();});
+});
+$("copy").addEventListener("click",function(){
+  var text=$("out").innerText;
+  (navigator.clipboard?navigator.clipboard.writeText(text):Promise.reject()).then(function(){
+    $("copy").textContent="Copied \u2713";setTimeout(function(){$("copy").textContent="Copy prompt";},1600);
+  }).catch(function(){
+    var r=document.createRange();r.selectNodeContents($("out"));
+    var sel=getSelection();sel.removeAllRanges();sel.addRange(r);
+    $("copy").textContent="Press Ctrl/Cmd+C";setTimeout(function(){$("copy").textContent="Copy prompt";},2200);
+  });
+});
+
+/* render thesaurus */
+$("swaps").innerHTML=SWAPS.map(function(s){
+  return '<div class="swap"><div class="weak">\u201c'+s[0]+'\u201d</div><div class="strong"><b>'+s[1]+'</b><span>'+s[2]+'</span></div></div>';
+}).join("");
+
+/* render + filter dictionary */
+var activeCat="all";
+function renderTerms(){
+  var q=$("dsearch").value.trim().toLowerCase();
+  var html=TERMS.filter(function(t){
+    return (activeCat==="all"||t[1]===activeCat)&&(!q||(t[0]+" "+t[2]+" "+t[3]).toLowerCase().indexOf(q)>-1);
+  }).map(function(t){
+    return '<div class="term"><div class="t"><h3>'+t[0]+'</h3><span class="c">'+t[1]+'</span></div><p>'+t[2]+' <b>Use it:</b> '+t[3]+'</p></div>';
+  }).join("");
+  $("terms").innerHTML=html;
+  $("dempty").hidden=!!html;
+}
+$("dsearch").addEventListener("input",renderTerms);
+document.querySelectorAll(".cat").forEach(function(b){
+  b.addEventListener("click",function(){
+    document.querySelectorAll(".cat").forEach(function(x){x.classList.remove("on");});
+    b.classList.add("on");activeCat=b.getAttribute("data-cat");renderTerms();
+  });
+});
+renderTerms();
+
+$("buy").href=BUY_URL;
+$("buy").addEventListener("click",function(){
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({event:"promptlab_upsell_click"});
+});
+</script>
+</body>
+</html>
