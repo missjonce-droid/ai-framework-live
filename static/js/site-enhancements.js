@@ -222,7 +222,7 @@
     if (!title || !subtitle || !actions) return;
 
     hero.setAttribute("data-framework-updated", "true");
-    title.textContent = "Stop collecting AI tools. Build a working AI system.";
+    title.textContent = ".";What the Framework?
     subtitle.textContent =
       "Tell us the result you want. AI Framework helps you find the right tools, compare the tradeoffs, and turn them into a practical step-by-step stack.";
 
