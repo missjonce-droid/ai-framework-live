@@ -103,7 +103,7 @@
 
     if (path === "/") {
       setMetadata(
-        "AI Framework â€” Find the Right AI Tools & Build a Working Stack",
+        "AI Framework — Find the Right AI Tools & Build a Working Stack",
         "Find the right AI tools, compare the tradeoffs, and build a practical AI stack for your exact goal. Explore 1,500+ indexed tools and step-by-step frameworks.",
         SITE + "/",
         "website",
@@ -127,7 +127,7 @@
     if (path.indexOf("/category/") === 0 && heading) {
       var count = text(document.querySelector(".result-count"));
       setMetadata(
-        heading + " AI Tools â€” Compare the Best Options | AI Framework",
+        heading + " AI Tools — Compare the Best Options | AI Framework",
         "Compare " +
           (count ? count + " in " : "") +
           heading +
@@ -171,7 +171,7 @@
         "Learn how AI Framework reviews tools, labels sponsored placements, and uses affiliate links.",
       ],
       "/advanced": [
-        "Advanced AI Tools â€” Legal and Responsible Use | AI Framework",
+        "Advanced AI Tools — Legal and Responsible Use | AI Framework",
         "Browse advanced AI tools with fewer restrictions. Legal, ethical, and responsible use is required.",
       ],
     };
@@ -230,7 +230,7 @@
       var builder = document.createElement("a");
       builder.href = "/build-my-framework/";
       builder.className = "clarity-link primary framework-hero-link";
-      builder.textContent = "Build My Framework â†’";
+      builder.textContent = "Build My Framework →";
       actions.insertBefore(builder, actions.firstChild);
     }
 
@@ -298,7 +298,7 @@
         var isSaved = getSavedTools().some(function (tool) {
           return tool.slug === slug;
         });
-        saveButton.textContent = isSaved ? "âœ“ Saved" : "ï¼‹ Save tool";
+        saveButton.textContent = isSaved ? "✓ Saved" : "＋ Save tool";
         saveButton.classList.toggle("is-saved", isSaved);
         saveButton.setAttribute("aria-pressed", String(isSaved));
       }
@@ -340,7 +340,7 @@
         var note = document.createElement("div");
         note.className = "framework-trust-note";
         note.innerHTML =
-          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the toolâ€™s official website before purchasing.";
+          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the tool’s official website before purchasing.";
         about.insertAdjacentElement("afterend", note);
       }
     }
