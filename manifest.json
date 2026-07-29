@@ -1,7 +1,7 @@
 {
   "short_name": "AI Framework",
-  "name": "AI Framework — Universal AI Resource Directory",
-  "description": "An OSINT-style expandable tree of the entire AI ecosystem: tools, agents, GPTs, prompts, courses, creators, companies, and more.",
+  "name": "AI Framework — AI Tool Directory and Framework Builder",
+  "description": "Find, compare, and combine AI tools into a practical system for your exact goal.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -14,5 +14,5 @@
   "theme_color": "#0b1220",
   "background_color": "#0b1220",
   "orientation": "any",
-  "categories": ["productivity", "reference", "utilities"]
+  "categories": ["productivity", "business", "education", "utilities"]
 }

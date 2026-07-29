@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="purple" cx="0" cy="0" r="1" gradientTransform="translate(130 40) rotate(36) scale(600 420)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5FB8" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#8B5FB8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gold" cx="0" cy="0" r="1" gradientTransform="translate(1110 60) rotate(136) scale(610 390)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D0AA6D" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#D0AA6D" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line" x1="178" y1="0" x2="1020" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D0AA6D"/>
+      <stop offset=".52" stop-color="#ECE7DA"/>
+      <stop offset="1" stop-color="#A77BDD"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0F1216"/>
+  <rect width="1200" height="630" fill="url(#purple)"/>
+  <rect width="1200" height="630" fill="url(#gold)"/>
+  <path d="M100 104H1100" stroke="#2C333E"/>
+  <text x="100" y="78" fill="#ECE7DA" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">AI Framework</text>
+  <text x="100" y="212" fill="#D0AA6D" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="4">AI TOOL DIRECTORY + WORKFLOW BUILDER</text>
+  <text x="100" y="300" fill="#ECE7DA" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-2">Stop collecting AI tools.</text>
+  <text x="100" y="374" fill="#ECE7DA" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-2">Build a working system.</text>
+  <rect x="100" y="428" width="850" height="4" rx="2" fill="url(#line)"/>
+  <text x="100" y="500" fill="#AAB0BA" font-family="Inter, Arial, sans-serif" font-size="27">Find the right tools. Compare the tradeoffs.</text>
+  <text x="100" y="542" fill="#AAB0BA" font-family="Inter, Arial, sans-serif" font-size="27">Build the whole framework.</text>
+  <text x="100" y="594" fill="#D0AA6D" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">AI-FRAMEWORK.IO</text>
+</svg>

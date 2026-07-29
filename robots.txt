@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin
 
-Sitemap: https://ai-tools-atlas.emergent.host/api/sitemap.xml
+Sitemap: https://ai-framework.io/sitemap.xml
