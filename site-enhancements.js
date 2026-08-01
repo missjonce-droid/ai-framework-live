@@ -207,6 +207,12 @@
       } else {
         nav.appendChild(labLink);
       }
+      var promptLabLink = document.createElement("a");
+      promptLabLink.href = "/prompt-lab";
+      promptLabLink.className = "promptlab-nav-link";
+      promptLabLink.textContent = "Prompt Lab";
+      var buildLink = nav.querySelector('[href="/build-my-framework/"]');
+      nav.insertBefore(promptLabLink, buildLink ? buildLink.nextSibling : nav.firstChild);
     }
 
     var homeActions = document.querySelector(".header-actions");
@@ -260,6 +266,15 @@
       builder.className = "clarity-link primary framework-hero-link";
       builder.textContent = "Build My Framework →";
       actions.insertBefore(builder, actions.firstChild);
+    }
+
+    if (!actions.querySelector('[href="/prompt-lab"]')) {
+      var promptLab = document.createElement("a");
+      promptLab.href = "/prompt-lab";
+      promptLab.className = "clarity-link promptlab-hero-link";
+      promptLab.textContent = "Try Prompt Lab (free)";
+      var builderLink = actions.querySelector('[href="/build-my-framework/"]');
+      actions.insertBefore(promptLab, builderLink ? builderLink.nextSibling : actions.firstChild);
     }
 
     var browse = actions.querySelector('a[href="#browse"]');

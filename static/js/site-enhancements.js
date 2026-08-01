@@ -4,6 +4,7 @@
   var SITE = "https://ai-framework.io";
   var SAVED_KEY = "ai_fw_saved_tools";
   var SOCIAL_IMAGE = SITE + "/social-card.png";
+  var PROMPT_LAB_URL = "/promptlab"; // the live route (no dash)
 
   function text(element) {
     return (element && element.textContent ? element.textContent : "")
@@ -158,6 +159,10 @@
         "Discover Useful, New & Under-the-Radar AI Tools | AI Framework",
         "Explore editor picks, hidden gems, beginner-friendly tools, operator stacks, and practical AI discoveries.",
       ],
+      "/promptlab": [
+        "Prompt Lab — Fix Your Prompt Free | AI Framework",
+        "Type your rough idea and watch it become a real prompt. Free AI dictionary and word upgrades included.",
+      ],
       "/submit": [
         "Submit an AI Tool for Editorial Review | AI Framework",
         "Submit an AI product, service, agent, or resource for consideration in the AI Framework directory.",
@@ -187,7 +192,11 @@
   }
 
   function addNavigationLinks() {
-    var nav = document.querySelector(".nav-links");
+    var nav =
+      document.querySelector(".nav-links") ||
+      document.querySelector("header nav") ||
+      document.querySelector("nav");
+
     if (nav && !nav.querySelector('[href="/build-my-framework/"]')) {
       var navLink = document.createElement("a");
       navLink.href = "/build-my-framework/";
@@ -207,6 +216,13 @@
       } else {
         nav.appendChild(labLink);
       }
+    if (nav && !nav.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
+      var promptLabLink = document.createElement("a");
+      promptLabLink.href = PROMPT_LAB_URL;
+      promptLabLink.className = "promptlab-nav-link";
+      promptLabLink.textContent = "Prompt Lab";
+      var buildLink = nav.querySelector('[href="/build-my-framework/"]');
+      nav.insertBefore(promptLabLink, buildLink ? buildLink.nextSibling : nav.firstChild);
     }
 
     var homeActions = document.querySelector(".header-actions");
@@ -251,6 +267,7 @@
 
     hero.setAttribute("data-framework-updated", "true");
     title.textContent = "What the Framework?";
+    title.textContent = "Stop collecting AI tools. Build a working AI system.";
     subtitle.textContent =
       "Tell us the result you want. AI Framework helps you find the right tools, compare the tradeoffs, and turn them into a practical step-by-step stack.";
 
@@ -262,8 +279,42 @@
       actions.insertBefore(builder, actions.firstChild);
     }
 
+    if (!actions.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
+      var promptLab = document.createElement("a");
+      promptLab.href = PROMPT_LAB_URL;
+      promptLab.className = "clarity-link promptlab-hero-link";
+      promptLab.textContent = "Try Prompt Lab (free)";
+      var builderLink = actions.querySelector('[href="/build-my-framework/"]');
+      actions.insertBefore(promptLab, builderLink ? builderLink.nextSibling : actions.firstChild);
+    }
+
     var browse = actions.querySelector('a[href="#browse"]');
     if (browse) browse.classList.remove("primary");
+  }
+
+  function addSearchHint() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/browse")
+      return;
+
+    var input = document.querySelector(
+      'input[type="search"], input[placeholder*="earch"]',
+    );
+    if (!input) return;
+
+    var anchorPoint = input.closest("form") || input.parentElement;
+    if (!anchorPoint || anchorPoint.getAttribute("data-promptlab-hint") === "true")
+      return;
+    if (document.querySelector(".promptlab-search-hint")) return;
+
+    anchorPoint.setAttribute("data-promptlab-hint", "true");
+    var hint = document.createElement("div");
+    hint.className = "promptlab-search-hint";
+    hint.style.cssText = "margin-top:8px;font-size:14px;opacity:.85";
+    hint.innerHTML =
+      'Not sure what to type? <a href="' +
+      PROMPT_LAB_URL +
+      '" style="text-decoration:underline;text-underline-offset:3px;color:inherit">Fix your prompt free \u2192</a>';
+    anchorPoint.insertAdjacentElement("afterend", hint);
   }
 
   function removeEmptySocialProof() {
@@ -314,6 +365,17 @@
     var pageHead = document.querySelector(".tool-page-head");
     if (!heading || !pageHead) return;
 
+    // "← All tools" — the way back (friend-test fix #3)
+    if (!pageHead.querySelector(".framework-back-link")) {
+      var back = document.createElement("a");
+      back.href = "/";
+      back.className = "framework-back-link";
+      back.textContent = "\u2190 All tools";
+      back.style.cssText =
+        "display:inline-block;margin:0 0 10px;font-size:14px;opacity:.75;color:inherit;text-decoration:none";
+      pageHead.insertBefore(back, pageHead.firstChild);
+    }
+
     if (!pageHead.querySelector(".framework-tool-actions")) {
       var actions = document.createElement("div");
       actions.className = "framework-tool-actions";
@@ -326,7 +388,7 @@
         var isSaved = getSavedTools().some(function (tool) {
           return tool.slug === slug;
         });
-        saveButton.textContent = isSaved ? "✓ Saved" : "＋ Save tool";
+        saveButton.textContent = isSaved ? "\u2713 Saved" : "\uFF0B Save tool";
         saveButton.classList.toggle("is-saved", isSaved);
         saveButton.setAttribute("aria-pressed", String(isSaved));
       }
@@ -361,6 +423,42 @@
       renderSaveState();
     }
 
+    // Prominent "Visit [Tool] ↗" button (friend-test fix #2)
+    var actionsEl = pageHead.querySelector(".framework-tool-actions");
+    if (actionsEl && !actionsEl.querySelector(".framework-visit-btn")) {
+      var visitTarget =
+        document.querySelector(
+          '.tool-page-main a[href^="/go/"], .tool-page-head a[href^="/go/"], .tool-page a[href^="/go/"]',
+        ) ||
+        Array.prototype.filter.call(
+          document.querySelectorAll(
+            ".tool-page-main a[href], .tool-page-head a[href], .tool-page a[href], main a[href]",
+          ),
+          function (a) {
+            var href = a.getAttribute("href") || "";
+            return (
+              /visit/i.test(text(a)) ||
+              (a.getAttribute("target") === "_blank" && /^https?:/i.test(href))
+            );
+          },
+        )[0];
+
+      if (visitTarget) {
+        var visitHref = visitTarget.getAttribute("href");
+        var visit = document.createElement("a");
+        visit.href = visitHref;
+        if (/^https?:/i.test(visitHref)) {
+          visit.target = "_blank";
+          visit.rel = "noopener";
+        }
+        visit.className = "pill-btn lg primary framework-visit-btn";
+        visit.style.cssText = "font-weight:600";
+        visit.textContent =
+          "Visit " + (text(heading) || slugToTitle(slug)) + " \u2197";
+        actionsEl.insertBefore(visit, actionsEl.firstChild);
+      }
+    }
+
     var main = document.querySelector(".tool-page-main");
     if (main && !main.querySelector(".framework-trust-note")) {
       var about = main.querySelector("p");
@@ -368,10 +466,38 @@
         var note = document.createElement("div");
         note.className = "framework-trust-note";
         note.innerHTML =
-          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the tool’s official website before purchasing.";
+          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the tool\u2019s official website before purchasing.";
         about.insertAdjacentElement("afterend", note);
       }
     }
+  }
+
+  // Fallback for the dead "Create a framework" CTA (friend-test fix #1):
+  // if something that *says* it opens the framework builder is clicked but
+  // isn't a real link, send the user there anyway.
+  function fixDeadFrameworkCta() {
+    if (
+      document.documentElement.getAttribute("data-framework-cta-fix") === "true"
+    )
+      return;
+    document.documentElement.setAttribute("data-framework-cta-fix", "true");
+
+    document.addEventListener("click", function (event) {
+      var target = event.target;
+      if (!target || !target.closest) return;
+      if (target.closest("a[href]")) return; // real links work fine
+
+      var candidate = target.closest(
+        "button, [role='button'], .clarity-link, .pill-btn, span, div",
+      );
+      if (!candidate) return;
+
+      var label = text(candidate);
+      if (!label || label.length > 40) return;
+      if (/^(create|build)( a| my| your)? (ai )?framework/i.test(label)) {
+        window.location.href = "/build-my-framework/";
+      }
+    });
   }
 
   function trackUsefulActions() {
@@ -392,12 +518,31 @@
           tool_slug: slug,
           source_path: window.location.pathname,
         });
+      } else if (
+        link.classList.contains("framework-visit-btn") &&
+        /^https?:/i.test(href)
+      ) {
+        var toolMatch = window.location.pathname.match(/^\/tool\/([^/]+)/);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "outbound_tool_click",
+          tool_slug: toolMatch ? toolMatch[1] : "unknown",
+          source_path: window.location.pathname,
+        });
       }
 
       if (href.indexOf("/build-my-framework") === 0) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: "framework_builder_opened",
+          source_path: window.location.pathname,
+        });
+      }
+
+      if (href === PROMPT_LAB_URL) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "promptlab_opened",
           source_path: window.location.pathname,
         });
       }
@@ -422,10 +567,37 @@
   function applyEnhancements() {
     addNavigationLinks();
     improveHomepage();
+    addSearchHint();
     removeEmptySocialProof();
     enhanceToolPage();
     improveRouteMetadata();
+    fixDeadFrameworkCta();
     trackUsefulActions();
+  }
+
+  // Re-apply on client-side navigation — the site is a single-page app,
+  // so route changes re-render the page without reloading this script.
+  function hookSpaNavigation() {
+    if (window.__fwNavHooked) return;
+    window.__fwNavHooked = true;
+
+    function onNavigate() {
+      applyEnhancements();
+      [150, 450, 1000, 2000].forEach(function (ms) {
+        window.setTimeout(applyEnhancements, ms);
+      });
+    }
+
+    ["pushState", "replaceState"].forEach(function (methodName) {
+      var original = history[methodName];
+      if (typeof original !== "function") return;
+      history[methodName] = function () {
+        var result = original.apply(this, arguments);
+        onNavigate();
+        return result;
+      };
+    });
+    window.addEventListener("popstate", onNavigate);
   }
 
   if (document.readyState === "loading") {
@@ -433,6 +605,7 @@
   } else {
     applyEnhancements();
   }
+  hookSpaNavigation();
 
   var attempts = 0;
   var timer = window.setInterval(function () {
