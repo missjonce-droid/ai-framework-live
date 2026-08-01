@@ -207,6 +207,42 @@
       homeLink.textContent = "Build My Framework";
       homeActions.insertBefore(homeLink, homeActions.firstChild);
     }
+
+    if (nav && !nav.querySelector('[href="/promptlab"]')) {
+      var promptLab = document.createElement("a");
+      promptLab.href = "/promptlab";
+      promptLab.className =
+        window.location.pathname === "/promptlab" ? "active" : "";
+      promptLab.textContent = "Prompt Lab";
+
+      // Sits next to Playbooks — the other standalone, non-router page.
+      var playbooks = nav.querySelector('[href="/playbooks/"]');
+      if (playbooks) {
+        nav.insertBefore(promptLab, playbooks.nextSibling);
+      } else {
+        nav.appendChild(promptLab);
+      }
+    }
+  }
+
+  function addPromptLabHint() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/tree")
+      return;
+
+    var search = document.querySelector(".clarity-search");
+    if (!search || !search.parentNode) return;
+    if (document.querySelector(".framework-promptlab-hint")) return;
+
+    var hint = document.createElement("p");
+    hint.className = "muted framework-promptlab-hint";
+
+    var link = document.createElement("a");
+    link.href = "/promptlab";
+    link.textContent = "Fix your prompt free →";
+
+    hint.appendChild(document.createTextNode("Not sure what to type? "));
+    hint.appendChild(link);
+    search.parentNode.insertBefore(hint, search.nextSibling);
   }
 
   function improveHomepage() {
@@ -222,7 +258,7 @@
     if (!title || !subtitle || !actions) return;
 
     hero.setAttribute("data-framework-updated", "true");
-    title.textContent = ".";What the Framework?
+    title.textContent = "Stop collecting AI tools. Build a working AI system.";
     subtitle.textContent =
       "Tell us the result you want. AI Framework helps you find the right tools, compare the tradeoffs, and turn them into a practical step-by-step stack.";
 
@@ -394,6 +430,7 @@
   function applyEnhancements() {
     addNavigationLinks();
     improveHomepage();
+    addPromptLabHint();
     removeEmptySocialProof();
     enhanceToolPage();
     improveRouteMetadata();

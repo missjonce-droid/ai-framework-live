@@ -12,6 +12,24 @@
   color: var(--framework-brass) !important;
 }
 
+.framework-promptlab-hint {
+  font-size: 13px;
+  margin: -8px auto 18px;
+  max-width: 560px;
+  text-align: center;
+}
+
+.framework-promptlab-hint a {
+  border-bottom: 1px solid rgba(208, 170, 109, 0.4);
+  color: var(--framework-brass);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.framework-promptlab-hint a:hover {
+  border-bottom-color: var(--framework-brass);
+}
+
 .framework-hero-link {
   background: linear-gradient(135deg, #ece7da, #d0aa6d) !important;
   border-color: #d0aa6d !important;
