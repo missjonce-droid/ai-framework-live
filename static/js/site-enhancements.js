@@ -237,6 +237,41 @@
       homeActions.insertBefore(homeLink, homeActions.firstChild);
     }
 
+    if (nav && !nav.querySelector('[href="/promptlab"]')) {
+      var promptLab = document.createElement("a");
+      promptLab.href = "/promptlab";
+      promptLab.className =
+        window.location.pathname === "/promptlab" ? "active" : "";
+      promptLab.textContent = "Prompt Lab";
+
+      // Sits next to Playbooks — the other standalone, non-router page.
+      var playbooks = nav.querySelector('[href="/playbooks/"]');
+      if (playbooks) {
+        nav.insertBefore(promptLab, playbooks.nextSibling);
+      } else {
+        nav.appendChild(promptLab);
+      }
+    }
+  }
+
+  function addPromptLabHint() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/tree")
+      return;
+
+    var search = document.querySelector(".clarity-search");
+    if (!search || !search.parentNode) return;
+    if (document.querySelector(".framework-promptlab-hint")) return;
+
+    var hint = document.createElement("p");
+    hint.className = "muted framework-promptlab-hint";
+
+    var link = document.createElement("a");
+    link.href = "/promptlab";
+    link.textContent = "Fix your prompt free →";
+
+    hint.appendChild(document.createTextNode("Not sure what to type? "));
+    hint.appendChild(link);
+    search.parentNode.insertBefore(hint, search.nextSibling);
     if (homeActions && !homeActions.querySelector('[href="/prompt-lab"]')) {
       var homeLabLink = document.createElement("a");
       homeLabLink.href = "/prompt-lab";
@@ -567,6 +602,7 @@
   function applyEnhancements() {
     addNavigationLinks();
     improveHomepage();
+    addPromptLabHint();
     addSearchHint();
     removeEmptySocialProof();
     enhanceToolPage();
