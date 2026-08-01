@@ -252,26 +252,51 @@
       actions.insertBefore(builder, actions.firstChild);
     }
 
-    if (!actions.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
-      var promptLab = document.createElement("a");
-      promptLab.href = PROMPT_LAB_URL;
-      promptLab.className = "clarity-link promptlab-hero-link";
-      promptLab.textContent = "Try Prompt Lab (free)";
-      var builderLink = actions.querySelector('[href="/build-my-framework/"]');
-      actions.insertBefore(promptLab, builderLink ? builderLink.nextSibling : actions.firstChild);
-    }
+    // One primary CTA above the fold. The Prompt Lab hint already lives next
+    // to the search bar (see addSearchHint), so the rest of the hero actions
+    // (category anchor, playbooks link, map toggle) are hidden via CSS.
+  }
 
-    var browse = actions.querySelector('a[href="#browse"]');
-    if (browse) browse.classList.remove("primary");
+  // Nav: exactly four items (Browse Tools, Build My Framework, Prompt Lab,
+  // Playbooks). The rest already live in the footer; CSS handles hiding and
+  // reordering, this just fixes the "Directory" label text.
+  function simplifyNav() {
+    var browseLink = document.querySelector('.nav-links > a[href="/browse"]');
+    if (!browseLink || browseLink.getAttribute("data-framework-relabeled") === "true")
+      return;
+
+    var relabeled = false;
+    Array.prototype.forEach.call(browseLink.childNodes, function (node) {
+      if (node.nodeType === 3 && node.textContent.trim() === "Directory") {
+        node.textContent = " Browse Tools";
+        relabeled = true;
+      }
+    });
+    if (relabeled) browseLink.setAttribute("data-framework-relabeled", "true");
+  }
+
+  // Homepage: cap category tiles to 8 (CSS) and relabel the overflow link.
+  function simplifyCategoryBrowse() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/tree")
+      return;
+
+    var seeAll = document.querySelector(".cat-browse-all");
+    if (seeAll && seeAll.getAttribute("data-framework-relabeled") !== "true") {
+      seeAll.setAttribute("data-framework-relabeled", "true");
+      seeAll.textContent = "Browse all categories →";
+    }
   }
 
   function addSearchHint() {
     if (window.location.pathname !== "/" && window.location.pathname !== "/browse")
       return;
 
-    var input = document.querySelector(
-      'input[type="search"], input[placeholder*="earch"]',
-    );
+    // On the homepage the hero has its own prominent search box
+    // (.clarity-search); that's the one "search bar" the task is about, not
+    // the smaller persistent one in the site header.
+    var input =
+      document.querySelector('.clarity-search input[placeholder*="earch"]') ||
+      document.querySelector('input[type="search"], input[placeholder*="earch"]');
     if (!input) return;
 
     var anchorPoint = input.closest("form") || input.parentElement;
@@ -539,7 +564,9 @@
 
   function applyEnhancements() {
     addNavigationLinks();
+    simplifyNav();
     improveHomepage();
+    simplifyCategoryBrowse();
     addSearchHint();
     removeEmptySocialProof();
     enhanceToolPage();

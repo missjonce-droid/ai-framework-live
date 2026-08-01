@@ -163,6 +163,63 @@
   text-transform: uppercase;
 }
 
+/* Nav: exactly four items — Browse Tools, Build My Framework, Prompt Lab,
+   Playbooks. Submit / Contact / Discover / the redundant home link already
+   live in the footer, so they're demoted from the header nav only. */
+.nav-links > a[href="/"],
+.nav-links > a[href="/discover"],
+.nav-links > a[href="/submit"],
+.nav-links > a[href="/contact"] {
+  display: none !important;
+}
+
+.nav-links > a[href="/browse"] {
+  order: 1;
+}
+
+.nav-links > a.framework-nav-link {
+  order: 2;
+}
+
+.nav-links > a.promptlab-nav-link {
+  order: 3;
+}
+
+.nav-links > a[href="/playbooks/"] {
+  order: 4;
+}
+
+/* Homepage hero: headline, search bar (with the Prompt Lab hint), one
+   primary CTA. Nothing else above the fold. */
+.clarity-actions a[href="#browse"],
+.clarity-actions a[href="/playbooks/"],
+.clarity-actions button[data-testid="toggle-tree"] {
+  display: none !important;
+}
+
+/* The homepage/tree route renders its own header (.site-header), separate
+   from the site-wide .nav-links header used everywhere else. "Submit a
+   tool" is a second primary CTA competing with Build My Framework right
+   above the fold — demote it off the homepage the same way Submit is
+   demoted from the main nav. */
+.header-actions a[data-testid="header-submit-link"] {
+  display: none !important;
+}
+
+/* Trending / Discover / Recently added still live at /discover — cut from
+   the homepage entirely rather than fighting for space below the fold.
+   (A legacy script relocates .tree-supp-inner next to the page's legend
+   footer, so it's hidden by class regardless of where it ends up in the DOM.) */
+.tree-supp,
+.tree-supp-inner {
+  display: none !important;
+}
+
+/* Category tiles: show at most 8, "Browse all categories" covers the rest. */
+.cat-grid > a:nth-child(n + 9) {
+  display: none !important;
+}
+
 @media (max-width: 860px) {
   .framework-tool-actions {
     margin: 10px 0 0;
