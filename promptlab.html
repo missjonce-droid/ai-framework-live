@@ -35,11 +35,20 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   .wrap{max-width:880px;margin:0 auto;padding:0 20px}
 
   .nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(11,18,32,.86);backdrop-filter:blur(10px);z-index:20}
-  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px}
-  .brand{font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:-.02em;text-decoration:none;color:var(--text)}
+  .nav .wrap{display:flex;align-items:center;gap:18px;height:56px}
+  .brand{font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:-.02em;text-decoration:none;color:var(--text);white-space:nowrap}
   .brand span{color:var(--mint)}
-  .nav a.dir{font-size:13px;color:var(--muted);text-decoration:none}
+  .nav-links{display:flex;align-items:center;gap:4px;flex:1 1 auto;overflow-x:auto;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{font-size:13px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:6px;white-space:nowrap;transition:color .15s ease,background-color .15s ease}
+  .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .nav-links a.active{color:var(--mint);background:rgba(77,224,192,.1)}
+  .nav a.dir{font-size:13px;color:var(--muted);text-decoration:none;white-space:nowrap}
   .nav a.dir:hover{color:var(--text)}
+  @media (max-width:720px){
+    .nav .wrap{gap:12px}
+    .nav a.dir{display:none}
+  }
 
   .hero{padding:56px 0 8px;text-align:center}
   .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);margin:0 0 16px}
@@ -124,12 +133,19 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
 
 <nav class="nav"><div class="wrap">
   <a class="brand" href="/">AI<span>/</span>Framework</a>
+  <div class="nav-links">
+    <a href="/">Directory</a>
+    <a href="/build-my-framework/">Build My Framework</a>
+    <a href="/playbooks/">Playbooks</a>
+    <a href="/tutorials/">Tutorials</a>
+    <a href="/prompt-lab" class="active" aria-current="page">Prompt Lab</a>
+  </div>
   <a class="dir" href="/">Browse 1,500+ tools →</a>
 </div></nav>
 
 <header class="hero"><div class="wrap">
   <p class="eyebrow">Prompt Lab · free</p>
-  <h1>You know what you want.<br>Now <em>say it</em> so the AI does too.</h1>
+  <h1>Tell me what you want.<br>What you <em>really really </em> want.</h1>
   <p class="lede">Type your idea the way you'd say it out loud. Prompt Lab rebuilds it into a structured prompt, flags the vague words, and shows you the vocabulary — so every prompt after this one is yours.</p>
 
   <div class="fixer">

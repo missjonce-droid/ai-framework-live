@@ -6,6 +6,7 @@
   --framework-brass: #d0aa6d;
   --framework-purple: #a77bdd;
   --framework-panel: #171b22;
+  --framework-mint: #4de0c0;
 }
 
 .framework-nav-link {
@@ -28,6 +29,32 @@
 
 .framework-promptlab-hint a:hover {
   border-bottom-color: var(--framework-brass);
+.prompt-lab-nav-link {
+  color: var(--framework-mint) !important;
+}
+
+.prompt-lab-home-button {
+  border-color: color-mix(
+    in srgb,
+    var(--framework-mint) 45%,
+    var(--border)
+  ) !important;
+  color: var(--framework-mint) !important;
+}
+
+.prompt-lab-home-button:hover {
+  background: color-mix(in srgb, var(--framework-mint) 12%, transparent) !important;
+.promptlab-nav-link {
+  color: var(--framework-purple) !important;
+}
+
+.promptlab-hero-link {
+  border-color: var(--framework-purple) !important;
+  color: var(--framework-purple) !important;
+}
+
+.promptlab-hero-link:hover {
+  background: color-mix(in srgb, var(--framework-purple) 12%, transparent);
 }
 
 .framework-hero-link {
@@ -181,7 +208,8 @@
 }
 
 @media (max-width: 767px) {
-  .framework-nav-link {
+  .framework-nav-link,
+  .promptlab-nav-link {
     display: none;
   }
 
