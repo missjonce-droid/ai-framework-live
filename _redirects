@@ -1,8 +1,8 @@
 # Static assets and standalone pages serve directly; everything else is the SPA.
-/vault/*            /vault/:splat              200
-/vault-thank-you    /vault-thank-you/index.html 200
-/playbooks          /playbooks/index.html      200
-/build-my-framework /build-my-framework/index.html 200
-/*
-/prompt-lab   /promptlab.html   200
-/*                  /index.html                200
+/vault/*             /vault/:splat                   200
+/vault-thank-you     /vault-thank-you/index.html     200
+/playbooks           /playbooks/index.html           200
+/build-my-framework  /build-my-framework/index.html  200
+/promptlab           /promptlab.html                 200
+/prompt-lab          /promptlab.html                 200
+/*                   /index.html                     200
