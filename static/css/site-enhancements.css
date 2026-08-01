@@ -6,12 +6,28 @@
   --framework-brass: #d0aa6d;
   --framework-purple: #a77bdd;
   --framework-panel: #171b22;
+  --framework-mint: #4de0c0;
 }
 
 .framework-nav-link {
   color: var(--framework-brass) !important;
 }
 
+.prompt-lab-nav-link {
+  color: var(--framework-mint) !important;
+}
+
+.prompt-lab-home-button {
+  border-color: color-mix(
+    in srgb,
+    var(--framework-mint) 45%,
+    var(--border)
+  ) !important;
+  color: var(--framework-mint) !important;
+}
+
+.prompt-lab-home-button:hover {
+  background: color-mix(in srgb, var(--framework-mint) 12%, transparent) !important;
 .promptlab-nav-link {
   color: var(--framework-purple) !important;
 }

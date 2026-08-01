@@ -205,6 +205,17 @@
       nav.insertBefore(navLink, nav.firstChild);
     }
 
+    if (nav && !nav.querySelector('[href="/prompt-lab"]')) {
+      var labLink = document.createElement("a");
+      labLink.href = "/prompt-lab";
+      labLink.className = "framework-nav-link prompt-lab-nav-link";
+      labLink.textContent = "Prompt Lab";
+      var afterBuilder = nav.querySelector('[href="/build-my-framework/"]');
+      if (afterBuilder && afterBuilder.nextSibling) {
+        nav.insertBefore(labLink, afterBuilder.nextSibling);
+      } else {
+        nav.appendChild(labLink);
+      }
     if (nav && !nav.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
       var promptLabLink = document.createElement("a");
       promptLabLink.href = PROMPT_LAB_URL;
@@ -225,6 +236,21 @@
       homeLink.textContent = "Build My Framework";
       homeActions.insertBefore(homeLink, homeActions.firstChild);
     }
+
+    if (homeActions && !homeActions.querySelector('[href="/prompt-lab"]')) {
+      var homeLabLink = document.createElement("a");
+      homeLabLink.href = "/prompt-lab";
+      homeLabLink.className = "pill-btn prompt-lab-home-button";
+      homeLabLink.textContent = "Prompt Lab";
+      var builderButton = homeActions.querySelector(
+        '[href="/build-my-framework/"]',
+      );
+      if (builderButton && builderButton.nextSibling) {
+        homeActions.insertBefore(homeLabLink, builderButton.nextSibling);
+      } else {
+        homeActions.appendChild(homeLabLink);
+      }
+    }
   }
 
   function improveHomepage() {
@@ -240,6 +266,7 @@
     if (!title || !subtitle || !actions) return;
 
     hero.setAttribute("data-framework-updated", "true");
+    title.textContent = "What the Framework?";
     title.textContent = "Stop collecting AI tools. Build a working AI system.";
     subtitle.textContent =
       "Tell us the result you want. AI Framework helps you find the right tools, compare the tradeoffs, and turn them into a practical step-by-step stack.";
