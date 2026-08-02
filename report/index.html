@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Report a Listing or Safety Concern | AI Framework</title>
+<meta name="description" content="Report an inaccurate, unsafe, unlawful, deceptive, expired, or rights-infringing AI Framework listing.">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://ai-framework.io/report/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/editorial-hubs.css">
+</head>
+<body>
+<header class="site-header"><a class="brand" href="/">AI Framework</a><nav aria-label="Primary navigation"><a href="/content-policy/">Content policy</a><a href="/contact">Contact</a></nav></header>
+<main class="legal-page">
+  <p class="legal-meta">Editorial safety channel</p>
+  <h1>Report a <span>Concern.</span></h1>
+  <p>Use this form for an inaccurate, broken, deceptive, unsafe, unlawful, age-inappropriate, or rights-infringing listing. Please identify the exact AI Framework page. Do not send passwords, financial information, government identifiers, medical records, explicit images, or unlawful material.</p>
+  <div class="warning-box"><strong>Not an emergency service.</strong> If someone is in immediate danger, contact the appropriate local emergency or law-enforcement authority. Do not rely on this form for urgent intervention.</div>
+
+  <form class="builder-panel" name="listing-report" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="listing-report">
+    <p hidden><label>Do not fill this out: <input name="bot-field"></label></p>
+    <div class="field"><label for="report-type">Type of concern</label>
+      <select id="report-type" name="report-type" required>
+        <option value="">Choose one</option>
+        <option>Incorrect or misleading information</option>
+        <option>Broken, expired, or redirected link</option>
+        <option>Undisclosed affiliate or sponsored relationship</option>
+        <option>Privacy, impersonation, or non-consensual content</option>
+        <option>Minor safety or sexual exploitation concern</option>
+        <option>Malware, fraud, or security abuse</option>
+        <option>Copyright, trademark, or other rights concern</option>
+        <option>Other policy concern</option>
+      </select>
+    </div>
+    <div class="field"><label for="page-url">AI Framework page URL</label><input id="page-url" type="url" name="page-url" placeholder="https://ai-framework.io/tool/..." required></div>
+    <div class="field"><label for="source-url">Supporting public source URL, if available</label><input id="source-url" type="url" name="source-url" placeholder="A safe public source—not explicit evidence"></div>
+    <div class="field"><label for="report-details">What is wrong and what action are you requesting?</label><textarea id="report-details" name="report-details" required placeholder="Describe the concern without including graphic, explicit, or unlawful material."></textarea></div>
+    <div class="field"><label for="report-name">Your name</label><input id="report-name" name="name" autocomplete="name"></div>
+    <div class="field"><label for="report-email">Email for follow-up</label><input id="report-email" type="email" name="email" autocomplete="email" required></div>
+    <label style="display:flex;gap:10px;align-items:flex-start;color:var(--dim);font-size:12px;margin:18px 0">
+      <input type="checkbox" name="good-faith" required style="margin-top:4px">
+      <span>I believe this report is accurate and submitted in good faith. I understand that submitting a report does not guarantee removal.</span>
+    </label>
+    <button class="button primary" type="submit">Submit report</button>
+  </form>
+  <p class="notice"><strong>Provider correction:</strong> If you represent a listed product, identify your relationship to it and provide a current official source supporting the requested correction.</p>
+</main>
+<footer><a class="brand" href="/">AI Framework</a><p>Independent AI directory and educational resource.</p><nav><a href="/content-policy/">Policy</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav></footer>
+</body>
+</html>

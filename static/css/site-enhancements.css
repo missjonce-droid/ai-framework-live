@@ -6,55 +6,18 @@
   --framework-brass: #d0aa6d;
   --framework-purple: #a77bdd;
   --framework-panel: #171b22;
-  --framework-mint: #4de0c0;
 }
 
 .framework-nav-link {
   color: var(--framework-brass) !important;
 }
 
-.framework-promptlab-hint {
-  font-size: 13px;
-  margin: -8px auto 18px;
-  max-width: 560px;
-  text-align: center;
+.framework-secondary-nav {
+  color: var(--text-muted, #aab0ba) !important;
 }
 
-.framework-promptlab-hint a {
-  border-bottom: 1px solid rgba(208, 170, 109, 0.4);
-  color: var(--framework-brass);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.framework-promptlab-hint a:hover {
-  border-bottom-color: var(--framework-brass);
-.prompt-lab-nav-link {
-  color: var(--framework-mint) !important;
-}
-
-.prompt-lab-home-button {
-  border-color: color-mix(
-    in srgb,
-    var(--framework-mint) 45%,
-    var(--border)
-  ) !important;
-  color: var(--framework-mint) !important;
-}
-
-.prompt-lab-home-button:hover {
-  background: color-mix(in srgb, var(--framework-mint) 12%, transparent) !important;
-.promptlab-nav-link {
-  color: var(--framework-purple) !important;
-}
-
-.promptlab-hero-link {
-  border-color: var(--framework-purple) !important;
-  color: var(--framework-purple) !important;
-}
-
-.promptlab-hero-link:hover {
-  background: color-mix(in srgb, var(--framework-purple) 12%, transparent);
+.framework-secondary-nav:hover {
+  color: var(--framework-brass) !important;
 }
 
 .framework-hero-link {
@@ -138,6 +101,49 @@
   color: var(--text);
 }
 
+.framework-legal-links {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-left: auto;
+}
+
+.framework-legal-links a {
+  color: var(--text-muted, #aab0ba);
+  font-size: 10px;
+  text-decoration: none;
+}
+
+.framework-legal-links a:hover {
+  color: var(--framework-brass);
+}
+
+.framework-advanced-policy {
+  background: color-mix(in srgb, #a96e4b 9%, var(--framework-panel));
+  border: 1px solid color-mix(in srgb, #d49a73 55%, var(--border));
+  border-left: 3px solid #d49a73;
+  border-radius: 9px;
+  color: var(--text-muted, #aab0ba);
+  font-size: 12px;
+  line-height: 1.55;
+  margin: 18px 0;
+  max-width: 760px;
+  padding: 15px 17px;
+}
+
+.framework-advanced-policy strong {
+  color: #f0c5a9;
+}
+
+.framework-advanced-policy p {
+  margin: 8px 0 0;
+}
+
+.framework-advanced-policy a {
+  color: var(--framework-brass);
+}
+
 .seo-fallback {
   background: #0f1216;
   color: #e6e6e6;
@@ -205,11 +211,14 @@
     align-items: flex-start;
     flex-direction: column;
   }
+
+  .framework-legal-links {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 767px) {
-  .framework-nav-link,
-  .promptlab-nav-link {
+  .framework-nav-link {
     display: none;
   }
 

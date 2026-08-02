@@ -37,6 +37,46 @@ const tutorials = fs.readFileSync(
   path.join(root, "tutorials", "index.html"),
   "utf8",
 );
+const prompts = fs.readFileSync(
+  path.join(root, "prompts", "index.html"),
+  "utf8",
+);
+const promptScript = fs.readFileSync(
+  path.join(root, "static", "js", "prompts.js"),
+  "utf8",
+);
+const personalize = fs.readFileSync(
+  path.join(root, "personalize-ai", "index.html"),
+  "utf8",
+);
+const personalizeScript = fs.readFileSync(
+  path.join(root, "static", "js", "personalize-ai.js"),
+  "utf8",
+);
+const worldAi = fs.readFileSync(
+  path.join(root, "world-ai", "index.html"),
+  "utf8",
+);
+const contentPolicy = fs.readFileSync(
+  path.join(root, "content-policy", "index.html"),
+  "utf8",
+);
+const listingReport = fs.readFileSync(
+  path.join(root, "report", "index.html"),
+  "utf8",
+);
+const thankYou = fs.readFileSync(
+  path.join(root, "vault-thank-you", "index.html"),
+  "utf8",
+);
+const advanced = fs.readFileSync(
+  path.join(root, "advanced", "index.html"),
+  "utf8",
+);
+const advancedScript = fs.readFileSync(
+  path.join(root, "static", "js", "advanced-directory.js"),
+  "utf8",
+);
 
 check(
   robots.includes("Sitemap: https://ai-framework.io/sitemap.xml"),
@@ -69,6 +109,11 @@ check(
 check(
   enhancements.includes("outbound_tool_click"),
   "Outbound tool tracking is missing.",
+);
+check(
+  enhancements.includes("document.title !== title") &&
+    enhancements.includes("bodyChanged"),
+  "The navigation freeze guard is missing from the enhancement observer.",
 );
 check(
   frameworkBuilder.includes("framework_generated"),
@@ -132,6 +177,74 @@ check(
     '<link rel="canonical" href="https://ai-framework.io/tutorials/">',
   ),
   "The tutorials page is missing its canonical URL.",
+);
+check(
+  prompts.includes(
+    '<link rel="canonical" href="https://ai-framework.io/prompts/">',
+  ) &&
+    (prompts.match(/ENTRY \d{2}\.\d{2} · FREE/g) || []).length === 8,
+  "The free Prompt Codex page is incomplete.",
+);
+check(
+  promptScript.includes("free_prompt_copied"),
+  "Free prompt copy tracking is missing.",
+);
+check(
+  fs.existsSync(
+    path.join(root, "vault", "AI-Framework-Prompt-Codex.pdf"),
+  ) &&
+    fs.statSync(
+      path.join(root, "vault", "AI-Framework-Prompt-Codex.pdf"),
+    ).size > 300_000,
+  "The paid 100-entry Prompt Codex PDF is missing or unexpectedly small.",
+);
+check(
+  thankYou.includes("/vault/AI-Framework-Prompt-Codex.pdf") &&
+    thankYou.includes("/vault/The-Premium-Vault.pdf"),
+  "The purchase thank-you page does not provide both paid downloads.",
+);
+check(
+  personalize.includes('id="capsule-form"') &&
+    personalize.includes('"@type":"HowTo"') &&
+    personalizeScript.includes("context_capsule_copied"),
+  "The Personalize AI guide or Context Capsule builder is incomplete.",
+);
+check(
+  worldAi.includes("Build a <span>BRIDGE.</span>") &&
+    worldAi.includes("https://www.unesco.org/") &&
+    worldAi.includes("https://au.int/") &&
+    worldAi.includes("https://asean.org/"),
+  "The international AI hub is missing its policy framework or primary sources.",
+);
+check(
+  contentPolicy.includes("non-consensual intimate imagery") &&
+    listingReport.includes('data-netlify="true"') &&
+    listingReport.includes('name="listing-report"'),
+  "The content policy or safety-reporting route is incomplete.",
+);
+check(
+  enhancements.includes("noindex, nofollow, noarchive") &&
+    enhancements.includes("/content-policy/") &&
+    enhancements.includes("/report/"),
+  "The Advanced section is missing noindex and safety safeguards.",
+);
+check(
+  advanced.includes(
+    '<meta name="robots" content="noindex, nofollow, noarchive">',
+  ) &&
+    advanced.includes('id="policy-confirmation"') &&
+    (advancedScript.match(/^\s*\["/gm) || []).length === 100,
+  "The standalone Advanced directory is missing its gate or 100-entry collection.",
+);
+check(
+  !sitemap.includes("<loc>https://ai-framework.io/advanced"),
+  "The restricted Advanced directory must not appear in the sitemap.",
+);
+check(
+  sitemap.includes("<loc>https://ai-framework.io/prompts/</loc>") &&
+    sitemap.includes("<loc>https://ai-framework.io/personalize-ai/</loc>") &&
+    sitemap.includes("<loc>https://ai-framework.io/world-ai/</loc>"),
+  "The sitemap is missing a new content hub.",
 );
 
 if (failures.length) {

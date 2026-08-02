@@ -20,7 +20,7 @@
   <path d="M100 104H1100" stroke="#2C333E"/>
   <text x="100" y="78" fill="#ECE7DA" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">AI Framework</text>
   <text x="100" y="212" fill="#D0AA6D" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="4">AI TOOL DIRECTORY + WORKFLOW BUILDER</text>
-  <text x="100" y="300" fill="#ECE7DA" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-2">Stop collecting AI tools.</text>
+  <text x="100" y="300" fill="#ECE7DA" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-2">Find the right AI tools.</text>
   <text x="100" y="374" fill="#ECE7DA" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-2">Build a working system.</text>
   <rect x="100" y="428" width="850" height="4" rx="2" fill="url(#line)"/>
   <text x="100" y="500" fill="#AAB0BA" font-family="Inter, Arial, sans-serif" font-size="27">Find the right tools. Compare the tradeoffs.</text>

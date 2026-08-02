@@ -55,14 +55,17 @@
   }
   h1 span{color:var(--brass)}
   p.lead{color:var(--dim); font-size:15.5px; margin-bottom:30px; max-width:44ch; margin-left:auto; margin-right:auto}
+  .downloads{display:grid;gap:12px}
   .btn{
-    display:inline-flex; align-items:center; gap:10px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
     font-family:var(--mono); font-size:13px; font-weight:500; letter-spacing:.08em;
     text-transform:uppercase; text-decoration:none;
     background:var(--brass); color:#14110a; border:1px solid var(--brass);
     padding:16px 32px; border-radius:4px; transition:background .15s;
   }
   .btn:hover{background:#e0bd82}
+  .btn.secondary{background:transparent;color:var(--brass);border-color:var(--brass-dim)}
+  .btn.secondary:hover{background:var(--brass-glow);color:var(--brass)}
   .note{
     margin-top:22px; font-family:var(--mono); font-size:11px; letter-spacing:.04em;
     color:var(--faint); line-height:1.7;
@@ -85,13 +88,16 @@
     <div class="check">&#10003;</div>
     <p class="eyebrow">Payment Complete</p>
     <h1>Welcome to the <span>Vault.</span></h1>
-    <p class="lead">Thank you for your purchase. Your download is ready below &mdash; all 50 premium playbooks in one PDF. This is yours for life.</p>
+    <p class="lead">Thank you for your purchase. Both reference books are ready below: the 100-entry Prompt Codex and all 50 premium business playbooks. Save both files for permanent personal business use.</p>
 
-    <a class="btn" href="/vault/The-Premium-Vault.pdf" download>&#8595;&nbsp; Download the Vault (PDF)</a>
+    <div class="downloads">
+      <a class="btn" href="/vault/AI-Framework-Prompt-Codex.pdf" download>&#8595;&nbsp; Download the Prompt Codex</a>
+      <a class="btn secondary" href="/vault/The-Premium-Vault.pdf" download>&#8595;&nbsp; Download 50 Premium Playbooks</a>
+    </div>
 
     <p class="note">
-      Save the file somewhere safe &mdash; you can re-download from this page anytime you have the link.<br>
-      Trouble with the download? Email <a href="mailto:hello@ai-framework.io">hello@ai-framework.io</a> and we'll send it over.
+      Save both files somewhere safe &mdash; you can re-download from this page anytime you have the link.<br>
+      Trouble with a download? Email <a href="mailto:hello@ai-framework.io">hello@ai-framework.io</a> and we'll send it over.
     </p>
 
     <div class="divider"></div>
