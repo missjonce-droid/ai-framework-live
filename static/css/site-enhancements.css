@@ -1,3 +1,9 @@
+/* Loaded on every prerendered page, so it is the one place that can reach
+   all of them. site-polish.css carries the horizontal-overflow fix, the
+   focus-visible styles and the skip-link styles. index.html and the newer
+   prerendered pages also link it directly; the browser dedupes by URL. */
+@import url("/static/css/site-polish.css");
+
 /* AI Framework progressive enhancements
    Loaded after the compiled application stylesheet so these rules can safely
    improve the live build without replacing the existing design system. */
