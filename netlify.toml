@@ -13,3 +13,44 @@
 [build]
 publish = "."
 command = ""
+
+# --- HTTP headers ------------------------------------------------------
+#
+# Caching. Netlify's default is to revalidate every asset on every page view,
+# so even an unchanged 2 MB bundle costs a round trip. The two main bundles
+# are content-hashed by the build (main.<hash>.js), meaning the filename
+# itself changes whenever the contents change, so they are safe to cache
+# permanently.
+#
+# This fails safe: if the bundle is ever rebuilt the hash changes, these
+# rules stop matching, and Netlify goes back to revalidating. A stale bundle
+# can never be served to anyone.
+#
+# site-enhancements.* and site-polish.* are deliberately NOT listed. They are
+# hand-edited and not content-hashed, so they must keep revalidating or
+# changes would never reach returning visitors.
+
+[[headers]]
+for = "/static/js/main.cd845d6d.js"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/static/css/main.fe123445.css"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
+
+# Security headers for every response.
+#
+# No Content-Security-Policy is set here on purpose. This site loads Google
+# Tag Manager, Microsoft Clarity and Google Fonts, so a CSP has to be written
+# and tested deliberately or it will silently break analytics.
+
+[[headers]]
+for = "/*"
+[headers.values]
+X-Content-Type-Options = "nosniff"
+X-Frame-Options = "SAMEORIGIN"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=()"
+Strict-Transport-Security = "max-age=31536000"
