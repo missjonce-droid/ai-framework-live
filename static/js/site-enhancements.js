@@ -674,33 +674,3 @@
     observer.disconnect();
   }, 12000);
 })();
-
-
-/* ---------------------------------------------------------------------------
-   Polish + accessibility loader (added 2026-08-02)
-
-   index.html links site-polish.css and a11y-enhancements.js directly, but the
-   1,600+ prerendered shells under /tool, /category, /creator and /company only
-   link this file. Rather than editing every one of them, load those two assets
-   from here when they are not already on the page. The guards mean index.html
-   and the newer prerendered pages do not end up loading them twice.
-   --------------------------------------------------------------------------- */
-(function () {
-  try {
-    if (!document.querySelector('link[href*="site-polish.css"]')) {
-      var link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/static/css/site-polish.css';
-      document.head.appendChild(link);
-    }
-
-    if (!document.querySelector('script[src*="a11y-enhancements.js"]')) {
-      var script = document.createElement('script');
-      script.defer = true;
-      script.src = '/static/js/a11y-enhancements.js';
-      document.head.appendChild(script);
-    }
-  } catch (e) {
-    /* never let this break the rest of the page */
-  }
-})();
