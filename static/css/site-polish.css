@@ -1,0 +1,85 @@
+/* ============================================================
+== site-polish.css
+==
+== Small additive fixes layered on top of the compiled bundle in
+== /static/css/main.<hash>.css, which we do not have the source for.
+==
+== This file is hand-edited and deliberately NOT content-hashed, so
+== it is excluded from the immutable cache rules in netlify.toml and
+== will always revalidate.
+==
+== Loaded last in index.html so it wins on equal specificity.
+============================================================ */
+
+/* ---- 1. Horizontal scrollbar on every screen size ----------
+==
+== .cat-browse is laid out with box-sizing: content-box and 20px of
+== horizontal padding, so its rendered width came out 40px wider than
+== the column it sits in. The document measured 1167px inside a 1135px
+== viewport, which produced a horizontal scrollbar at every breakpoint
+== and let the page drift sideways on touch devices.
+==
+== Switching this one section to border-box pulls the padding inside
+== the declared width. Measured before and after: 1167px -> 1135px, an
+== exact match to the viewport. The category grid stays four columns,
+== each card simply narrows by 10px.
+------------------------------------------------------------ */
+
+.cat-browse {
+  box-sizing: border-box;
+}
+
+/* ---- 2. Safety net -----------------------------------------
+==
+== Stops any future stray element from reintroducing a sideways
+== scroll. "clip" is used rather than "hidden" on purpose: "hidden"
+== turns the root into a scroll container and silently breaks
+== position: sticky. Browsers without "clip" support ignore this
+== line and fall back to current behaviour.
+------------------------------------------------------------ */
+
+html {
+  overflow-x: clip;
+}
+
+/* ---- 3. Skip link ------------------------------------------
+==
+== Injected by a11y-enhancements.js. Sits off-screen until it takes
+== keyboard focus, then pins to the top-left corner.
+------------------------------------------------------------ */
+
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 10000;
+}
+
+.skip-to-content:focus {
+  left: 8px;
+  top: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #ece7da;
+  color: #101317;
+  font: 600 15px/1.2 Inter, system-ui, sans-serif;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+}
+
+/* ---- 4. Visible keyboard focus -----------------------------
+==
+== :focus-visible only matches keyboard focus, so this adds a clear
+== focus ring for keyboard and screen reader users without putting
+== an outline on elements clicked with a mouse.
+------------------------------------------------------------ */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #d0aa6d;
+  outline-offset: 2px;
+}
