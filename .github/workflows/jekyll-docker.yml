@@ -1,7 +1,3 @@
-git add .github/workflows/jekyll-docker.yml
-git commit -m "Fix GitHub Actions workflow"
-git push
-
 name: Jekyll site CI
 
 on:
