@@ -1,0 +1,15 @@
+# Netlify configuration for ai-framework.io
+#
+# This repository holds a pre-built static bundle (index.html, /static,
+# asset-manifest.json). There is no build step - Netlify publishes the
+# repository root exactly as it is committed.
+#
+# These settings previously lived only in the Netlify UI, which made them
+# invisible to code review and easy to change by accident. Keeping them
+# here means the deploy config is version-controlled with the site.
+#
+# Redirect rules intentionally remain in the _redirects file.
+
+[build]
+publish = "."
+command = ""
