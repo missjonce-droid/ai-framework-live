@@ -6,4 +6,5 @@
 /promptlab           /promptlab.html                 200
 /prompt-lab          /promptlab.html                 200
 /prompt-lab/         /promptlab.html                 200
+/api/build-framework /.netlify/functions/build-framework  200
 /*                   /index.html                     200
