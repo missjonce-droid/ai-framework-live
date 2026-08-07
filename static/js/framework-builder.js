@@ -481,6 +481,30 @@
   }
 
   // --- AI-generated mode: real, free-text-driven stacks ---------------
+  // Soft, client-side daily cap so casual overuse is deterred even though
+  // there's no server-side enforcement. Easily bypassed by clearing
+  // localStorage - the real cost backstop is a spend limit set directly on
+  // the Anthropic account, not this.
+  var AI_LIMIT_KEY = "fb_ai_generations";
+  var AI_DAILY_LIMIT = 5;
+
+  function getAIUsageToday() {
+    try {
+      var record = JSON.parse(localStorage.getItem(AI_LIMIT_KEY) || "{}");
+      var today = new Date().toISOString().slice(0, 10);
+      return record.date === today ? record.count : 0;
+    } catch (e) {
+      return 0;
+    }
+  }
+
+  function incrementAIUsage() {
+    var today = new Date().toISOString().slice(0, 10);
+    var count = getAIUsageToday() + 1;
+    localStorage.setItem(AI_LIMIT_KEY, JSON.stringify({ date: today, count: count }));
+    return count;
+  }
+
   function initAIMode() {
     var form = query("#fb-ai-form");
     var input = query("#fb-ai-input");
@@ -498,6 +522,13 @@
       var description = input.value.trim();
       if (!description) {
         status.textContent = "Tell us what you're trying to do first.";
+        return;
+      }
+      if (getAIUsageToday() >= AI_DAILY_LIMIT) {
+        status.textContent =
+          "You've used today's free generations (" +
+          AI_DAILY_LIMIT +
+          "). Come back tomorrow, or explore the directory in the meantime.";
         return;
       }
 
@@ -531,12 +562,12 @@
             workflow: result.data.workflow,
           });
           setStep(3);
-          if (typeof result.data.remaining === "number") {
-            status.textContent =
-              result.data.remaining > 0
-                ? result.data.remaining + " free generation(s) left today."
-                : "That was your last free generation today.";
-          }
+          var usedToday = incrementAIUsage();
+          var remaining = AI_DAILY_LIMIT - usedToday;
+          status.textContent =
+            remaining > 0
+              ? remaining + " free generation(s) left today."
+              : "That was your last free generation today.";
         })
         .catch(function () {
           status.textContent = "Couldn't reach the server. Try again.";
