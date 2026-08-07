@@ -83,6 +83,28 @@
 
         <div id="source-tool" class="fb-source-tool"></div>
 
+        <section class="fb-ai-mode" id="fb-ai-mode">
+          <p class="fb-step-kicker">New — describe your actual situation</p>
+          <h2>Tell us what you're really trying to do</h2>
+          <p class="fb-step-intro">In your own words. We'll build a specific stack from our real tool directory &mdash; not a generic template.</p>
+
+          <form id="fb-ai-form">
+            <textarea
+              id="fb-ai-input"
+              maxlength="600"
+              rows="3"
+              placeholder="e.g. I run a 3-person landscaping company and I'm drowning in scheduling and quote follow-ups."
+            ></textarea>
+            <div class="fb-ai-row">
+              <span id="fb-ai-count" class="fb-ai-count">0 / 600</span>
+              <button type="submit" class="fb-ai-submit" id="fb-ai-submit">Build my stack &rarr;</button>
+            </div>
+            <p id="fb-ai-status" class="fb-ai-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <p class="fb-or-divider">or answer three quick questions instead</p>
+
         <section class="fb-step" data-step="1">
           <p class="fb-step-kicker">Step 1 of 3</p>
           <h2>What are you trying to accomplish?</h2>
