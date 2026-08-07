@@ -18,7 +18,7 @@ import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const currentDir = dirname(fileURLToPath(import.meta.url));
 
 const DAILY_LIMIT = 3;
 const MODEL = "claude-sonnet-5";
@@ -27,7 +27,7 @@ const MAX_INPUT_LENGTH = 600;
 let catalogCache = null;
 function loadCatalog() {
   if (!catalogCache) {
-    const raw = readFileSync(join(__dirname, "tools-catalog.json"), "utf-8");
+    const raw = readFileSync(join(currentDir, "tools-catalog.json"), "utf-8");
     catalogCache = JSON.parse(raw);
   }
   return catalogCache;
