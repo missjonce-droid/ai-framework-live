@@ -5,6 +5,8 @@
   var SAVED_KEY = "ai_fw_saved_tools";
   var SOCIAL_IMAGE = SITE + "/social-card.png";
   var PROMPT_LAB_URL = "/promptlab"; // the live route (no dash)
+  var RECEIPT_URL = "/receipt";
+  var NEWS_URL = "/news";
 
   function text(element) {
     return (element && element.textContent ? element.textContent : "")
@@ -230,7 +232,39 @@
       document.querySelector("header nav") ||
       document.querySelector("nav");
 
-    if (nav && !nav.querySelector('[href="/build-my-framework/"]')) {
+    // The homepage uses a different header than the directory pages: it has
+    // .header-top with a couple of pill buttons and no nav bar at all. Give
+    // it one, so the site's main destinations are reachable from the front
+    // page (and on mobile, where the pill buttons hide their own labels).
+    if (!nav) {
+      var headerTop = document.querySelector(".header-top");
+      if (headerTop && headerTop.parentNode) {
+        nav = document.createElement("nav");
+        nav.className = "nav-links framework-injected-nav";
+        nav.style.cssText =
+          "display:flex;flex-wrap:wrap;gap:6px;justify-content:center;" +
+          "padding:10px 12px 2px;";
+        headerTop.parentNode.insertBefore(nav, headerTop.nextSibling);
+
+        if (!document.getElementById("framework-injected-nav-css")) {
+          var style = document.createElement("style");
+          style.id = "framework-injected-nav-css";
+          style.textContent =
+            ".framework-injected-nav a{color:var(--text-muted,#8f96a3);" +
+            "font-size:13px;text-decoration:none;padding:6px 10px;" +
+            "border-radius:4px;white-space:nowrap;}" +
+            ".framework-injected-nav a:hover,.framework-injected-nav a.active{" +
+            "color:var(--text,#e6e6e6);background:var(--pill-hover,#1a1e25);}" +
+            "@media(max-width:600px){.framework-injected-nav a{font-size:12px;" +
+            "padding:6px 8px;}}";
+          document.head.appendChild(style);
+        }
+      }
+    }
+
+    if (!nav) return;
+
+    if (!nav.querySelector('[href="/build-my-framework/"]')) {
       var navLink = document.createElement("a");
       navLink.href = "/build-my-framework/";
       navLink.className = "framework-nav-link";
@@ -238,7 +272,7 @@
       nav.insertBefore(navLink, nav.firstChild);
     }
 
-    if (nav && !nav.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
+    if (!nav.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
       var promptLabLink = document.createElement("a");
       promptLabLink.href = PROMPT_LAB_URL;
       promptLabLink.className =
@@ -256,6 +290,31 @@
       homeLink.className = "pill-btn framework-home-button";
       homeLink.textContent = "Build My Framework";
       homeActions.insertBefore(homeLink, homeActions.firstChild);
+    }
+
+    // "The Receipt" - the free audit tool at /receipt. Placed first in the
+    // nav because it's the lowest-friction entry point on the site: no
+    // signup, instant result, built to be shared.
+    if (!nav.querySelector('[href="' + RECEIPT_URL + '"]')) {
+      var receiptLink = document.createElement("a");
+      receiptLink.href = RECEIPT_URL;
+      receiptLink.className =
+        "receipt-nav-link" +
+        (window.location.pathname === RECEIPT_URL ? " active" : "");
+      receiptLink.textContent = "The Receipt";
+      nav.insertBefore(receiptLink, nav.firstChild);
+    }
+
+    // "The AI Wire" - the auto-updating news page. Sits first: it's the
+    // reason to come back daily, which nothing else on the site gives you.
+    if (!nav.querySelector('[href="' + NEWS_URL + '"]')) {
+      var newsLink = document.createElement("a");
+      newsLink.href = NEWS_URL;
+      newsLink.className =
+        "news-nav-link" +
+        (window.location.pathname === NEWS_URL ? " active" : "");
+      newsLink.textContent = "The AI Wire";
+      nav.insertBefore(newsLink, nav.firstChild);
     }
   }
 
@@ -275,16 +334,24 @@
     if (!title || !subtitle || !actions) return;
 
     hero.setAttribute("data-framework-updated", "true");
-    title.textContent = "Stop collecting AI tools. Build a working AI system.";
+    title.textContent = "Stop guessing. Start building.";
     subtitle.textContent =
       "Tell us the result you want. AI Framework helps you find the right tools, compare the tradeoffs, and turn them into a practical step-by-step stack.";
 
     if (!actions.querySelector('[href="/build-my-framework/"]')) {
       var builder = document.createElement("a");
       builder.href = "/build-my-framework/";
-      builder.className = "clarity-link primary framework-hero-link";
+      builder.className = "clarity-link framework-hero-link";
       builder.textContent = "Build My Framework \u2192";
       actions.insertBefore(builder, actions.firstChild);
+    }
+
+    if (!actions.querySelector('[href="' + RECEIPT_URL + '"]')) {
+      var receipt = document.createElement("a");
+      receipt.href = RECEIPT_URL;
+      receipt.className = "clarity-link primary receipt-hero-link";
+      receipt.textContent = "Get My Receipt \u2192";
+      actions.insertBefore(receipt, actions.firstChild);
     }
 
     if (!actions.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
@@ -347,6 +414,77 @@
       PROMPT_LAB_URL +
       '" style="text-decoration:underline;text-underline-offset:3px;color:inherit">Fix your prompt free \u2192</a>';
     anchorPoint.insertAdjacentElement("afterend", hint);
+  }
+
+  // Real logos for tool cards and tool pages (friend-test follow-up: most
+  // tools currently show a plain letter fallback instead of a logo). We
+  // don't have permission to host 1,500+ companies' logo files ourselves,
+  // so this fetches each tool's own favicon directly from its own domain
+  // via Google's public favicon service, the same low-risk approach used
+  // by most tool directories. If a favicon fails to load, the original
+  // letter fallback is left in place untouched.
+  var toolDomainsPromise = null;
+
+  function loadToolDomains() {
+    if (!toolDomainsPromise) {
+      toolDomainsPromise = fetch("/static/data/tool-domains.json")
+        .then(function (response) {
+          return response.ok ? response.json() : {};
+        })
+        .catch(function () {
+          return {};
+        });
+    }
+    return toolDomainsPromise;
+  }
+
+  function slugFromLogoElement(el) {
+    var link = el.closest("a[href^='/tool/']");
+    if (link) {
+      var match = link.getAttribute("href").match(/^\/tool\/([^/?#]+)/);
+      if (match) return match[1];
+    }
+    var pageMatch = window.location.pathname.match(/^\/tool\/([^/]+)/);
+    return pageMatch ? pageMatch[1] : null;
+  }
+
+  function addToolLogos() {
+    var targets = document.querySelectorAll(
+      ".tool-logo:not([data-framework-logo-checked]), .tool-page-logo:not([data-framework-logo-checked])",
+    );
+    if (!targets.length) return;
+
+    loadToolDomains().then(function (domains) {
+      Array.prototype.forEach.call(targets, function (el) {
+        el.setAttribute("data-framework-logo-checked", "true");
+
+        // Already has a real logo image (not our injected one) - leave it.
+        var existingImg = el.querySelector("img");
+        if (existingImg && !existingImg.hasAttribute("data-framework-favicon"))
+          return;
+
+        var fallback = el.querySelector("span");
+        var slug = slugFromLogoElement(el);
+        var domain = slug ? domains[slug] : null;
+        if (!domain || !fallback) return;
+
+        var img = document.createElement("img");
+        img.src =
+          "https://www.google.com/s2/favicons?domain=" +
+          encodeURIComponent(domain) +
+          "&sz=128";
+        img.alt = "";
+        img.setAttribute("data-framework-favicon", "true");
+        img.style.cssText = "width:100%;height:100%;object-fit:contain;";
+        img.addEventListener("error", function () {
+          // Favicon didn't load - restore the original letter fallback.
+          img.remove();
+          fallback.style.display = "";
+        });
+        fallback.style.display = "none";
+        el.appendChild(img);
+      });
+    });
   }
 
   function removeEmptySocialProof() {
@@ -667,6 +805,7 @@
     safely(addPromptLabHint);
     safely(addSearchHint);
     safely(removeEmptySocialProof);
+    safely(addToolLogos);
     safely(enhanceToolPage);
     safely(improveRouteMetadata);
     safely(fixDeadFrameworkCta);
