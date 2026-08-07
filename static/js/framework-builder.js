@@ -398,14 +398,52 @@
   function renderResult() {
     var framework = frameworks[state.goal];
     if (!framework) return;
+    renderResultCommon({
+      title: framework.title,
+      outcome: framework.outcome,
+      cost: framework.costs[state.budget],
+      tools: framework.tools,
+      workflow: framework.workflow,
+    });
+    query("#skill-note").hidden = false;
+    var skillNotes = {
+      beginner:
+        "Start with the first two tools and complete the workflow manually once before adding automation.",
+      comfortable:
+        "Build one reusable template at each handoff, then automate only the steps that behave consistently.",
+      technical:
+        "Add structured inputs, logging, version control, and failure alerts before scaling the workflow.",
+    };
+    query("#skill-note").textContent = skillNotes[state.skill];
+    updateAddressBar();
+    localStorage.setItem(
+      SAVED_FRAMEWORK_KEY,
+      JSON.stringify({
+        goal: state.goal,
+        budget: state.budget,
+        skill: state.skill,
+        title: framework.title,
+        savedAt: new Date().toISOString(),
+      }),
+    );
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "framework_generated",
+      framework_goal: state.goal,
+      framework_budget: state.budget,
+      framework_skill: state.skill,
+    });
+    setStep(3);
+  }
 
-    query("#result-title").textContent = framework.title;
-    query("#result-outcome").textContent = framework.outcome;
-    query("#result-cost").textContent = framework.costs[state.budget];
+  function renderResultCommon(result) {
+    query("#result-title").textContent = result.title;
+    query("#result-outcome").textContent = result.outcome;
+    query("#result-cost").textContent = result.cost;
 
     var tools = query("#result-tools");
     tools.innerHTML = "";
-    framework.tools.forEach(function (tool, index) {
+    result.tools.forEach(function (tool, index) {
       var card = document.createElement("article");
       card.className = "fb-tool";
 
@@ -423,7 +461,7 @@
 
       var link = document.createElement("a");
       link.href = "/tool/" + tool.slug;
-      link.textContent = "View tool →";
+      link.textContent = "View tool \u2192";
 
       card.appendChild(number);
       card.appendChild(copy);
@@ -433,45 +471,83 @@
 
     var workflow = query("#result-workflow");
     workflow.innerHTML = "";
-    framework.workflow.forEach(function (step) {
+    result.workflow.forEach(function (step) {
       var item = document.createElement("li");
       var copy = document.createElement("span");
       copy.textContent = step;
       item.appendChild(copy);
       workflow.appendChild(item);
     });
-
-    var skillNotes = {
-      beginner:
-        "Start with the first two tools and complete the workflow manually once before adding automation.",
-      comfortable:
-        "Build one reusable template at each handoff, then automate only the steps that behave consistently.",
-      technical:
-        "Add structured inputs, logging, version control, and failure alerts before scaling the workflow.",
-    };
-    query("#skill-note").textContent = skillNotes[state.skill];
-
-    updateAddressBar();
-    localStorage.setItem(
-      SAVED_FRAMEWORK_KEY,
-      JSON.stringify({
-        goal: state.goal,
-        budget: state.budget,
-        skill: state.skill,
-        title: framework.title,
-        savedAt: new Date().toISOString(),
-      }),
-    );
-
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "framework_generated",
-      framework_goal: state.goal,
-      framework_budget: state.budget,
-      framework_skill: state.skill,
-    });
-    setStep(3);
   }
+
+  // --- AI-generated mode: real, free-text-driven stacks ---------------
+  function initAIMode() {
+    var form = query("#fb-ai-form");
+    var input = query("#fb-ai-input");
+    var count = query("#fb-ai-count");
+    var status = query("#fb-ai-status");
+    var submit = query("#fb-ai-submit");
+    if (!form || !input) return;
+
+    input.addEventListener("input", function () {
+      count.textContent = input.value.length + " / 600";
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var description = input.value.trim();
+      if (!description) {
+        status.textContent = "Tell us what you're trying to do first.";
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = "Building your stack\u2026";
+      status.textContent = "";
+
+      fetch("/api/build-framework", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ description: description }),
+      })
+        .then(function (response) {
+          return response.json().then(function (data) {
+            return { ok: response.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          if (!result.ok || result.data.error) {
+            status.textContent =
+              (result.data && result.data.error) ||
+              "Something went wrong. Try again.";
+            return;
+          }
+          query("#skill-note").hidden = true;
+          renderResultCommon({
+            title: result.data.title,
+            outcome: result.data.outcome,
+            cost: result.data.estimated_cost,
+            tools: result.data.tools,
+            workflow: result.data.workflow,
+          });
+          setStep(3);
+          if (typeof result.data.remaining === "number") {
+            status.textContent =
+              result.data.remaining > 0
+                ? result.data.remaining + " free generation(s) left today."
+                : "That was your last free generation today.";
+          }
+        })
+        .catch(function () {
+          status.textContent = "Couldn't reach the server. Try again.";
+        })
+        .finally(function () {
+          submit.disabled = false;
+          submit.textContent = "Build my stack \u2192";
+        });
+    });
+  }
+
 
   function shareFramework() {
     var framework = frameworks[state.goal];
@@ -577,4 +653,5 @@
 
   renderSavedTools();
   readInitialState();
+  initAIMode();
 })();
