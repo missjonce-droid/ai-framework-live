@@ -226,96 +226,73 @@
 
   // Header nav: "Build My Framework" + "Prompt Lab" (friend-test fix #1 support,
   // plus the requested header nav item). One insertion each — no duplicates.
+  // Site nav. Directory pages ship their own .nav-links bar; the homepage
+  // and the standalone pages do not, and the compiled stylesheet also hides
+  // the header pill buttons' labels under 900px - which left mobile with a
+  // nearly empty header. So: use the real nav bar when one exists, and
+  // otherwise build a self-contained one pinned to the top of <body>, which
+  // does not depend on finding any particular container in the bundle.
+  var NAV_ITEMS = [
+    { href: NEWS_URL, label: "The AI Wire" },
+    { href: RECEIPT_URL, label: "The Receipt" },
+    { href: "/build-my-framework/", label: "Build My Framework" },
+    { href: PROMPT_LAB_URL, label: "Prompt Lab" },
+    { href: "/playbooks/", label: "Playbooks" },
+    { href: "/browse", label: "Directory" },
+  ];
+
+  function injectNavStyles() {
+    if (document.getElementById("fw-nav-css")) return;
+    var style = document.createElement("style");
+    style.id = "fw-nav-css";
+    style.textContent =
+      ".fw-nav{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;" +
+      "align-items:center;padding:8px 12px;border-bottom:1px solid " +
+      "var(--input-border,#2a2f38);background:var(--bg,#0f1216);}" +
+      ".fw-nav a{color:var(--text-muted,#8f96a3);font-size:13px;" +
+      "text-decoration:none;padding:7px 11px;border-radius:4px;" +
+      "white-space:nowrap;line-height:1;}" +
+      ".fw-nav a:hover,.fw-nav a.active{color:var(--text,#e6e6e6);" +
+      "background:var(--pill-hover,#1a1e25);}" +
+      "@media(max-width:600px){.fw-nav{gap:2px;padding:6px 8px;}" +
+      ".fw-nav a{font-size:12px;padding:6px 8px;}}";
+    document.head.appendChild(style);
+  }
+
   function addNavigationLinks() {
-    var nav =
-      document.querySelector(".nav-links") ||
-      document.querySelector("header nav") ||
-      document.querySelector("nav");
+    var existing = document.querySelector(".nav-links");
 
-    // The homepage uses a different header than the directory pages: it has
-    // .header-top with a couple of pill buttons and no nav bar at all. Give
-    // it one, so the site's main destinations are reachable from the front
-    // page (and on mobile, where the pill buttons hide their own labels).
-    if (!nav) {
-      var headerTop = document.querySelector(".header-top");
-      if (headerTop && headerTop.parentNode) {
-        nav = document.createElement("nav");
-        nav.className = "nav-links framework-injected-nav";
-        nav.style.cssText =
-          "display:flex;flex-wrap:wrap;gap:6px;justify-content:center;" +
-          "padding:10px 12px 2px;";
-        headerTop.parentNode.insertBefore(nav, headerTop.nextSibling);
-
-        if (!document.getElementById("framework-injected-nav-css")) {
-          var style = document.createElement("style");
-          style.id = "framework-injected-nav-css";
-          style.textContent =
-            ".framework-injected-nav a{color:var(--text-muted,#8f96a3);" +
-            "font-size:13px;text-decoration:none;padding:6px 10px;" +
-            "border-radius:4px;white-space:nowrap;}" +
-            ".framework-injected-nav a:hover,.framework-injected-nav a.active{" +
-            "color:var(--text,#e6e6e6);background:var(--pill-hover,#1a1e25);}" +
-            "@media(max-width:600px){.framework-injected-nav a{font-size:12px;" +
-            "padding:6px 8px;}}";
-          document.head.appendChild(style);
-        }
-      }
+    if (existing) {
+      // Real nav bar present - just top up anything missing, in order.
+      NAV_ITEMS.forEach(function (item, i) {
+        if (existing.querySelector('a[href="' + item.href + '"]')) return;
+        var a = document.createElement("a");
+        a.href = item.href;
+        a.textContent = item.label;
+        if (window.location.pathname === item.href) a.className = "active";
+        var refNode = existing.children[i] || null;
+        existing.insertBefore(a, refNode);
+      });
+      return;
     }
 
-    if (!nav) return;
+    if (document.querySelector(".fw-nav")) return;
+    if (!document.body) return;
 
-    if (!nav.querySelector('[href="/build-my-framework/"]')) {
-      var navLink = document.createElement("a");
-      navLink.href = "/build-my-framework/";
-      navLink.className = "framework-nav-link";
-      navLink.textContent = "Build My Framework";
-      nav.insertBefore(navLink, nav.firstChild);
-    }
+    injectNavStyles();
+    var nav = document.createElement("nav");
+    nav.className = "fw-nav";
+    nav.setAttribute("aria-label", "Main");
 
-    if (!nav.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
-      var promptLabLink = document.createElement("a");
-      promptLabLink.href = PROMPT_LAB_URL;
-      promptLabLink.className =
-        "promptlab-nav-link" +
-        (window.location.pathname === PROMPT_LAB_URL ? " active" : "");
-      promptLabLink.textContent = "Prompt Lab";
-      var buildLink = nav.querySelector('[href="/build-my-framework/"]');
-      nav.insertBefore(promptLabLink, buildLink ? buildLink.nextSibling : nav.firstChild);
-    }
+    NAV_ITEMS.forEach(function (item) {
+      var a = document.createElement("a");
+      a.href = item.href;
+      a.textContent = item.label;
+      if (window.location.pathname === item.href) a.className = "active";
+      nav.appendChild(a);
+    });
 
-    var homeActions = document.querySelector(".header-actions");
-    if (homeActions && !homeActions.querySelector('[href="/build-my-framework/"]')) {
-      var homeLink = document.createElement("a");
-      homeLink.href = "/build-my-framework/";
-      homeLink.className = "pill-btn framework-home-button";
-      homeLink.textContent = "Build My Framework";
-      homeActions.insertBefore(homeLink, homeActions.firstChild);
-    }
-
-    // "The Receipt" - the free audit tool at /receipt. Placed first in the
-    // nav because it's the lowest-friction entry point on the site: no
-    // signup, instant result, built to be shared.
-    if (!nav.querySelector('[href="' + RECEIPT_URL + '"]')) {
-      var receiptLink = document.createElement("a");
-      receiptLink.href = RECEIPT_URL;
-      receiptLink.className =
-        "receipt-nav-link" +
-        (window.location.pathname === RECEIPT_URL ? " active" : "");
-      receiptLink.textContent = "The Receipt";
-      nav.insertBefore(receiptLink, nav.firstChild);
-    }
-
-    // "The AI Wire" - the auto-updating news page. Sits first: it's the
-    // reason to come back daily, which nothing else on the site gives you.
-    if (!nav.querySelector('[href="' + NEWS_URL + '"]')) {
-      var newsLink = document.createElement("a");
-      newsLink.href = NEWS_URL;
-      newsLink.className =
-        "news-nav-link" +
-        (window.location.pathname === NEWS_URL ? " active" : "");
-      newsLink.textContent = "The AI Wire";
-      nav.insertBefore(newsLink, nav.firstChild);
-    }
+    document.body.insertBefore(nav, document.body.firstChild);
   }
 
   // Homepage hero: real "Build My Framework →" link (friend-test fix #1 —
