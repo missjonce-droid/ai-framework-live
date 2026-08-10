@@ -232,6 +232,18 @@ a {
   min-height: 18px;
 }
 
+.fb-ai-promptlab-hint {
+  color: var(--fb-muted);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+
+.fb-ai-promptlab-hint a {
+  color: var(--fb-brass);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .fb-or-divider {
   color: var(--fb-muted);
   font-size: 13px;
