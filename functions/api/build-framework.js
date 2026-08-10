@@ -1,5 +1,5 @@
 
-// Netlify Function: generates a real, personalized AI tool stack from
+// Cloudflare Pages Function: generates a real, personalized AI tool stack from
 // free-text input, grounded in AI Framework's actual tool catalog.
 //
 // This is the "revolutionary" version of Build My Framework - instead of
@@ -8,11 +8,11 @@
 // build something that's never existed before.
 //
 // Requires the ANTHROPIC_API_KEY environment variable to be set in the
-// Netlify dashboard (Site configuration -> Environment variables).
+// Cloudflare Pages dashboard (Settings -> Environment variables).
 //
 // The tool catalog is inlined directly in this file (rather than a
-// separate module) because Netlify treats every top-level file in
-// netlify/functions/ as its own independent function - a sibling
+// separate module) because Cloudflare Pages treats every top-level file in
+// functions/ as its own independent function - a sibling
 // tools-catalog.js file was being deployed as a second, broken function
 // instead of being bundled as a shared helper. One self-contained file
 // avoids that entirely.
