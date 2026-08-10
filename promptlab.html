@@ -400,7 +400,10 @@ function cleanCore(t){
 }
 
 var $=function(id){return document.getElementById(id);};
-function runFix(){
+
+// Template fallback - the original regex/intent engine. Runs whenever the
+// AI rewrite is unavailable, so the button always does something useful.
+function runFixLocal(){
   var raw=$("idea").value.trim();
   if(!raw){$("idea").focus();return;}
   var intent=null;
@@ -416,7 +419,68 @@ function runFix(){
   $("upgrades").hidden=chips.length===0;
   $("result").classList.add("show");
   window.dataLayer=window.dataLayer||[];
-  window.dataLayer.push({event:"prompt_fixed",intent:intent.id,weak_words_found:chips.length});
+  window.dataLayer.push({event:"prompt_fixed",intent:intent.id,weak_words_found:chips.length,mode:"template"});
+}
+
+// Soft per-browser daily cap on AI rewrites. Easily bypassed by clearing
+// localStorage - the real cost control is the Anthropic prepaid balance.
+var PL_LIMIT_KEY="pl_ai_fixes", PL_DAILY_LIMIT=10;
+function plUsageToday(){
+  try{
+    var r=JSON.parse(localStorage.getItem(PL_LIMIT_KEY)||"{}");
+    return r.date===new Date().toISOString().slice(0,10)?r.count:0;
+  }catch(e){return 0;}
+}
+function plIncrement(){
+  var c=plUsageToday()+1;
+  localStorage.setItem(PL_LIMIT_KEY,JSON.stringify({date:new Date().toISOString().slice(0,10),count:c}));
+  return c;
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+
+function runFix(){
+  var raw=$("idea").value.trim();
+  if(!raw){$("idea").focus();return;}
+
+  if(plUsageToday()>=PL_DAILY_LIMIT){
+    runFixLocal();
+    return;
+  }
+
+  var btn=$("fix"), original=btn.textContent;
+  btn.disabled=true; btn.textContent="Rewriting\u2026";
+
+  fetch("/api/fix-prompt",{
+    method:"POST",
+    headers:{"content-type":"application/json"},
+    body:JSON.stringify({idea:raw})
+  })
+  .then(function(r){return r.json().then(function(d){return {ok:r.ok,data:d};});})
+  .then(function(res){
+    if(!res.ok||res.data.error||!res.data.prompt){
+      runFixLocal();
+      return;
+    }
+    plIncrement();
+    $("intent").textContent="Detected: "+res.data.detected;
+    $("out").innerHTML=escapeHtml(res.data.prompt)
+      .replace(/\[([^\]]+)\]/g,'[<span class="ph">$1</span>]');
+    var chips=(res.data.changes||[]).map(function(c){
+      return '<span class="chip">'+escapeHtml(c)+'</span>';
+    });
+    $("chips").innerHTML=chips.join("");
+    $("upgrades").hidden=chips.length===0;
+    $("result").classList.add("show");
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({event:"prompt_fixed",mode:"ai"});
+  })
+  .catch(function(){ runFixLocal(); })
+  .then(function(){ btn.disabled=false; btn.textContent=original; });
 }
 $("fix").addEventListener("click",runFix);
 $("idea").addEventListener("keydown",function(e){if(e.key==="Enter"&&(e.metaKey||e.ctrlKey))runFix();});
