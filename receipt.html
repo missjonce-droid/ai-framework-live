@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Receipt — see what your AI stack actually costs | AI Framework</title>
+<meta name="description" content="Add the AI tools you pay for. Get an instant receipt: what's redundant, what's overpriced, and what to cancel — checked against 1,500+ tools.">
+<link rel="canonical" href="https://ai-framework.io/receipt">
+<meta name="theme-color" content="#0b1220">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Framework">
+<meta property="og:title" content="The Receipt — see what your AI stack actually costs">
+<meta property="og:description" content="Free instant audit of your AI subscriptions. Redundant tools, cheaper swaps, one number that stings a little.">
+<meta property="og:image" content="https://ai-framework.io/social-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Receipt — see what your AI stack actually costs">
+<meta name="twitter:description" content="Free instant audit of your AI subscriptions, checked against 1,500+ tools.">
+<meta name="twitter:image" content="https://ai-framework.io/social-card.png">
+
+<!-- Google Tag Manager (same container as the main site) -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;
+j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0b1220; --surface:#111a2e; --line:#1e2b45;
+    --text:#e6ecf7; --muted:#8ea0bf; --mint:#4de0c0; --amber:#f2c14e; --red:#ff6b5f;
+    --paper:#f4f1ea; --paper-ink:#1b1b16; --paper-faint:#8a8578;
+    --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+    --body:"Inter",ui-sans-serif,system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  a{color:inherit}
+  :focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+
+  /* ---------- nav (matches the rest of the site) ---------- */
+  nav.nav{border-bottom:1px solid var(--line);padding:14px 0}
+  .nav .wrap{display:flex;align-items:center;gap:18px}
+  .brand{font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:-.02em;text-decoration:none;color:var(--text);white-space:nowrap}
+  .brand span{color:var(--mint)}
+  .nav-links{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;padding:6px 10px;border-radius:8px}
+  .nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+  .nav-links a.active{color:var(--mint);background:rgba(77,224,192,.1)}
+  .nav a.dir{margin-left:auto;font-size:13px;color:var(--muted);text-decoration:none;white-space:nowrap}
+  .nav a.dir:hover{color:var(--text)}
+  @media (max-width:720px){ .nav a.dir{display:none} }
+
+  /* ---------- hero ---------- */
+  .hero{padding:56px 0 28px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mint);margin:0 0 16px}
+  h1{font-family:var(--display);font-weight:800;font-size:clamp(30px,5.4vw,50px);line-height:1.05;letter-spacing:-.02em;margin:0 0 16px}
+  h1 em{font-style:normal;color:var(--mint)}
+  .lede{color:var(--muted);font-size:17px;max-width:56ch;margin:0 0 8px}
+
+  /* ---------- input rig ---------- */
+  .rig{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;margin:28px 0}
+  .rig-row{display:flex;gap:10px;position:relative}
+  .rig input[type=text]{flex:1;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:10px;
+    padding:13px 14px;font:400 15px var(--body)}
+  .rig input[type=text]:focus{outline:2px solid var(--mint);outline-offset:1px;border-color:transparent}
+  .rig .price-field{width:110px;display:flex;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:0 10px}
+  .rig .price-field span{color:var(--muted);font-family:var(--mono);font-size:14px}
+  .rig .price-field input{width:100%;background:none;border:0;color:var(--text);font:600 15px var(--mono);padding:12px 4px 12px 2px}
+  .rig .price-field input:focus{outline:0}
+  .rig button.add{background:var(--mint);color:#062018;border:0;border-radius:10px;padding:0 20px;font:600 15px var(--body);cursor:pointer;white-space:nowrap}
+  .rig button.add:hover{filter:brightness(1.08)}
+  .suggest{position:absolute;top:calc(100% + 6px);left:0;right:120px;background:var(--bg);border:1px solid var(--line);
+    border-radius:10px;overflow:hidden;z-index:5;box-shadow:0 12px 32px rgba(0,0,0,.4)}
+  .suggest button{display:flex;justify-content:space-between;gap:10px;width:100%;text-align:left;background:none;border:0;
+    color:var(--text);padding:10px 14px;font:400 14px var(--body);cursor:pointer;border-bottom:1px solid var(--line)}
+  .suggest button:last-child{border-bottom:0}
+  .suggest button:hover,.suggest button.hi{background:rgba(77,224,192,.08)}
+  .suggest .cat{color:var(--muted);font-size:12px}
+  .try{margin-top:12px;font-size:13px;color:var(--muted)}
+  .try button{background:none;border:0;color:var(--mint);cursor:pointer;font:inherit;padding:0 2px;text-decoration:underline;text-underline-offset:3px}
+
+  .added-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .added{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:999px;
+    padding:6px 8px 6px 14px;font-size:13px}
+  .added b{font-weight:600}
+  .added .amt{font-family:var(--mono);color:var(--amber)}
+  .added button{background:rgba(255,255,255,.06);border:0;color:var(--muted);width:20px;height:20px;border-radius:50%;
+    cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
+  .added button:hover{background:var(--red);color:#fff}
+
+  .cta-row{margin-top:18px}
+  button.reveal{background:var(--amber);color:#241a00;border:0;border-radius:10px;padding:14px 24px;font:700 16px var(--body);
+    cursor:pointer}
+  button.reveal:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+  .rig-hint{color:var(--paper-faint);font-size:13px;margin-top:10px}
+
+  /* ================= THE RECEIPT ================= */
+  #receipt-wrap{display:none;margin:36px 0 56px}
+  #receipt-wrap.show{display:block}
+  .receipt{
+    background:var(--paper); color:var(--paper-ink); max-width:420px; margin:0 auto;
+    font-family:var(--mono); font-size:13px; line-height:1.55;
+    padding:30px 26px 26px; position:relative;
+    box-shadow:0 30px 70px rgba(0,0,0,.55), 0 2px 0 rgba(0,0,0,.15);
+    -webkit-mask-image: radial-gradient(circle 5px at 8px 0, transparent 98%, #000 100%),
+                         radial-gradient(circle 5px at 8px 100%, transparent 98%, #000 100%);
+  }
+  .receipt::before, .receipt::after{
+    content:""; position:absolute; left:0; right:0; height:10px; background:
+      linear-gradient(135deg, transparent 50%, var(--bg) 52%) 0 0/10px 10px repeat-x,
+      linear-gradient(-135deg, transparent 50%, var(--bg) 52%) 0 0/10px 10px repeat-x;
+  }
+  .receipt::before{top:-10px}
+  .receipt::after{bottom:-10px;transform:rotate(180deg)}
+  .r-brand{text-align:center;font-family:var(--display);font-weight:800;letter-spacing:.02em;font-size:16px;margin-bottom:2px}
+  .r-sub{text-align:center;color:var(--paper-faint);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .r-rule{border:0;border-top:1px dashed var(--paper-faint);margin:12px 0}
+  .r-meta{display:flex;justify-content:space-between;color:var(--paper-faint);font-size:11px}
+  .r-line{display:flex;align-items:baseline;gap:6px;margin:7px 0}
+  .r-line .n{flex-shrink:0;max-width:62%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .r-line .dots{flex:1;border-bottom:1px dotted var(--paper-faint);height:1px;transform:translateY(-4px)}
+  .r-line .amt{flex-shrink:0;font-weight:700}
+  .r-line.flag .n{color:var(--paper-ink)}
+  .r-line.flag .amt{color:#a8321f}
+  .stamp{display:inline-block;border:2px solid #a8321f;color:#a8321f;font-family:var(--display);font-weight:800;
+    font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:1px 6px;border-radius:3px;transform:rotate(-4deg);
+    margin-left:6px}
+  .r-swap{font-size:11px;color:var(--paper-faint);margin:2px 0 8px 0;padding-left:2px}
+  .r-swap b{color:#0f7a5c}
+  .r-total-row{display:flex;justify-content:space-between;font-size:15px;font-weight:800;margin:14px 0 4px}
+  .r-waste{background:#a8321f;color:#fff;text-align:center;padding:12px 10px;margin:16px -4px 4px;border-radius:2px}
+  .r-waste .amt{font-family:var(--display);font-weight:800;font-size:26px;display:block;letter-spacing:-.01em}
+  .r-waste .lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+  .r-grade{text-align:center;margin:16px 0 6px}
+  .r-grade .g{font-family:var(--display);font-weight:800;font-size:46px;line-height:1}
+  .r-grade .g.a{color:#0f7a5c}.r-grade .g.b{color:#3a6b00}.r-grade .g.c{color:#8a6d00}
+  .r-grade .g.d{color:#a8321f}.r-grade .g.f{color:#a8321f}
+  .r-grade .glbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-faint)}
+  .r-foot{text-align:center;color:var(--paper-faint);font-size:10px;margin-top:14px}
+  .r-barcode{height:26px;margin:14px 0 4px;background:repeating-linear-gradient(90deg,var(--paper-ink) 0 2px,transparent 2px 5px)}
+
+  .share-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:22px 0 0}
+  .share-row button, .share-row a.btn{border-radius:10px;padding:11px 18px;font:600 14px var(--body);cursor:pointer;
+    text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+  .share-row .save{background:var(--mint);color:#062018;border:0}
+  .share-row .save:hover{filter:brightness(1.08)}
+  .share-row .link{background:var(--surface);border:1px solid var(--line);color:var(--text)}
+  .share-row .link:hover{border-color:var(--mint);color:var(--mint)}
+  .share-row .again{background:none;border:1px solid var(--line);color:var(--muted)}
+  .share-row .again:hover{color:var(--text)}
+
+  .upsell{max-width:520px;margin:34px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;
+    padding:22px 24px;text-align:center}
+  .upsell p.k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 8px}
+  .upsell h3{margin:0 0 8px;font-family:var(--display);font-size:20px}
+  .upsell p{color:var(--muted);font-size:14px;margin:0 0 16px}
+  .upsell a.buy{display:inline-block;background:var(--amber);color:#241a00;text-decoration:none;border-radius:10px;
+    padding:12px 22px;font:700 15px var(--body)}
+  .upsell a.buy:hover{filter:brightness(1.06)}
+
+  .empty-note{color:var(--muted);font-size:14px;margin-top:26px;max-width:52ch}
+
+  footer{border-top:1px solid var(--line);margin-top:60px;padding:24px 0 60px;color:var(--muted);font-size:13px}
+  footer a{color:var(--mint);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+
+  @media (max-width:560px){
+    .rig-row{flex-wrap:wrap}
+    .rig .price-field{width:100%;order:2}
+    .rig button.add{width:100%;order:3}
+    .suggest{right:0}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="/">AI<span>/</span>Framework</a>
+  <div class="nav-links">
+    <a href="/">Directory</a>
+    <a href="/build-my-framework/">Build My Framework</a>
+    <a href="/playbooks/">Playbooks</a>
+    <a href="/promptlab">Prompt Lab</a>
+    <a href="/receipt" class="active" aria-current="page">The Receipt</a>
+  </div>
+  <a class="dir" href="/">Browse 1,500+ tools →</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">Free · 60 seconds · no signup</p>
+  <h1>What is your AI stack <em>actually</em> costing you?</h1>
+  <p class="lede">Add what you're paying for. We'll check it against 1,500+ tools and print the receipt — what overlaps, what's overpriced, what to cancel this week.</p>
+</div></header>
+
+<main class="wrap">
+
+  <div class="rig">
+    <div class="rig-row">
+      <input type="text" id="tool-input" placeholder="Type a tool you pay for… (e.g. Jasper, Zapier, Notion AI)"
+             autocomplete="off" aria-label="Search for an AI tool you pay for" aria-expanded="false" role="combobox">
+      <div class="price-field">
+        <span>$</span><input type="number" id="price-input" placeholder="20" min="0" step="1" aria-label="Monthly price">
+      </div>
+      <button class="add" id="add-btn" type="button">Add</button>
+      <div class="suggest" id="suggest" hidden></div>
+    </div>
+    <p class="try">Not on the list? <button type="button" id="add-manual">Add it anyway</button> — try:
+      <button type="button" data-ex="ChatGPT Plus" data-price="20">ChatGPT Plus</button> ·
+      <button type="button" data-ex="Jasper" data-price="49">Jasper</button> ·
+      <button type="button" data-ex="Zapier" data-price="30">Zapier</button>
+    </p>
+    <div class="added-list" id="added-list"></div>
+    <div class="cta-row">
+      <button class="reveal" id="reveal-btn" type="button" disabled>Print my receipt →</button>
+    </div>
+    <p class="rig-hint" id="rig-hint">Add at least 2 tools — that's when the overlaps start showing up.</p>
+  </div>
+
+  <div id="receipt-wrap">
+    <div class="receipt" id="receipt"></div>
+    <div class="share-row">
+      <button class="save" id="save-img" type="button">⬇ Save as image</button>
+      <a class="link" id="copy-link" href="#" role="button">🔗 Copy shareable link</a>
+      <button class="again" id="start-over" type="button">↺ Start over</button>
+    </div>
+    <div class="upsell">
+      <p class="k">Beyond the script</p>
+      <h3>Want a human to catch what this can't?</h3>
+      <p>This checks price and category overlap. The full AI Stack Audit checks actual usage, contract terms, and negotiates the swap — with a guarantee: at least 2× the fee in savings, or it's free.</p>
+      <a class="buy" href="/contact" id="audit-cta">Book the AI Stack Audit →</a>
+    </div>
+  </div>
+
+  <p class="empty-note">Nothing you add here is sent anywhere — it's computed in your browser and the link you can copy encodes the list, not a server record.</p>
+</main>
+
+<footer><div class="wrap">
+  <p>The Receipt is part of <a href="/">AI Framework</a> — a curated directory of 1,500+ AI tools. Pricing shown is directory-listed and can change; always confirm on the tool's site. <a href="/disclosure">Editorial &amp; affiliate disclosure →</a></p>
+</div></footer>
+
+<script defer src="/static/js/site-enhancements.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var TOOLS = [];
+  var added = [];   // {name, price, slug|null, category|null}
+  var els = {};
+
+  function $(id){ return document.getElementById(id); }
+  function money(n){ return "$" + Math.round(n).toLocaleString(); }
+  function esc(s){ return (s||"").replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  }); }
+
+  function pushEvent(payload){
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(payload);
+  }
+
+  function loadTools(){
+    fetch("/static/data/tools-lite.json").then(function(r){ return r.json(); })
+      .then(function(data){ TOOLS = data || []; })
+      .catch(function(){ TOOLS = []; });
+  }
+
+  /* ---------------- autocomplete ---------------- */
+  var hiIndex = -1, currentMatches = [];
+
+  function renderSuggestions(query){
+    var box = els.suggest;
+    if (!query || query.length < 2 || !TOOLS.length){
+      box.hidden = true; box.innerHTML = ""; currentMatches = []; hiIndex = -1;
+      return;
+    }
+    var q = query.toLowerCase();
+    var already = added.map(function(a){ return a.slug; });
+    currentMatches = TOOLS.filter(function(t){
+      return t.n.toLowerCase().indexOf(q) === 0 && already.indexOf(t.s) === -1;
+    }).slice(0, 7);
+    if (!currentMatches.length){
+      currentMatches = TOOLS.filter(function(t){
+        return t.n.toLowerCase().indexOf(q) !== -1 && already.indexOf(t.s) === -1;
+      }).slice(0, 7);
+    }
+    if (!currentMatches.length){ box.hidden = true; box.innerHTML = ""; hiIndex = -1; return; }
+    box.innerHTML = currentMatches.map(function(t, i){
+      return '<button type="button" data-i="' + i + '"><span>' + esc(t.n) +
+        '</span><span class="cat">' + esc(t.c) + '</span></button>';
+    }).join("");
+    box.hidden = false;
+    hiIndex = -1;
+  }
+
+  function pickMatch(t){
+    els.toolInput.value = t.n;
+    renderSuggestions("");
+    els.priceInput.focus();
+  }
+
+  /* ---------------- add / remove ---------------- */
+  function addTool(name, price, meta){
+    name = (name || "").trim();
+    if (!name) return;
+    price = parseFloat(price);
+    if (!isFinite(price) || price < 0) price = 0;
+    if (added.some(function(a){ return a.name.toLowerCase() === name.toLowerCase(); })) return;
+
+    added.push({
+      name: name,
+      price: price,
+      slug: meta && meta.s ? meta.s : null,
+      category: meta && meta.c ? meta.c : null,
+      subcategory: meta && meta.sc ? meta.sc : null,
+    });
+    renderAdded();
+    els.toolInput.value = "";
+    els.priceInput.value = "";
+    renderSuggestions("");
+    els.toolInput.focus();
+    pushEvent({ event: "receipt_tool_added", tool_name: name, matched_catalog: !!(meta && meta.s) });
+  }
+
+  function removeTool(index){
+    added.splice(index, 1);
+    renderAdded();
+  }
+
+  function renderAdded(){
+    els.addedList.innerHTML = added.map(function(a, i){
+      return '<span class="added"><b>' + esc(a.name) + '</b> <span class="amt">' + money(a.price) +
+        '/mo</span> <button type="button" data-remove="' + i + '" aria-label="Remove ' + esc(a.name) + '">✕</button></span>';
+    }).join("");
+    els.revealBtn.disabled = added.length < 1;
+    els.rigHint.textContent = added.length === 0
+      ? "Add at least 2 tools — that's when the overlaps start showing up."
+      : added.length === 1
+        ? "One more, and we can start checking for overlap."
+        : added.length + " tools added — ready when you are.";
+  }
+
+  /* ---------------- scoring ---------------- */
+  function computeReceipt(){
+    var total = added.reduce(function(s, a){ return s + a.price; }, 0);
+
+    // group by subcategory (fallback to category) among tools we matched
+    // to the catalog — that's the redundancy signal.
+    var groups = {};
+    added.forEach(function(a, i){
+      var key = a.subcategory || a.category;
+      if (!key) return;
+      groups[key] = groups[key] || [];
+      groups[key].push(i);
+    });
+
+    var flaggedIdx = {};
+    var swaps = [];
+    Object.keys(groups).forEach(function(key){
+      var idxs = groups[key];
+      if (idxs.length < 2) return;
+      // flag every item in the group except the cheapest — that's the one worth keeping
+      var sorted = idxs.slice().sort(function(x, y){ return added[y].price - added[x].price; });
+      sorted.slice(0, -1).forEach(function(i){ flaggedIdx[i] = key; });
+    });
+
+    // cheaper / free catalog alternatives for each flagged (paid) tool's category
+    var usedSlugs = added.map(function(a){ return a.slug; }).filter(Boolean);
+    Object.keys(flaggedIdx).forEach(function(i){
+      var a = added[i];
+      if (!a.category) return;
+      var alt = TOOLS.find(function(t){
+        return (t.c === a.category) &&
+          (t.sc === a.subcategory || !a.subcategory) &&
+          usedSlugs.indexOf(t.s) === -1 &&
+          (t.p === "free" || t.p === "open-source" || t.p === "freemium");
+      });
+      if (alt) swaps.push({ from: a.name, to: alt.n, price: alt.p });
+    });
+
+    var wastedAmount = Object.keys(flaggedIdx).reduce(function(s, i){ return s + added[i].price; }, 0);
+    var redundantCount = Object.keys(flaggedIdx).length;
+
+    var grade = "A";
+    var ratio = total > 0 ? wastedAmount / total : 0;
+    if (ratio > 0.45 || redundantCount >= 4) grade = "F";
+    else if (ratio > 0.3 || redundantCount >= 3) grade = "D";
+    else if (ratio > 0.15 || redundantCount >= 2) grade = "C";
+    else if (ratio > 0.03 || redundantCount >= 1) grade = "B";
+
+    return { total: total, flaggedIdx: flaggedIdx, wastedAmount: wastedAmount,
+             redundantCount: redundantCount, swaps: swaps, grade: grade };
+  }
+
+  /* ---------------- render receipt ---------------- */
+  function renderReceipt(){
+    var r = computeReceipt();
+    var now = new Date();
+    var dateStr = now.toLocaleDateString(undefined, { month: "short", day: "2-digit", year: "numeric" });
+
+    var lines = added.map(function(a, i){
+      var flagged = r.flaggedIdx.hasOwnProperty(i);
+      var swap = r.swaps.find(function(s){ return s.from === a.name; });
+      var row = '<div class="r-line' + (flagged ? " flag" : "") + '">' +
+        '<span class="n">' + esc(a.name) + '</span><span class="dots"></span>' +
+        '<span class="amt">' + money(a.price) + '</span>' +
+        (flagged ? '<span class="stamp">overlap</span>' : "") +
+        '</div>';
+      if (swap) {
+        row += '<div class="r-swap">↳ same job, less money: <b>' + esc(swap.to) +
+          '</b> (' + esc(swap.price === "free" ? "free" : swap.price) + ')</div>';
+      }
+      return row;
+    }).join("");
+
+    var gradeClass = r.grade.toLowerCase();
+    var annual = r.wastedAmount * 12;
+
+    var html =
+      '<div class="r-brand">AI FRAMEWORK</div>' +
+      '<div class="r-sub">The Receipt</div>' +
+      '<div class="r-meta"><span>' + dateStr + '</span><span>' + added.length + ' item' + (added.length === 1 ? "" : "s") + '</span></div>' +
+      '<hr class="r-rule">' +
+      lines +
+      '<hr class="r-rule">' +
+      '<div class="r-total-row"><span>Monthly total</span><span>' + money(r.total) + '</span></div>' +
+      (r.wastedAmount > 0
+        ? '<div class="r-waste"><span class="amt">' + money(r.wastedAmount) + '/mo</span><span class="lbl">flagged as overlap · ' + money(annual) + '/yr</span></div>'
+        : '<div class="r-waste" style="background:#0f7a5c"><span class="amt">$0</span><span class="lbl">no overlap detected — clean stack</span></div>') +
+      '<div class="r-grade"><div class="g ' + gradeClass + '">' + r.grade + '</div><div class="glbl">Stack Grade</div></div>' +
+      '<div class="r-barcode"></div>' +
+      '<div class="r-foot">ai-framework.io/receipt · checked against 1,500+ tools</div>';
+
+    els.receipt.innerHTML = html;
+    els.receiptWrap.classList.add("show");
+    els.receiptWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    pushEvent({
+      event: "receipt_generated",
+      tool_count: added.length,
+      monthly_total: r.total,
+      wasted_monthly: r.wastedAmount,
+      grade: r.grade,
+    });
+
+    return r;
+  }
+
+  /* ---------------- share image (canvas, no libraries) ---------------- */
+  function saveAsImage(){
+    var r = computeReceipt();
+    var w = 640, h = 820;
+    var canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    var ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "#0b1220"; ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = "#f4f1ea";
+    roundRect(ctx, 40, 40, w - 80, h - 80, 6); ctx.fill();
+
+    ctx.fillStyle = "#1b1b16";
+    ctx.textAlign = "center";
+    ctx.font = "800 24px Georgia, serif";
+    ctx.fillText("AI FRAMEWORK", w / 2, 96);
+    ctx.font = "12px Menlo, monospace";
+    ctx.fillStyle = "#8a8578";
+    ctx.fillText("THE RECEIPT", w / 2, 118);
+
+    ctx.strokeStyle = "#8a8578"; ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(64, 138); ctx.lineTo(w - 64, 138); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.textAlign = "left"; ctx.fillStyle = "#1b1b16"; ctx.font = "13px Menlo, monospace";
+    var y = 168;
+    added.slice(0, 9).forEach(function(a, i){
+      var flagged = r.flaggedIdx.hasOwnProperty(i);
+      ctx.fillStyle = flagged ? "#a8321f" : "#1b1b16";
+      var name = a.name.length > 26 ? a.name.slice(0, 25) + "…" : a.name;
+      ctx.fillText(name, 64, y);
+      ctx.textAlign = "right";
+      ctx.fillText("$" + Math.round(a.price), w - 64, y);
+      ctx.textAlign = "left";
+      y += 26;
+    });
+    if (added.length > 9){
+      ctx.fillStyle = "#8a8578";
+      ctx.fillText("+ " + (added.length - 9) + " more", 64, y); y += 26;
+    }
+
+    ctx.strokeStyle = "#8a8578"; ctx.setLineDash([2, 3]);
+    ctx.beginPath(); ctx.moveTo(64, y + 4); ctx.lineTo(w - 64, y + 4); ctx.stroke();
+    ctx.setLineDash([]);
+    y += 34;
+
+    ctx.font = "700 15px Menlo, monospace"; ctx.fillStyle = "#1b1b16";
+    ctx.fillText("Monthly total", 64, y);
+    ctx.textAlign = "right"; ctx.fillText("$" + Math.round(r.total), w - 64, y);
+    ctx.textAlign = "left";
+    y += 46;
+
+    var wasteColor = r.wastedAmount > 0 ? "#a8321f" : "#0f7a5c";
+    ctx.fillStyle = wasteColor;
+    roundRect(ctx, 64, y - 26, w - 128, 64, 4); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.textAlign = "center";
+    ctx.font = "800 28px Georgia, serif";
+    ctx.fillText(r.wastedAmount > 0 ? ("$" + Math.round(r.wastedAmount) + "/mo") : "$0", w / 2, y + 6);
+    ctx.font = "11px Menlo, monospace";
+    ctx.fillText(r.wastedAmount > 0 ? "FLAGGED AS OVERLAP" : "NO OVERLAP — CLEAN STACK", w / 2, y + 24);
+    y += 70;
+
+    ctx.fillStyle = { A: "#0f7a5c", B: "#0f7a5c", C: "#8a6d00", D: "#a8321f", F: "#a8321f" }[r.grade];
+    ctx.font = "800 56px Georgia, serif";
+    ctx.fillText(r.grade, w / 2, y + 50);
+    ctx.font = "10px Menlo, monospace"; ctx.fillStyle = "#8a8578";
+    ctx.fillText("STACK GRADE", w / 2, y + 68);
+
+    ctx.font = "11px Menlo, monospace"; ctx.fillStyle = "#8a8578";
+    ctx.fillText("ai-framework.io/receipt", w / 2, h - 60);
+
+    var link = document.createElement("a");
+    link.download = "ai-stack-receipt.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+
+    pushEvent({ event: "receipt_image_saved", tool_count: added.length, grade: r.grade });
+  }
+
+  function roundRect(ctx, x, y, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  /* ---------------- shareable link (state in the URL, no server) ---------------- */
+  function encodeState(){
+    var compact = added.map(function(a){ return [a.name, a.price, a.slug || "", a.category || "", a.subcategory || ""]; });
+    return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(compact)))));
+  }
+  function decodeState(hash){
+    try {
+      var json = decodeURIComponent(escape(atob(decodeURIComponent(hash))));
+      var compact = JSON.parse(json);
+      return compact.map(function(c){
+        return { name: c[0], price: c[1], slug: c[2] || null, category: c[3] || null, subcategory: c[4] || null };
+      });
+    } catch (e) { return null; }
+  }
+  function copyLink(){
+    var url = window.location.origin + window.location.pathname + "#s=" + encodeState();
+    window.location.hash = "s=" + encodeState();
+    var done = function(){
+      var original = els.copyLink.textContent;
+      els.copyLink.textContent = "✓ Link copied";
+      window.setTimeout(function(){ els.copyLink.textContent = original; }, 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(done).catch(function(){ prompt("Copy this link:", url); });
+    } else {
+      prompt("Copy this link:", url);
+    }
+    pushEvent({ event: "receipt_link_copied", tool_count: added.length });
+  }
+
+  function tryLoadFromHash(){
+    var m = window.location.hash.match(/s=([^&]+)/);
+    if (!m) return;
+    var state = decodeState(m[1]);
+    if (!state || !state.length) return;
+    added = state;
+    renderAdded();
+    renderReceipt();
+  }
+
+  /* ---------------- wire up ---------------- */
+  function init(){
+    els.toolInput = $("tool-input");
+    els.priceInput = $("price-input");
+    els.addBtn = $("add-btn");
+    els.suggest = $("suggest");
+    els.addedList = $("added-list");
+    els.revealBtn = $("reveal-btn");
+    els.rigHint = $("rig-hint");
+    els.receiptWrap = $("receipt-wrap");
+    els.receipt = $("receipt");
+    els.saveImg = $("save-img");
+    els.copyLink = $("copy-link");
+    els.startOver = $("start-over");
+    els.addManual = $("add-manual");
+
+    loadTools();
+
+    els.toolInput.addEventListener("input", function(){ renderSuggestions(this.value); });
+    els.toolInput.addEventListener("keydown", function(e){
+      if (e.key === "ArrowDown"){ e.preventDefault(); hiIndex = Math.min(hiIndex + 1, currentMatches.length - 1); paintHi(); }
+      else if (e.key === "ArrowUp"){ e.preventDefault(); hiIndex = Math.max(hiIndex - 1, 0); paintHi(); }
+      else if (e.key === "Enter"){
+        e.preventDefault();
+        if (hiIndex >= 0 && currentMatches[hiIndex]) pickMatch(currentMatches[hiIndex]);
+        else addTool(els.toolInput.value, els.priceInput.value || 0, null);
+      } else if (e.key === "Escape"){ renderSuggestions(""); }
+    });
+    function paintHi(){
+      Array.prototype.forEach.call(els.suggest.querySelectorAll("button"), function(b, i){
+        b.classList.toggle("hi", i === hiIndex);
+      });
+    }
+    els.suggest.addEventListener("click", function(e){
+      var btn = e.target.closest("button[data-i]");
+      if (!btn) return;
+      pickMatch(currentMatches[parseInt(btn.getAttribute("data-i"), 10)]);
+    });
+    document.addEventListener("click", function(e){
+      if (!e.target.closest(".rig-row")) renderSuggestions("");
+    });
+
+    els.addBtn.addEventListener("click", function(){
+      var name = els.toolInput.value.trim();
+      if (!name) { els.toolInput.focus(); return; }
+      var match = TOOLS.find(function(t){ return t.n.toLowerCase() === name.toLowerCase(); });
+      addTool(name, els.priceInput.value || 0, match);
+    });
+    els.addManual.addEventListener("click", function(){
+      var name = els.toolInput.value.trim();
+      if (!name) { els.toolInput.focus(); return; }
+      addTool(name, els.priceInput.value || 0, null);
+    });
+
+    document.querySelectorAll(".try button[data-ex]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var name = b.getAttribute("data-ex");
+        var price = b.getAttribute("data-price");
+        var match = TOOLS.find(function(t){ return t.n.toLowerCase() === name.toLowerCase(); });
+        addTool(name, price, match);
+      });
+    });
+
+    els.addedList.addEventListener("click", function(e){
+      var btn = e.target.closest("button[data-remove]");
+      if (!btn) return;
+      removeTool(parseInt(btn.getAttribute("data-remove"), 10));
+    });
+
+    els.revealBtn.addEventListener("click", renderReceipt);
+    els.saveImg.addEventListener("click", saveAsImage);
+    els.copyLink.addEventListener("click", function(e){ e.preventDefault(); copyLink(); });
+    els.startOver.addEventListener("click", function(){
+      added = [];
+      renderAdded();
+      els.receiptWrap.classList.remove("show");
+      window.location.hash = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    window.setTimeout(tryLoadFromHash, 300); // give tools-lite.json a moment to load first
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+})();
+</script>
+</body>
+</html>
