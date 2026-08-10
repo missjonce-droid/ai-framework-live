@@ -1,4 +1,4 @@
-// Netlify Function: pulls the latest AI headlines from public RSS feeds and
+// Cloudflare Pages Function: pulls the latest AI headlines from public RSS feeds and
 // returns them as clean JSON for the /news page.
 //
 // Why RSS and not a news API: no signup, no API key, no per-request cost, no
