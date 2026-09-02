@@ -1,0 +1,34 @@
+# Netlify redirects for AI Framework.
+#
+# Netlify serves an existing static file before applying a rewrite, so the SPA
+# catch-all at the bottom cannot shadow the real pages, PDFs, or hashed
+# bundles. The rules above it exist for paths that have no file of their own:
+# the /api/* endpoints and the hyphenated aliases for promptlab.html and
+# receipt.html.
+
+# API endpoints, backed by netlify/functions/*.mjs.
+/api/ai-news           /.netlify/functions/ai-news           200
+/api/build-framework   /.netlify/functions/build-framework   200
+/api/fix-prompt        /.netlify/functions/fix-prompt        200
+
+# Downloads and standalone pages serve their own files.
+/vault/*               /vault/:splat                         200
+/downloads/*           /downloads/:splat                     200
+/vault-thank-you       /vault-thank-you/index.html           200
+/playbooks             /playbooks/index.html                 200
+/tutorials             /tutorials/index.html                 200
+/build-my-framework    /build-my-framework/index.html        200
+
+# Aliases for the two standalone tools, which ship under shorter filenames.
+/promptlab             /promptlab.html                       200
+/prompt-lab            /promptlab.html                       200
+/prompt-lab/           /promptlab.html                       200
+/prompt-lab.html       /promptlab.html                       200
+/receipt               /receipt.html                         200
+/the-receipt           /receipt.html                         200
+/the-receipt/          /receipt.html                         200
+/the-receipt.html      /receipt.html                         200
+/news                  /news.html                            200
+
+# SPA fallback - must stay last so it can't swallow the rules above.
+/*                     /index.html                           200
