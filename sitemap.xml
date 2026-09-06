@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <!-- Core pages -->
   <url>
     <loc>https://ai-framework.io/</loc>
   </url>
-
   <url>
     <loc>https://ai-framework.io/news</loc>
   </url>
-
+  <url>
+    <loc>https://ai-framework.io/press/</loc>
+  </url>
   <url>
     <loc>https://ai-framework.io/the-receipt</loc>
   </url>
-
   <url>
     <loc>https://ai-framework.io/prompt-lab</loc>
   </url>
-
   <url>
     <loc>https://ai-framework.io/category/all</loc>
   </url>
@@ -26,13 +24,10 @@
   <url>
     <loc>https://ai-framework.io/discover/trending</loc>
   </url>
-
   <url>
     <loc>https://ai-framework.io/discover/new</loc>
   </url>
-
   <url>
     <loc>https://ai-framework.io/discover/popular</loc>
   </url>
-
 </urlset>
