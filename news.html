@@ -79,7 +79,7 @@ article.story a:hover h3{color:var(--brass)}
 /* --- Footer band ---------------------------------------------------- */
 .band{border-top:3px double var(--border);margin-top:10px;padding:30px 0 10px;
   font-family:ui-sans-serif,system-ui,sans-serif;text-align:center}
-.band h4{margin:0 0 8px;font-size:20px}
+.band h2{margin:0 0 8px;font-size:20px;font-weight:700}
 .band p{margin:0 0 18px;color:var(--muted);font-size:15px;line-height:1.55}
 .cta{display:inline-block;background:linear-gradient(135deg,var(--brass),var(--purple));
   color:#0f1216;font-weight:800;text-decoration:none;padding:13px 26px;border-radius:10px}
@@ -88,6 +88,8 @@ footer.site{border-top:1px solid var(--border);margin-top:34px;padding:22px 0 40
   font-family:ui-sans-serif,system-ui,sans-serif}
 footer.site a{color:var(--muted)}
 </style>
+<link href="/static/css/site-polish.css" rel="stylesheet">
+<script defer src="/static/js/a11y-enhancements.js"></script>
 </head>
 <body>
 <noscript><iframe title="Google Tag Manager" src="https://www.googletagmanager.com/ns.html?id=GTM-KFZ7N4LF"
@@ -96,8 +98,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="site">
   <div class="wrap topbar">
     <a class="brand" href="/">AI Framework</a>
-    <nav class="topnav">
-      <a href="/news" class="on">The AI Wire</a>
+    <nav class="topnav" aria-label="Main navigation">
+      <a href="/news" class="on" aria-current="page">The AI Wire</a>
       <a href="/receipt">The Receipt</a>
       <a href="/build-my-framework/">Build My Framework</a>
       <a href="/promptlab">Prompt Lab</a>
@@ -108,7 +110,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="wrap masthead">
     <h1>The AI Wire</h1>
     <div class="rule">
-      <i></i><span id="dateline">Loading\u2026</span><i></i>
+      <i></i><span id="dateline">Loading&hellip;</span><i></i>
     </div>
   </div>
 </header>
@@ -116,31 +118,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main class="wrap">
   <div id="lede" class="lede" hidden></div>
 
-  <div id="stories" class="cols">
-    <div class="state" id="loading">
+  <div id="stories" class="cols" aria-live="polite" aria-busy="true">
+    <div class="state" id="loading" role="status">
       <div class="skeleton" style="width:88%"></div>
       <div class="skeleton" style="width:72%"></div>
       <div class="skeleton" style="width:81%"></div>
       <div class="skeleton" style="width:64%"></div>
-      <p style="margin-top:18px">Pulling today's headlines\u2026</p>
+      <p style="margin-top:18px">Pulling today&rsquo;s headlines&hellip;</p>
     </div>
   </div>
 
-  <div id="error" class="state" hidden>
+  <div id="error" class="state" role="alert" hidden>
     <p>Couldn't load the wire just now. <a href="/news" style="color:var(--brass)">Try again</a>.</p>
   </div>
 
   <section class="band">
-    <h4>Paying for tools you read about last year?</h4>
-    <p>Find out what your AI stack actually costs \u2014 and what's redundant.</p>
-    <a class="cta" href="/receipt">Get My Receipt \u2192</a>
+    <h2>Paying for tools you read about last year?</h2>
+    <p>Find out what your AI stack actually costs &mdash; and what's redundant.</p>
+    <a class="cta" href="/receipt">Get My Receipt &rarr;</a>
   </section>
 </main>
 
 <footer class="site">
   <div class="wrap">
     <p>Headlines link to their original publishers. AI Framework doesn't host or reproduce article content.</p>
-    <p><a href="/">AI Framework</a> \u00b7 <a href="/disclosure">Disclosure</a> \u00b7 <a href="/contact">Contact</a></p>
+    <p><a href="/">AI Framework</a> &middot; <a href="/disclosure">Disclosure</a> &middot; <a href="/contact">Contact</a></p>
   </div>
 </footer>
 
@@ -163,6 +165,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     if(hrs < 24) return hrs + "h ago";
     var days = Math.floor(hrs/24);
     return days === 1 ? "yesterday" : days + "d ago";
+  }
+
+  function newTab(){
+    return '<span class="visually-hidden"> (opens in a new tab)</span>';
   }
 
   function metaLine(item){
@@ -193,16 +199,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var lede = $("lede");
     lede.innerHTML =
       '<a class="story" href="' + esc(top.link) + '" target="_blank" rel="noopener">' +
-      '<h2>' + esc(top.title) + '</h2>' + metaLine(top) + '</a>';
+      '<h2>' + esc(top.title) + newTab() + '</h2>' + metaLine(top) + '</a>';
     lede.hidden = false;
     lede.querySelector("a").addEventListener("click", function(){ track(top); });
 
     var html = items.slice(1).map(function(item){
       return '<article class="story"><a href="' + esc(item.link) +
         '" target="_blank" rel="noopener" data-src="' + esc(item.source) + '">' +
-        '<h3>' + esc(item.title) + '</h3>' + metaLine(item) + '</a></article>';
+        '<h3>' + esc(item.title) + newTab() + '</h3>' + metaLine(item) + '</a></article>';
     }).join("");
     $("stories").innerHTML = html;
+    $("stories").setAttribute("aria-busy", "false");
 
     Array.prototype.forEach.call($("stories").querySelectorAll("a[data-src]"), function(a){
       a.addEventListener("click", function(){

@@ -101,6 +101,7 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
 
   /* ================= THE RECEIPT ================= */
   #receipt-wrap{display:none;margin:36px 0 56px}
+  #receipt-wrap:focus{outline:none}
   #receipt-wrap.show{display:block}
   .receipt{
     background:var(--paper); color:var(--paper-ink); max-width:420px; margin:0 auto;
@@ -157,7 +158,7 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   .upsell{max-width:520px;margin:34px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:16px;
     padding:22px 24px;text-align:center}
   .upsell p.k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 8px}
-  .upsell h3{margin:0 0 8px;font-family:var(--display);font-size:20px}
+  .upsell h2{margin:0 0 8px;font-family:var(--display);font-size:20px;font-weight:700}
   .upsell p{color:var(--muted);font-size:14px;margin:0 0 16px}
   .upsell a.buy{display:inline-block;background:var(--amber);color:#241a00;text-decoration:none;border-radius:10px;
     padding:12px 22px;font:700 15px var(--body)}
@@ -177,10 +178,12 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   }
   @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
 </style>
+<link href="/static/css/site-polish.css" rel="stylesheet">
+<script defer src="/static/js/a11y-enhancements.js"></script>
 </head>
 <body>
 
-<nav class="nav"><div class="wrap">
+<nav class="nav" aria-label="Main navigation"><div class="wrap">
   <a class="brand" href="/">AI<span>/</span>Framework</a>
   <div class="nav-links">
     <a href="/">Directory</a>
@@ -203,12 +206,13 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   <div class="rig">
     <div class="rig-row">
       <input type="text" id="tool-input" placeholder="Type a tool you pay for… (e.g. Jasper, Zapier, Notion AI)"
-             autocomplete="off" aria-label="Search for an AI tool you pay for" aria-expanded="false" role="combobox">
+             autocomplete="off" aria-label="Search for an AI tool you pay for" role="combobox"
+             aria-expanded="false" aria-autocomplete="list" aria-controls="suggest">
       <div class="price-field">
         <span>$</span><input type="number" id="price-input" placeholder="20" min="0" step="1" aria-label="Monthly price">
       </div>
       <button class="add" id="add-btn" type="button">Add</button>
-      <div class="suggest" id="suggest" hidden></div>
+      <div class="suggest" id="suggest" role="listbox" aria-label="Matching tools" hidden></div>
     </div>
     <p class="try">Not on the list? <button type="button" id="add-manual">Add it anyway</button> — try:
       <button type="button" data-ex="ChatGPT Plus" data-price="20">ChatGPT Plus</button> ·
@@ -222,16 +226,16 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
     <p class="rig-hint" id="rig-hint">Add at least 2 tools — that's when the overlaps start showing up.</p>
   </div>
 
-  <div id="receipt-wrap">
+  <div id="receipt-wrap" role="region" aria-label="Your receipt" tabindex="-1">
     <div class="receipt" id="receipt"></div>
     <div class="share-row">
       <button class="save" id="save-img" type="button">⬇ Save as image</button>
-      <a class="link" id="copy-link" href="#" role="button">🔗 Copy shareable link</a>
+      <button class="link" id="copy-link" type="button">🔗 Copy shareable link</button>
       <button class="again" id="start-over" type="button">↺ Start over</button>
     </div>
     <div class="upsell">
       <p class="k">Beyond the script</p>
-      <h3>Want a human to catch what this can't?</h3>
+      <h2>Want a human to catch what this can't?</h2>
       <p>This checks price and category overlap. The full AI Stack Audit checks actual usage, contract terms, and negotiates the swap — with a guarantee: at least 2× the fee in savings, or it's free.</p>
       <a class="buy" href="/contact" id="audit-cta">Book the AI Stack Audit →</a>
     </div>
@@ -273,10 +277,16 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   /* ---------------- autocomplete ---------------- */
   var hiIndex = -1, currentMatches = [];
 
+  function setExpanded(open){
+    if (els.toolInput) els.toolInput.setAttribute("aria-expanded", String(open));
+    if (!open && els.toolInput) els.toolInput.removeAttribute("aria-activedescendant");
+  }
+
   function renderSuggestions(query){
     var box = els.suggest;
     if (!query || query.length < 2 || !TOOLS.length){
       box.hidden = true; box.innerHTML = ""; currentMatches = []; hiIndex = -1;
+      setExpanded(false);
       return;
     }
     var q = query.toLowerCase();
@@ -289,12 +299,14 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
         return t.n.toLowerCase().indexOf(q) !== -1 && already.indexOf(t.s) === -1;
       }).slice(0, 7);
     }
-    if (!currentMatches.length){ box.hidden = true; box.innerHTML = ""; hiIndex = -1; return; }
+    if (!currentMatches.length){ box.hidden = true; box.innerHTML = ""; hiIndex = -1; setExpanded(false); return; }
     box.innerHTML = currentMatches.map(function(t, i){
-      return '<button type="button" data-i="' + i + '"><span>' + esc(t.n) +
+      return '<button type="button" role="option" aria-selected="false" id="suggest-opt-' + i +
+        '" data-i="' + i + '"><span>' + esc(t.n) +
         '</span><span class="cat">' + esc(t.c) + '</span></button>';
     }).join("");
     box.hidden = false;
+    setExpanded(true);
     hiIndex = -1;
   }
 
@@ -439,6 +451,7 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
     els.receipt.innerHTML = html;
     els.receiptWrap.classList.add("show");
     els.receiptWrap.scrollIntoView({ behavior: "smooth", block: "start" });
+    els.receiptWrap.focus();
 
     pushEvent({
       event: "receipt_generated",
@@ -610,8 +623,12 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
     });
     function paintHi(){
       Array.prototype.forEach.call(els.suggest.querySelectorAll("button"), function(b, i){
-        b.classList.toggle("hi", i === hiIndex);
+        var on = i === hiIndex;
+        b.classList.toggle("hi", on);
+        b.setAttribute("aria-selected", String(on));
       });
+      if (hiIndex >= 0) els.toolInput.setAttribute("aria-activedescendant", "suggest-opt-" + hiIndex);
+      else els.toolInput.removeAttribute("aria-activedescendant");
     }
     els.suggest.addEventListener("click", function(e){
       var btn = e.target.closest("button[data-i]");
@@ -651,7 +668,7 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
 
     els.revealBtn.addEventListener("click", renderReceipt);
     els.saveImg.addEventListener("click", saveAsImage);
-    els.copyLink.addEventListener("click", function(e){ e.preventDefault(); copyLink(); });
+    els.copyLink.addEventListener("click", function(){ copyLink(); });
     els.startOver.addEventListener("click", function(){
       added = [];
       renderAdded();

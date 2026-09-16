@@ -100,6 +100,7 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
 
   /* dictionary */
   .dict-controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .cat-group{display:flex;gap:10px;flex-wrap:wrap}
   .dict-controls input{flex:1 1 220px;background:var(--surface);border:1px solid var(--line);color:var(--text);
                        border-radius:10px;padding:12px 14px;font:inherit;font-size:15px}
   .dict-controls input:focus{outline:2px solid var(--mint);outline-offset:1px;border-color:transparent}
@@ -126,12 +127,15 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   footer a{color:var(--mint)}
   :focus-visible{outline:2px solid var(--mint);outline-offset:2px}
   @media (max-width:560px){.swap{grid-template-columns:1fr}.hero{padding:42px 0 4px}}
+  .result:focus{outline:none}
 </style>
+<link href="/static/css/site-polish.css" rel="stylesheet">
+<script defer src="/static/js/a11y-enhancements.js"></script>
 </head>
 <body>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KFZ7N4LF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe title="Google Tag Manager" src="https://www.googletagmanager.com/ns.html?id=GTM-KFZ7N4LF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<nav class="nav"><div class="wrap">
+<nav class="nav" aria-label="Main navigation"><div class="wrap">
   <a class="brand" href="/">AI<span>/</span>Framework</a>
   <div class="nav-links">
     <a href="/">Directory</a>
@@ -152,18 +156,18 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
     <label for="idea">Your rough idea</label>
     <textarea id="idea" placeholder="e.g. write me a good email to my landlord about fixing the heater, make it professional but not mean"></textarea>
     <div class="bar">
-      <button class="go" id="fix">Fix my prompt</button>
+      <button class="go" id="fix" type="button">Fix my prompt</button>
       <span class="try">Try one:
-        <button data-ex="make me a short catchy caption for my new bakery instagram">bakery caption</button> ·
-        <button data-ex="explain how crypto works, keep it simple im a beginner">explain crypto</button> ·
-        <button data-ex="i need a logo image for my dog walking business, something nice">logo idea</button>
+        <button type="button" data-ex="make me a short catchy caption for my new bakery instagram">bakery caption</button> ·
+        <button type="button" data-ex="explain how crypto works, keep it simple im a beginner">explain crypto</button> ·
+        <button type="button" data-ex="i need a logo image for my dog walking business, something nice">logo idea</button>
       </span>
     </div>
 
-    <div class="result" id="result">
+    <div class="result" id="result" role="region" aria-label="Your structured prompt" tabindex="-1">
       <div class="head">
         <span class="intent" id="intent"></span>
-        <button class="copy" id="copy">Copy prompt</button>
+        <button class="copy" id="copy" type="button">Copy prompt</button>
       </div>
       <div class="out" id="out"></div>
       <div class="upgrades" id="upgrades" hidden>
@@ -186,14 +190,16 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   <p class="sub">Every term you'll run into, in plain English, with how to actually use it in a prompt.</p>
   <div class="dict-controls">
     <input id="dsearch" type="search" placeholder="Search terms — try 'few-shot' or 'temperature'" aria-label="Search dictionary">
-    <button class="cat on" data-cat="all">All</button>
-    <button class="cat" data-cat="basics">Basics</button>
-    <button class="cat" data-cat="technique">Techniques</button>
-    <button class="cat" data-cat="settings">Settings</button>
-    <button class="cat" data-cat="image">Image &amp; video</button>
+    <div class="cat-group" role="group" aria-label="Filter terms by category">
+      <button class="cat on" type="button" data-cat="all" aria-pressed="true">All</button>
+      <button class="cat" type="button" data-cat="basics" aria-pressed="false">Basics</button>
+      <button class="cat" type="button" data-cat="technique" aria-pressed="false">Techniques</button>
+      <button class="cat" type="button" data-cat="settings" aria-pressed="false">Settings</button>
+      <button class="cat" type="button" data-cat="image" aria-pressed="false">Image &amp; video</button>
+    </div>
   </div>
   <div class="terms" id="terms"></div>
-  <div class="empty" id="dempty" hidden>Nothing matches that — try a shorter word, or browse a category above.</div>
+  <div class="empty" id="dempty" role="status" hidden>Nothing matches that — try a shorter word, or browse a category above.</div>
 </div></section>
 
 <div class="wrap">
@@ -418,6 +424,7 @@ function runFixLocal(){
   $("chips").innerHTML=chips.join("");
   $("upgrades").hidden=chips.length===0;
   $("result").classList.add("show");
+  $("result").focus();
   window.dataLayer=window.dataLayer||[];
   window.dataLayer.push({event:"prompt_fixed",intent:intent.id,weak_words_found:chips.length,mode:"template"});
 }
@@ -476,6 +483,7 @@ function runFix(){
     $("chips").innerHTML=chips.join("");
     $("upgrades").hidden=chips.length===0;
     $("result").classList.add("show");
+    $("result").focus();
     window.dataLayer=window.dataLayer||[];
     window.dataLayer.push({event:"prompt_fixed",mode:"ai"});
   })
@@ -518,8 +526,11 @@ function renderTerms(){
 $("dsearch").addEventListener("input",renderTerms);
 document.querySelectorAll(".cat").forEach(function(b){
   b.addEventListener("click",function(){
-    document.querySelectorAll(".cat").forEach(function(x){x.classList.remove("on");});
-    b.classList.add("on");activeCat=b.getAttribute("data-cat");renderTerms();
+    document.querySelectorAll(".cat").forEach(function(x){
+      x.classList.remove("on");x.setAttribute("aria-pressed","false");
+    });
+    b.classList.add("on");b.setAttribute("aria-pressed","true");
+    activeCat=b.getAttribute("data-cat");renderTerms();
   });
 });
 renderTerms();
