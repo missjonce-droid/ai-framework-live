@@ -37,17 +37,18 @@
   // Name each top-level section after its own heading. A <section> that
   // has an accessible name is exposed as a landmark, which is what lets
   // a screen reader user jump between blocks of the page instead of
-  // arrowing through all of it. Returns the first section so the skip
-  // link has somewhere to point.
+  // arrowing through all of it.
+  //
+  // ".page" is the application shell. The hand-written pages - the
+  // homepage, the wire, the receipt, the prompt lab - wrap their content
+  // in <main> instead, so both are checked.
   function nameSections() {
-    var page = document.querySelector(".page");
-    if (!page) return null;
+    var page = document.querySelector(".page") || document.querySelector("main");
+    if (!page) return;
 
-    var first = null;
     for (var i = 0; i < page.children.length; i++) {
       var el = page.children[i];
       if (el.tagName !== "SECTION") continue;
-      if (!first) first = el;
       if (el.getAttribute("aria-label")) continue;
       if (el.getAttribute("aria-labelledby")) continue;
 
@@ -57,19 +58,37 @@
       if (!text) continue;
       el.setAttribute("aria-label", text.slice(0, 80));
     }
-    return first;
   }
 
-  // The standard way to let keyboard users jump past the header. It is
-  // inserted before #root so it sits outside React's tree, and it is the
+  // Where the skip link should land. <main> is the correct target wherever
+  // one exists; the application shell has no <main>, so there the first
+  // top-level section of ".page" is the closest equivalent.
+  function findSkipTarget() {
+    var main = document.querySelector("main");
+    if (main) return main;
+
+    var page = document.querySelector(".page");
+    if (!page) return null;
+    for (var i = 0; i < page.children.length; i++) {
+      if (page.children[i].tagName === "SECTION") return page.children[i];
+    }
+    return null;
+  }
+
+  // The standard way to let keyboard users jump past the header, and the
   // first thing focus reaches. tabindex="-1" on the target makes the jump
   // actually move focus rather than only scrolling.
+  //
+  // On application pages it goes immediately before #root, so it sits
+  // outside React's tree. On the hand-written pages there is no #root and
+  // it becomes the first child of <body> instead.
   function addSkipLink(target) {
     if (!target) return;
     if (document.querySelector(".skip-to-content")) return;
 
     var root = document.getElementById("root");
-    if (!root || !root.parentNode) return;
+    var parent = root && root.parentNode ? root.parentNode : document.body;
+    if (!parent) return;
 
     if (!target.id) target.id = "main-content";
     if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
@@ -78,13 +97,14 @@
     link.className = "skip-to-content";
     link.href = "#" + target.id;
     link.textContent = "Skip to main content";
-    root.parentNode.insertBefore(link, root);
+    parent.insertBefore(link, root || parent.firstChild);
   }
 
   function apply() {
     try {
       labelFormControls();
-      addSkipLink(nameSections());
+      nameSections();
+      addSkipLink(findSkipTarget());
     } catch (e) {
       // Deliberately silent. This is presentation polish, not core
       // functionality, and it must never surface an error to a visitor.

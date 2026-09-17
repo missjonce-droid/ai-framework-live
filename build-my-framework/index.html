@@ -30,6 +30,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="/static/css/framework-builder.css" rel="stylesheet">
+  <link href="/static/css/site-polish.css" rel="stylesheet">
+  <script defer src="/static/js/a11y-enhancements.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -90,6 +92,7 @@
           <p class="fb-step-intro">In your own words. We'll build a specific stack from our real tool directory &mdash; not a generic template.</p>
 
           <form id="fb-ai-form">
+            <label class="visually-hidden" for="fb-ai-input">Describe what you are trying to do</label>
             <textarea
               id="fb-ai-input"
               maxlength="600"
