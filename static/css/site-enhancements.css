@@ -1,3 +1,9 @@
+/* Loaded on every prerendered page, so it is the one place that can reach
+   all of them. site-polish.css carries the horizontal-overflow fix, the
+   focus-visible styles and the skip-link styles. index.html and the newer
+   prerendered pages also link it directly; the browser dedupes by URL. */
+@import url("/static/css/site-polish.css");
+
 /* AI Framework progressive enhancements
    Loaded after the compiled application stylesheet so these rules can safely
    improve the live build without replacing the existing design system. */
@@ -6,10 +12,55 @@
   --framework-brass: #d0aa6d;
   --framework-purple: #a77bdd;
   --framework-panel: #171b22;
+  --framework-mint: #4de0c0;
 }
 
 .framework-nav-link {
   color: var(--framework-brass) !important;
+}
+
+.framework-promptlab-hint {
+  font-size: 13px;
+  margin: -8px auto 18px;
+  max-width: 560px;
+  text-align: center;
+}
+
+.framework-promptlab-hint a {
+  border-bottom: 1px solid rgba(208, 170, 109, 0.4);
+  color: var(--framework-brass);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.framework-promptlab-hint a:hover {
+  border-bottom-color: var(--framework-brass);
+.prompt-lab-nav-link {
+  color: var(--framework-mint) !important;
+}
+
+.prompt-lab-home-button {
+  border-color: color-mix(
+    in srgb,
+    var(--framework-mint) 45%,
+    var(--border)
+  ) !important;
+  color: var(--framework-mint) !important;
+}
+
+.prompt-lab-home-button:hover {
+  background: color-mix(in srgb, var(--framework-mint) 12%, transparent) !important;
+.promptlab-nav-link {
+  color: var(--framework-purple) !important;
+}
+
+.promptlab-hero-link {
+  border-color: var(--framework-purple) !important;
+  color: var(--framework-purple) !important;
+}
+
+.promptlab-hero-link:hover {
+  background: color-mix(in srgb, var(--framework-purple) 12%, transparent);
 }
 
 .framework-hero-link {
@@ -28,6 +79,21 @@
   background: color-mix(in srgb, var(--framework-brass) 18%, transparent);
   border-color: var(--framework-brass);
   color: var(--framework-brass);
+}
+
+.framework-card-clickable {
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.framework-card-clickable:hover {
+  background: color-mix(in srgb, var(--framework-brass) 5%, transparent);
+}
+
+.framework-card-clickable:focus-visible {
+  outline: 2px solid var(--framework-brass);
+  outline-offset: 2px;
 }
 
 .framework-tool-actions {
@@ -163,7 +229,8 @@
 }
 
 @media (max-width: 767px) {
-  .framework-nav-link {
+  .framework-nav-link,
+  .promptlab-nav-link {
     display: none;
   }
 

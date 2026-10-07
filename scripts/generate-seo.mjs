@@ -161,7 +161,10 @@ const mainBundlePath = path.join(
   assetManifest.files["main.js"].replace(/^\/+/, ""),
 );
 const bundle = fs.readFileSync(mainBundlePath, "utf8");
-const baseTemplate = fs.readFileSync(path.join(root, "index.html"), "utf8");
+// app.html, not index.html. index.html is the hand-written static homepage
+// and carries neither #root nor the bundle, so rendering from it would
+// produce 1,600 pages that can never mount the application.
+const baseTemplate = fs.readFileSync(path.join(root, "app.html"), "utf8");
 const allResources = extractArray(bundle).filter(
   (resource) => resource && resource.status === "active",
 );
@@ -177,13 +180,17 @@ const tools = publicResources.filter(
     !resource.resource_type || resource.resource_type === "tool",
 );
 
+// Grouped from every public resource rather than tools alone. Creator and
+// company pages link back to their own category in the same way tool pages
+// do, so building this map from `tools` left /category/creators-influencers
+// and /category/companies with no page to link to.
 const categories = new Map();
-for (const tool of tools) {
-  if (!tool.primary_category) continue;
-  if (!categories.has(tool.primary_category)) {
-    categories.set(tool.primary_category, []);
+for (const resource of publicResources) {
+  if (!resource.primary_category) continue;
+  if (!categories.has(resource.primary_category)) {
+    categories.set(resource.primary_category, []);
   }
-  categories.get(tool.primary_category).push(tool);
+  categories.get(resource.primary_category).push(resource);
 }
 
 for (const resource of publicResources) {

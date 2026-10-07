@@ -406,6 +406,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://ai-framework.io/category/creators-influencers</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://ai-framework.io/category/companies</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://ai-framework.io/category/audio-voice</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

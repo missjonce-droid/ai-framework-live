@@ -4,6 +4,9 @@
   var SITE = "https://ai-framework.io";
   var SAVED_KEY = "ai_fw_saved_tools";
   var SOCIAL_IMAGE = SITE + "/social-card.png";
+  var PROMPT_LAB_URL = "/promptlab"; // the live route (no dash)
+  var RECEIPT_URL = "/receipt";
+  var NEWS_URL = "/news";
 
   function text(element) {
     return (element && element.textContent ? element.textContent : "")
@@ -19,6 +22,37 @@
         return part.charAt(0).toUpperCase() + part.slice(1);
       })
       .join(" ");
+  }
+
+  function createExternalLinkIcon() {
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "14");
+    svg.setAttribute("height", "14");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "2.5");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("aria-hidden", "true");
+    svg.style.cssText = "vertical-align:-2px;margin-left:4px";
+
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6");
+    svg.appendChild(path);
+
+    var polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    polyline.setAttribute("points", "15 3 21 3 21 9");
+    svg.appendChild(polyline);
+
+    var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", "10");
+    line.setAttribute("y1", "14");
+    line.setAttribute("x2", "21");
+    line.setAttribute("y2", "3");
+    svg.appendChild(line);
+
+    return svg;
   }
 
   function upsertMeta(selector, attributes) {
@@ -158,6 +192,10 @@
         "Discover Useful, New & Under-the-Radar AI Tools | AI Framework",
         "Explore editor picks, hidden gems, beginner-friendly tools, operator stacks, and practical AI discoveries.",
       ],
+      "/promptlab": [
+        "Prompt Lab — Fix Your Prompt Free | AI Framework",
+        "Type your rough idea and watch it become a real prompt. Free AI dictionary and word upgrades included.",
+      ],
       "/submit": [
         "Submit an AI Tool for Editorial Review | AI Framework",
         "Submit an AI product, service, agent, or resource for consideration in the AI Framework directory.",
@@ -186,29 +224,80 @@
     }
   }
 
-  function addNavigationLinks() {
-    var nav = document.querySelector(".nav-links");
-    if (nav && !nav.querySelector('[href="/build-my-framework/"]')) {
-      var navLink = document.createElement("a");
-      navLink.href = "/build-my-framework/";
-      navLink.className = "framework-nav-link";
-      navLink.textContent = "Build My Framework";
-      nav.insertBefore(navLink, nav.firstChild);
-    }
+  // Header nav: "Build My Framework" + "Prompt Lab" (friend-test fix #1 support,
+  // plus the requested header nav item). One insertion each — no duplicates.
+  // Site nav. Directory pages ship their own .nav-links bar; the homepage
+  // and the standalone pages do not, and the compiled stylesheet also hides
+  // the header pill buttons' labels under 900px - which left mobile with a
+  // nearly empty header. So: use the real nav bar when one exists, and
+  // otherwise build a self-contained one pinned to the top of <body>, which
+  // does not depend on finding any particular container in the bundle.
+  var NAV_ITEMS = [
+    { href: NEWS_URL, label: "The AI Wire" },
+    { href: RECEIPT_URL, label: "The Receipt" },
+    { href: "/build-my-framework/", label: "Build My Framework" },
+    { href: PROMPT_LAB_URL, label: "Prompt Lab" },
+    { href: "/playbooks/", label: "Playbooks" },
+    { href: "/browse", label: "Directory" },
+  ];
 
-    var homeActions = document.querySelector(".header-actions");
-    if (
-      homeActions &&
-      !homeActions.querySelector('[href="/build-my-framework/"]')
-    ) {
-      var homeLink = document.createElement("a");
-      homeLink.href = "/build-my-framework/";
-      homeLink.className = "pill-btn framework-home-button";
-      homeLink.textContent = "Build My Framework";
-      homeActions.insertBefore(homeLink, homeActions.firstChild);
-    }
+  function injectNavStyles() {
+    if (document.getElementById("fw-nav-css")) return;
+    var style = document.createElement("style");
+    style.id = "fw-nav-css";
+    style.textContent =
+      ".fw-nav{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;" +
+      "align-items:center;padding:8px 12px;border-bottom:1px solid " +
+      "var(--input-border,#2a2f38);background:var(--bg,#0f1216);}" +
+      ".fw-nav a{color:var(--text-muted,#8f96a3);font-size:13px;" +
+      "text-decoration:none;padding:7px 11px;border-radius:4px;" +
+      "white-space:nowrap;line-height:1;}" +
+      ".fw-nav a:hover,.fw-nav a.active{color:var(--text,#e6e6e6);" +
+      "background:var(--pill-hover,#1a1e25);}" +
+      "@media(max-width:600px){.fw-nav{gap:2px;padding:6px 8px;}" +
+      ".fw-nav a{font-size:12px;padding:6px 8px;}}";
+    document.head.appendChild(style);
   }
 
+  function addNavigationLinks() {
+    var existing = document.querySelector(".nav-links");
+
+    if (existing) {
+      // Real nav bar present - just top up anything missing, in order.
+      NAV_ITEMS.forEach(function (item, i) {
+        if (existing.querySelector('a[href="' + item.href + '"]')) return;
+        var a = document.createElement("a");
+        a.href = item.href;
+        a.textContent = item.label;
+        if (window.location.pathname === item.href) a.className = "active";
+        var refNode = existing.children[i] || null;
+        existing.insertBefore(a, refNode);
+      });
+      return;
+    }
+
+    if (document.querySelector(".fw-nav")) return;
+    if (!document.body) return;
+
+    injectNavStyles();
+    var nav = document.createElement("nav");
+    nav.className = "fw-nav";
+    nav.setAttribute("aria-label", "Main");
+
+    NAV_ITEMS.forEach(function (item) {
+      var a = document.createElement("a");
+      a.href = item.href;
+      a.textContent = item.label;
+      if (window.location.pathname === item.href) a.className = "active";
+      nav.appendChild(a);
+    });
+
+    document.body.insertBefore(nav, document.body.firstChild);
+  }
+
+  // Homepage hero: real "Build My Framework →" link (friend-test fix #1 —
+  // the compiled bundle's hero has no such CTA at all, so this injects a
+  // genuine <a href> rather than patching a button that doesn't exist).
   function improveHomepage() {
     if (window.location.pathname !== "/" && window.location.pathname !== "/tree")
       return;
@@ -222,20 +311,157 @@
     if (!title || !subtitle || !actions) return;
 
     hero.setAttribute("data-framework-updated", "true");
-    title.textContent = ".";What the Framework?
+    title.textContent = "Stop guessing. Start building.";
     subtitle.textContent =
       "Tell us the result you want. AI Framework helps you find the right tools, compare the tradeoffs, and turn them into a practical step-by-step stack.";
 
     if (!actions.querySelector('[href="/build-my-framework/"]')) {
       var builder = document.createElement("a");
       builder.href = "/build-my-framework/";
-      builder.className = "clarity-link primary framework-hero-link";
-      builder.textContent = "Build My Framework →";
+      builder.className = "clarity-link framework-hero-link";
+      builder.textContent = "Build My Framework \u2192";
       actions.insertBefore(builder, actions.firstChild);
+    }
+
+    if (!actions.querySelector('[href="' + RECEIPT_URL + '"]')) {
+      var receipt = document.createElement("a");
+      receipt.href = RECEIPT_URL;
+      receipt.className = "clarity-link primary receipt-hero-link";
+      receipt.textContent = "Get My Receipt \u2192";
+      actions.insertBefore(receipt, actions.firstChild);
+    }
+
+    if (!actions.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
+      var promptLab = document.createElement("a");
+      promptLab.href = PROMPT_LAB_URL;
+      promptLab.className = "clarity-link promptlab-hero-link";
+      promptLab.textContent = "Try Prompt Lab (free)";
+      var builderLink = actions.querySelector('[href="/build-my-framework/"]');
+      actions.insertBefore(promptLab, builderLink ? builderLink.nextSibling : actions.firstChild);
     }
 
     var browse = actions.querySelector('a[href="#browse"]');
     if (browse) browse.classList.remove("primary");
+  }
+
+  // "Not sure what to type? Fix your prompt free →" under the homepage
+  // search bar, linking to /promptlab.
+  function addPromptLabHint() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/tree")
+      return;
+
+    var search = document.querySelector(".clarity-search");
+    if (!search || !search.parentNode) return;
+    if (document.querySelector(".framework-promptlab-hint")) return;
+
+    var hint = document.createElement("p");
+    hint.className = "muted framework-promptlab-hint";
+
+    var link = document.createElement("a");
+    link.href = PROMPT_LAB_URL;
+    link.textContent = "Fix your prompt free \u2192";
+
+    hint.appendChild(document.createTextNode("Not sure what to type? "));
+    hint.appendChild(link);
+    search.parentNode.insertBefore(hint, search.nextSibling);
+  }
+
+  // Same hint, styled for the /browse search bar. Homepage is covered by
+  // addPromptLabHint above, so this is scoped to /browse only to avoid
+  // showing the line twice on "/".
+  function addSearchHint() {
+    if (window.location.pathname !== "/browse") return;
+
+    var input = document.querySelector(
+      'input[type="search"], input[placeholder*="earch"]',
+    );
+    if (!input) return;
+
+    var anchorPoint = input.closest("form") || input.parentElement;
+    if (!anchorPoint || anchorPoint.getAttribute("data-promptlab-hint") === "true")
+      return;
+    if (document.querySelector(".promptlab-search-hint")) return;
+
+    anchorPoint.setAttribute("data-promptlab-hint", "true");
+    var hint = document.createElement("div");
+    hint.className = "promptlab-search-hint";
+    hint.style.cssText = "margin-top:8px;font-size:14px;opacity:.85";
+    hint.innerHTML =
+      'Not sure what to type? <a href="' +
+      PROMPT_LAB_URL +
+      '" style="text-decoration:underline;text-underline-offset:3px;color:inherit">Fix your prompt free \u2192</a>';
+    anchorPoint.insertAdjacentElement("afterend", hint);
+  }
+
+  // Real logos for tool cards and tool pages (friend-test follow-up: most
+  // tools currently show a plain letter fallback instead of a logo). We
+  // don't have permission to host 1,500+ companies' logo files ourselves,
+  // so this fetches each tool's own favicon directly from its own domain
+  // via Google's public favicon service, the same low-risk approach used
+  // by most tool directories. If a favicon fails to load, the original
+  // letter fallback is left in place untouched.
+  var toolDomainsPromise = null;
+
+  function loadToolDomains() {
+    if (!toolDomainsPromise) {
+      toolDomainsPromise = fetch("/static/data/tool-domains.json")
+        .then(function (response) {
+          return response.ok ? response.json() : {};
+        })
+        .catch(function () {
+          return {};
+        });
+    }
+    return toolDomainsPromise;
+  }
+
+  function slugFromLogoElement(el) {
+    var link = el.closest("a[href^='/tool/']");
+    if (link) {
+      var match = link.getAttribute("href").match(/^\/tool\/([^/?#]+)/);
+      if (match) return match[1];
+    }
+    var pageMatch = window.location.pathname.match(/^\/tool\/([^/]+)/);
+    return pageMatch ? pageMatch[1] : null;
+  }
+
+  function addToolLogos() {
+    var targets = document.querySelectorAll(
+      ".tool-logo:not([data-framework-logo-checked]), .tool-page-logo:not([data-framework-logo-checked])",
+    );
+    if (!targets.length) return;
+
+    loadToolDomains().then(function (domains) {
+      Array.prototype.forEach.call(targets, function (el) {
+        el.setAttribute("data-framework-logo-checked", "true");
+
+        // Already has a real logo image (not our injected one) - leave it.
+        var existingImg = el.querySelector("img");
+        if (existingImg && !existingImg.hasAttribute("data-framework-favicon"))
+          return;
+
+        var fallback = el.querySelector("span");
+        var slug = slugFromLogoElement(el);
+        var domain = slug ? domains[slug] : null;
+        if (!domain || !fallback) return;
+
+        var img = document.createElement("img");
+        img.src =
+          "https://www.google.com/s2/favicons?domain=" +
+          encodeURIComponent(domain) +
+          "&sz=128";
+        img.alt = "";
+        img.setAttribute("data-framework-favicon", "true");
+        img.style.cssText = "width:100%;height:100%;object-fit:contain;";
+        img.addEventListener("error", function () {
+          // Favicon didn't load - restore the original letter fallback.
+          img.remove();
+          fallback.style.display = "";
+        });
+        fallback.style.display = "none";
+        el.appendChild(img);
+      });
+    });
   }
 
   function removeEmptySocialProof() {
@@ -277,6 +503,32 @@
     localStorage.setItem(SAVED_KEY, JSON.stringify(tools));
   }
 
+  // Finds the tool's real outbound link on the page (the /go/<slug> link
+  // the app already renders for tracked tools, falling back to any
+  // external "Visit" link) so the prominent button, the whole-card click,
+  // and the app's own tracking all point at the same URL.
+  function findToolOutboundLink() {
+    var goLink = document.querySelector(
+      '.tool-page-main a[href^="/go/"], .tool-page-head a[href^="/go/"], .tool-page a[href^="/go/"]',
+    );
+    if (goLink) return goLink.getAttribute("href");
+
+    var fallback = Array.prototype.filter.call(
+      document.querySelectorAll(
+        ".tool-page-main a[href], .tool-page-head a[href], .tool-page a[href], main a[href]",
+      ),
+      function (a) {
+        var href = a.getAttribute("href") || "";
+        return (
+          /visit/i.test(text(a)) ||
+          (a.getAttribute("target") === "_blank" && /^https?:/i.test(href))
+        );
+      },
+    )[0];
+
+    return fallback ? fallback.getAttribute("href") : null;
+  }
+
   function enhanceToolPage() {
     var match = window.location.pathname.match(/^\/tool\/([^/]+)/);
     if (!match) return;
@@ -285,6 +537,19 @@
     var heading = document.querySelector(".tool-page-title h1");
     var pageHead = document.querySelector(".tool-page-head");
     if (!heading || !pageHead) return;
+
+    var toolName = text(heading) || slugToTitle(slug);
+
+    // "← All tools" — the way back (friend-test fix #3)
+    if (!pageHead.querySelector(".framework-back-link")) {
+      var back = document.createElement("a");
+      back.href = "/";
+      back.className = "framework-back-link";
+      back.textContent = "\u2190 All tools";
+      back.style.cssText =
+        "display:inline-block;margin:0 0 10px;font-size:14px;opacity:.75;color:inherit;text-decoration:none";
+      pageHead.insertBefore(back, pageHead.firstChild);
+    }
 
     if (!pageHead.querySelector(".framework-tool-actions")) {
       var actions = document.createElement("div");
@@ -298,7 +563,7 @@
         var isSaved = getSavedTools().some(function (tool) {
           return tool.slug === slug;
         });
-        saveButton.textContent = isSaved ? "✓ Saved" : "＋ Save tool";
+        saveButton.textContent = isSaved ? "\u2713 Saved" : "\uFF0B Save tool";
         saveButton.classList.toggle("is-saved", isSaved);
         saveButton.setAttribute("aria-pressed", String(isSaved));
       }
@@ -311,7 +576,7 @@
         if (index >= 0) {
           saved.splice(index, 1);
         } else {
-          saved.push({ slug: slug, name: text(heading) || slugToTitle(slug) });
+          saved.push({ slug: slug, name: toolName });
         }
         setSavedTools(saved);
         renderSaveState();
@@ -333,6 +598,65 @@
       renderSaveState();
     }
 
+    var visitHref = findToolOutboundLink();
+
+    // Prominent "Visit [Tool] →" button at the top of the page,
+    // with an external-link icon (friend-test fix #2).
+    var actionsEl = pageHead.querySelector(".framework-tool-actions");
+    if (visitHref && actionsEl && !actionsEl.querySelector(".framework-visit-btn")) {
+      var visit = document.createElement("a");
+      visit.href = visitHref;
+      if (/^https?:/i.test(visitHref)) {
+        visit.target = "_blank";
+        visit.rel = "noopener";
+      }
+      visit.className = "pill-btn lg primary framework-visit-btn";
+      visit.style.cssText = "font-weight:600";
+      visit.appendChild(document.createTextNode("Visit " + toolName + " \u2192"));
+      visit.appendChild(createExternalLinkIcon());
+      actionsEl.insertBefore(visit, actionsEl.firstChild);
+    }
+
+    // Make the entire tool card clickable, opening the tool's site in a
+    // new tab (friend-test fix #2). Clicks on real links/buttons inside
+    // the card — Save, Build a stack, the Visit button itself — still do
+    // their own thing; only clicks on the "dead space" of the card open
+    // the tool's site.
+    if (visitHref && !pageHead.hasAttribute("data-framework-card-click")) {
+      pageHead.setAttribute("data-framework-card-click", "true");
+      pageHead.classList.add("framework-card-clickable");
+      pageHead.setAttribute("tabindex", "0");
+      pageHead.setAttribute("role", "link");
+      pageHead.setAttribute(
+        "aria-label",
+        "Visit " + toolName + " (opens in a new tab)",
+      );
+
+      var openTool = function () {
+        window.open(visitHref, "_blank", "noopener");
+      };
+
+      pageHead.addEventListener("click", function (event) {
+        if (event.target.closest("a, button, input, textarea, select")) return;
+        openTool();
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "outbound_tool_click",
+          tool_slug: slug,
+          source_path: window.location.pathname,
+          source: "tool_card",
+        });
+      });
+
+      pageHead.addEventListener("keydown", function (event) {
+        if (event.target !== pageHead) return;
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openTool();
+        }
+      });
+    }
+
     var main = document.querySelector(".tool-page-main");
     if (main && !main.querySelector(".framework-trust-note")) {
       var about = main.querySelector("p");
@@ -340,10 +664,38 @@
         var note = document.createElement("div");
         note.className = "framework-trust-note";
         note.innerHTML =
-          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the tool’s official website before purchasing.";
+          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the tool\u2019s official website before purchasing.";
         about.insertAdjacentElement("afterend", note);
       }
     }
+  }
+
+  // Fallback for the dead "Create a framework" CTA (friend-test fix #1):
+  // if something that *says* it opens the framework builder is clicked but
+  // isn't a real link (e.g. a stale cached page), send the user there anyway.
+  function fixDeadFrameworkCta() {
+    if (
+      document.documentElement.getAttribute("data-framework-cta-fix") === "true"
+    )
+      return;
+    document.documentElement.setAttribute("data-framework-cta-fix", "true");
+
+    document.addEventListener("click", function (event) {
+      var target = event.target;
+      if (!target || !target.closest) return;
+      if (target.closest("a[href]")) return; // real links work fine
+
+      var candidate = target.closest(
+        "button, [role='button'], .clarity-link, .pill-btn, span, div",
+      );
+      if (!candidate) return;
+
+      var label = text(candidate);
+      if (!label || label.length > 40) return;
+      if (/^(create|build)( a| my| your)? (ai )?framework/i.test(label)) {
+        window.location.href = "/build-my-framework/";
+      }
+    });
   }
 
   function trackUsefulActions() {
@@ -364,12 +716,31 @@
           tool_slug: slug,
           source_path: window.location.pathname,
         });
+      } else if (
+        link.classList.contains("framework-visit-btn") &&
+        /^https?:/i.test(href)
+      ) {
+        var toolMatch = window.location.pathname.match(/^\/tool\/([^/]+)/);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "outbound_tool_click",
+          tool_slug: toolMatch ? toolMatch[1] : "unknown",
+          source_path: window.location.pathname,
+        });
       }
 
       if (href.indexOf("/build-my-framework") === 0) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: "framework_builder_opened",
+          source_path: window.location.pathname,
+        });
+      }
+
+      if (href === PROMPT_LAB_URL) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "promptlab_opened",
           source_path: window.location.pathname,
         });
       }
@@ -391,13 +762,56 @@
     });
   }
 
+  // Each enhancement is independent. If one throws (a selector that no
+  // longer matches after a future UI change, say) it must not stop the
+  // rest from running — that was the root cause of the CTA/nav bugs a
+  // previous pass here left behind.
+  function safely(fn) {
+    try {
+      fn();
+    } catch (error) {
+      if (window.console && console.warn) {
+        console.warn("[site-enhancements] " + fn.name + " failed:", error);
+      }
+    }
+  }
+
   function applyEnhancements() {
-    addNavigationLinks();
-    improveHomepage();
-    removeEmptySocialProof();
-    enhanceToolPage();
-    improveRouteMetadata();
-    trackUsefulActions();
+    safely(addNavigationLinks);
+    safely(improveHomepage);
+    safely(addPromptLabHint);
+    safely(addSearchHint);
+    safely(removeEmptySocialProof);
+    safely(addToolLogos);
+    safely(enhanceToolPage);
+    safely(improveRouteMetadata);
+    safely(fixDeadFrameworkCta);
+    safely(trackUsefulActions);
+  }
+
+  // Re-apply on client-side navigation — the site is a single-page app,
+  // so route changes re-render the page without reloading this script.
+  function hookSpaNavigation() {
+    if (window.__fwNavHooked) return;
+    window.__fwNavHooked = true;
+
+    function onNavigate() {
+      applyEnhancements();
+      [150, 450, 1000, 2000].forEach(function (ms) {
+        window.setTimeout(applyEnhancements, ms);
+      });
+    }
+
+    ["pushState", "replaceState"].forEach(function (methodName) {
+      var original = history[methodName];
+      if (typeof original !== "function") return;
+      history[methodName] = function () {
+        var result = original.apply(this, arguments);
+        onNavigate();
+        return result;
+      };
+    });
+    window.addEventListener("popstate", onNavigate);
   }
 
   if (document.readyState === "loading") {
@@ -405,6 +819,7 @@
   } else {
     applyEnhancements();
   }
+  hookSpaNavigation();
 
   var attempts = 0;
   var timer = window.setInterval(function () {
@@ -436,4 +851,100 @@
   window.setTimeout(function () {
     observer.disconnect();
   }, 12000);
+})();
+
+/* AI Framework — builder input helper
+ *
+ * Replaces the earlier "Builder Buddy" robot mascot, which was removed:
+ * it read as cartoony against the rest of the site, and its fixed-position
+ * stage sat over the input on narrow screens.
+ *
+ * What's kept is the one thing that actually helped people: rotating real
+ * example prompts through the textarea's placeholder, so someone staring at
+ * an empty box can see the shape of a good answer. Rotation pauses the
+ * moment they start typing and never returns, so it can't move under them
+ * mid-thought.
+ *
+ * No dependencies, no injected chrome, no fixed positioning, no cursor
+ * tracking. Attaches to the first <textarea> on the page; if there isn't
+ * one, it does nothing.
+ */
+(function () {
+  "use strict";
+
+  var EXAMPLES = [
+    "e.g. I run a cleaning business and keep missing calls while I'm working\u2026",
+    "e.g. I make TikToks about cooking and want to post daily without burning out\u2026",
+    "e.g. I sell candles online and need product photos that don't look homemade\u2026",
+    "e.g. I'm a realtor and want every listing turned into a video tour automatically\u2026",
+    "e.g. I have a podcast and want clips, show notes, and posts from each episode\u2026",
+  ];
+
+  var ROTATE_MS = 5000;
+
+  var textarea = null;
+  var index = 0;
+  var timer = null;
+  var stopped = false;
+
+  function stop() {
+    if (stopped) return;
+    stopped = true;
+    if (timer) window.clearInterval(timer);
+    timer = null;
+  }
+
+  function rotate() {
+    if (stopped || !textarea) return;
+    // Never swap text out from under someone mid-sentence.
+    if (textarea.value || document.activeElement === textarea) {
+      stop();
+      return;
+    }
+    textarea.placeholder = EXAMPLES[index % EXAMPLES.length];
+    index += 1;
+  }
+
+  function start() {
+    var original = (textarea.placeholder || "").trim();
+    if (original && EXAMPLES.indexOf(original) === -1) {
+      EXAMPLES.unshift(original);
+    }
+
+    // Respect people who've asked their system to cut down on motion.
+    var reduceMotion = false;
+    try {
+      reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    } catch (e) {}
+    if (reduceMotion) return;
+
+    textarea.addEventListener("input", stop);
+    textarea.addEventListener("focus", stop);
+    timer = window.setInterval(rotate, ROTATE_MS);
+  }
+
+  function init() {
+    textarea = document.querySelector("textarea");
+    if (textarea) {
+      start();
+      return;
+    }
+    // The builder is a single-page app; the box may render after this runs.
+    var tries = 0;
+    var poll = window.setInterval(function () {
+      textarea = document.querySelector("textarea");
+      if (textarea) {
+        window.clearInterval(poll);
+        start();
+      } else if (++tries > 20) {
+        window.clearInterval(poll);
+      }
+    }, 500);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
