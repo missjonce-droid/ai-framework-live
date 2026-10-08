@@ -54,12 +54,8 @@ check(
   index.includes('property="og:image"'),
   "The homepage is missing an Open Graph image.",
 );
-// Matched with a regex rather than a substring because the homepage ships
-// its JSON-LD minified, with no space after the colon, while every other
-// page pretty-prints it. The old substring check reported the homepage as
-// missing a WebSite node that was in fact present.
 check(
-  /"@type":\s*"WebSite"/.test(index),
+  index.includes('"@type": "WebSite"'),
   "The homepage is missing WebSite structured data.",
 );
 check(

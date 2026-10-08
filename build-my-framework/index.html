@@ -30,8 +30,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="/static/css/framework-builder.css" rel="stylesheet">
-  <link href="/static/css/site-polish.css" rel="stylesheet">
-  <script defer src="/static/js/a11y-enhancements.js"></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -50,7 +48,6 @@
   }
   </script>
 </head>
-<script defer src="/static/js/builder-input-helper.js"></script>
 <body>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe title="Google Tag Manager" src="https://www.googletagmanager.com/ns.html?id=GTM-KFZ7N4LF"
@@ -61,10 +58,10 @@
     <div class="fb-nav-inner">
       <a class="fb-brand" href="/">AI Framework</a>
       <nav class="fb-nav-links" aria-label="Primary navigation">
-        <a href="/browse">Directory</a>
-        <a href="/discover">Discover</a>
-        <a href="/playbooks/">Playbooks</a>
+        <a href="/browse">Browse Tools</a>
         <a href="/build-my-framework/" aria-current="page">Build My Framework</a>
+        <a href="/promptlab">Prompt Lab</a>
+        <a href="/playbooks/">Playbooks</a>
       </nav>
     </div>
   </header>
@@ -85,30 +82,6 @@
         </div>
 
         <div id="source-tool" class="fb-source-tool"></div>
-
-        <section class="fb-ai-mode" id="fb-ai-mode">
-          <p class="fb-step-kicker">New — describe your actual situation</p>
-          <h2>Tell us what you're really trying to do</h2>
-          <p class="fb-step-intro">In your own words. We'll build a specific stack from our real tool directory &mdash; not a generic template.</p>
-
-          <form id="fb-ai-form">
-            <label class="visually-hidden" for="fb-ai-input">Describe what you are trying to do</label>
-            <textarea
-              id="fb-ai-input"
-              maxlength="600"
-              rows="3"
-              placeholder="e.g. I run a 3-person landscaping company and I'm drowning in scheduling and quote follow-ups."
-            ></textarea>
-            <div class="fb-ai-row">
-              <span id="fb-ai-count" class="fb-ai-count">0 / 600</span>
-              <button type="submit" class="fb-ai-submit" id="fb-ai-submit">Build my stack &rarr;</button>
-            </div>
-            <p id="fb-ai-status" class="fb-ai-status" role="status" aria-live="polite"></p>
-            <p class="fb-ai-promptlab-hint">Not sure how to describe it? <a href="/promptlab">Fix your prompt free &rarr;</a></p>
-          </form>
-        </section>
-
-        <p class="fb-or-divider">or answer three quick questions instead</p>
 
         <section class="fb-step" data-step="1">
           <p class="fb-step-kicker">Step 1 of 3</p>
