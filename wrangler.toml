@@ -1,6 +1,6 @@
 name = "sports-research-api"
 main = "worker/src/index.ts"
-compatibility_date = "2026-10-08"
+compatibility_date = "2026-10-09"
 workers_dev = true
 previews = {}
 
