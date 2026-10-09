@@ -51,10 +51,13 @@ will own the Worker:
    Wrangler creates the `AI` binding and the configured rate-limit bindings.
    The Worker uses `workers.dev`; this does not require changing GoDaddy DNS
    or the existing Pages custom-domain records.
-   The Wrangler configuration is at the repository root, matching the
-   Cloudflare Workers Builds commands (`npx wrangler deploy` and
-   `npx wrangler preview`) so both production and pull-request previews load
-   this configuration. The `previews` block is intentionally empty: previews
+   The Wrangler configuration is at the repository root. Configure the
+   `sports-research-api` Cloudflare Workers Build with root directory `/` and
+   deploy command `npx wrangler deploy --config wrangler.toml` so builds use
+   this configuration. The build's production branch must contain the Worker
+   files; after this change is merged, set it to the repository's `main`
+   branch. This Worker build setting is separate from the Pages project
+   settings. The `previews` block is intentionally empty: previews
    do not inherit production bindings, and Cloudflare preview URLs are disabled
    for this Worker. The pull-request check validates the build, but it does not
    provide a live API preview. To enable one, configure separate preview KV and
