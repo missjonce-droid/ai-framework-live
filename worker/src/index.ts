@@ -485,7 +485,11 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
       max_tokens: 180,
       temperature: 0.1,
     });
-  } catch {
+  } catch (error) {
+    console.error(
+      "Workers AI summary request failed:",
+      error instanceof Error ? error.message : "Unknown error",
+    );
     return jsonResponse(502, { error: "Cloudflare Workers AI could not create a market summary." }, origin);
   }
   const rawSummary =

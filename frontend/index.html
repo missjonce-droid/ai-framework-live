@@ -14,7 +14,7 @@
 <meta property="og:description" content="Current college-football sportsbook markets and an AI-written context summary, not a forecast.">
 <meta property="og:url" content="https://ai-framework.io/sports-research/">
 <meta property="og:image" content="https://ai-framework.io/social-card.png">
-<meta name="sports-api-base" content="https://sports-research-api.<YOUR_ACCOUNT_SUBDOMAIN>.workers.dev">
+<meta name="sports-api-base" content="https://sports-research-api.ai-framework-io.workers.dev">
 <style>
 :root{color-scheme:dark;--bg:#0f1216;--surface:#151a21;--surface2:#1b222b;--border:#2a323d;--text:#eef2f7;--muted:#aab4c0;--accent:#c9a227;--warning:#f3e4c6;--bad:#ffb4a9}
 *{box-sizing:border-box}
@@ -79,7 +79,7 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
     <input id="search" type="search" maxlength="80" placeholder="Search college teams" autocomplete="off">
     <button id="refresh" type="button">Refresh markets</button>
   </div>
-  <p id="status" class="status" role="status" aria-live="polite">Set the Worker URL in the page metadata to load market data.</p>
+  <p id="status" class="status" role="status" aria-live="polite">Loading current bookmaker markets…</p>
   <div id="events" aria-live="polite"></div>
 </main>
 <footer>
@@ -192,7 +192,7 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
   function load(){
     if(!configured){
       status.className="status error";
-      status.textContent="Sports API is not configured. After deploying the Worker, replace the account-subdomain placeholder in the sports-api-base metadata with its HTTPS workers.dev URL.";
+      status.textContent="Sports API is not configured. Set the sports-api-base metadata to the deployed HTTPS workers.dev URL.";
       refresh.disabled=true;
       return;
     }
@@ -221,7 +221,7 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
   if(configured)load();
   else{
     status.className="status error";
-    status.textContent="Sports API is not configured. After deploying the Worker, replace the account-subdomain placeholder in the sports-api-base metadata with its HTTPS workers.dev URL.";
+    status.textContent="Sports API is not configured. Set the sports-api-base metadata to the deployed HTTPS workers.dev URL.";
     refresh.disabled=true;
   }
 })();
