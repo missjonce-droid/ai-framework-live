@@ -1,10 +1,12 @@
 # Keep this compatibility config aligned with ../wrangler.toml while Cloudflare
 # Worker build settings may still reference this path.
+# Leave preview bindings empty: build previews must never share production data.
 name = "sports-research-api"
 main = "src/index.ts"
 compatibility_date = "2026-10-09"
 workers_dev = true
 preview_urls = false
+previews = {}
 
 [ai]
 binding = "AI"

@@ -64,9 +64,15 @@ will own the Worker:
    `npx wrangler deploy --dry-run --config worker/wrangler.toml`. This checks
    the Worker bundle without publishing a preview or sharing production
    bindings; keep preview URLs disabled with `preview_urls = false`. Worker
-   build settings are separate from the Pages project settings. Do not publish
-   preview deployments until separate preview KV and rate-limit resources, the
-   AI binding, and a preview ingest secret are configured.
+   build settings are separate from the Pages project settings.
+   Both Wrangler configs also include an intentionally empty `previews` block
+   for compatibility with Cloudflare builds still invoking the older
+   `npx wrangler preview` command. If Cloudflare invokes that older command, it
+   creates a branch Preview without runtime bindings; it is not a dry run or a
+   functional Preview. Preview URLs remain disabled, and the empty block
+   prevents sharing production resources. Do not add production KV, rate limits,
+   or secrets to it. Configure separate test resources before enabling
+   functional branch previews.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:

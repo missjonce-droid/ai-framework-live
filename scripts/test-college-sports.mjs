@@ -336,11 +336,13 @@ const legacyWrangler = fs.readFileSync(new URL("../worker/wrangler.toml", import
 assert.ok(wrangler.includes('name = "sports-research-api"'));
 assert.ok(wrangler.includes('main = "worker/src/index.ts"'));
 assert.ok(wrangler.includes("preview_urls = false"));
+assert.ok(wrangler.includes("previews = {}"));
 assert.ok(wrangler.includes('binding = "SPORTS_DATA"'));
 assert.ok(wrangler.includes('namespace_id = "941001"'));
 assert.ok(legacyWrangler.includes('name = "sports-research-api"'));
 assert.ok(legacyWrangler.includes('main = "src/index.ts"'));
 assert.ok(legacyWrangler.includes("preview_urls = false"));
+assert.ok(legacyWrangler.includes("previews = {}"));
 assert.ok(legacyWrangler.includes('binding = "SPORTS_DATA"'));
 assert.ok(legacyWrangler.includes('namespace_id = "941001"'));
 

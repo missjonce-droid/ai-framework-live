@@ -3,6 +3,7 @@ main = "worker/src/index.ts"
 compatibility_date = "2026-10-09"
 workers_dev = true
 preview_urls = false
+previews = {}
 
 [ai]
 binding = "AI"
