@@ -29,6 +29,7 @@ const root = path.resolve(scriptDirectory, "..");
 // in attributes.socials, and the tutorials entry points at an internal
 // route rather than an absolute URL.
 const destinationOverrides = {
+  "the-charley-project": "https://charleyproject.org/",
   "creator-riley-brown": "https://www.tiktok.com/@rileybrown.ai",
   "ai-framework-tutorials": "/tutorials/",
 };
@@ -95,8 +96,17 @@ function normaliseDestination(value) {
   }
 }
 
+const affiliateConfig = JSON.parse(fs.readFileSync(path.join(root, 'data/affiliate-links.json'), 'utf8'));
+const affiliateLinks = affiliateConfig.links || {};
+for (const [slug, entry] of Object.entries(affiliateLinks)) {
+  if (!/^[a-z0-9-]+$/.test(slug) || !entry || entry.approved !== true) throw new Error('Affiliate entry must be approved: ' + slug);
+  const url = new URL(entry.url);
+  if (url.protocol !== 'https:' || url.username || url.password || ['ai-framework.io', 'www.ai-framework.io'].includes(url.hostname) || url.hostname.endsWith('.pages.dev')) throw new Error('Affiliate destination must be an external HTTPS URL: ' + slug);
+}
+
 function destinationFor(resource) {
   return normaliseDestination(
+    affiliateLinks[resource.slug]?.url ||
     destinationOverrides[resource.slug] ||
       resource.affiliate_url ||
       resource.website_url,
@@ -113,6 +123,10 @@ const bundle = fs.readFileSync(
 const resources = extractArray(bundle).filter(
   (resource) => resource && resource.slug && resource.status === "active",
 );
+
+for (const slug of Object.keys(affiliateLinks)) {
+  if (!resources.some(resource => resource.slug === slug)) throw new Error('Unknown affiliate tool: ' + slug);
+}
 
 const outboundRules = [];
 const unresolved = [];
@@ -146,30 +160,26 @@ const header = `# Cloudflare Pages redirects for AI Framework.
 # Static files are served by Pages; these rules provide URL aliases and
 # rewrites for paths that do not have a corresponding file.
 
-# Standalone pages and directory index aliases.
-/vault-thank-you       /vault-thank-you/index.html           200
-/playbooks             /playbooks/index.html                 200
-/tutorials             /tutorials/index.html                 200
-/build-my-framework    /build-my-framework/index.html        200
+# Directory index pages use Cloudflare Pages automatic clean-URL routing.
+# Do not proxy /tutorials (or any existing directory) to its index.html: the
+# automatic index.html -> directory redirect can feed back into that proxy.
 
 # Aliases for the two standalone tools, which ship under shorter filenames.
-/promptlab             /promptlab.html                       200
-/prompt-lab            /promptlab.html                       200
-/prompt-lab/           /promptlab.html                       200
-/prompt-lab.html       /promptlab.html                       200
+# /promptlab is served automatically from promptlab.html (no self-rewrite).
+/prompt-lab            /promptlab                            302
+/prompt-lab/           /promptlab                            302
+/prompt-lab.html       /promptlab                            302
 /receipt               /receipt.html                         200
 /the-receipt           /receipt.html                         200
 /the-receipt/          /receipt.html                         200
 /the-receipt.html      /receipt.html                         200
 /news                  /news.html                            200
 /sports-matchup        /sports-matchup.html                  200
-/calculator            /calculator/index.html                200
 # Static client-side route aliases rewrite to app.html, the SPA shell,
 # because index.html is a static homepage and carries neither #root nor the
 # bundle, so the router cannot start there.
 /alternatives          /app.html                             200
 /tree                  /app.html                             200
-/advanced              /advanced/index.html                  200
 
 # Outbound links for every resource in the directory, generated from the
 # affiliate_url / website_url fields. 302 rather than 301 so a destination
@@ -222,3 +232,4 @@ console.log(
     2,
   ),
 );
+

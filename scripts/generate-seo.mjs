@@ -161,7 +161,8 @@ const mainBundlePath = path.join(
   assetManifest.files["main.js"].replace(/^\/+/, ""),
 );
 const bundle = fs.readFileSync(mainBundlePath, "utf8");
-const baseTemplate = fs.readFileSync(path.join(root, "index.html"), "utf8");
+// Profiles use the React shell; the homepage is now a separate static experience.
+const baseTemplate = fs.readFileSync(path.join(root, "app.html"), "utf8");
 const allResources = extractArray(bundle).filter(
   (resource) => resource && resource.status === "active",
 );
@@ -396,7 +397,7 @@ ${sitemapRoutes
 </urlset>
 `;
 
-fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap);
+fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap.replace("</urlset>", "<url><loc>https://ai-framework.io/start-here/</loc></url>\n</urlset>"));
 
 console.log(
   JSON.stringify(

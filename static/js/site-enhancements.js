@@ -192,51 +192,54 @@
   }
 
   function addNavigationLinks() {
-    var nav =
-      document.querySelector(".nav-links") ||
-      document.querySelector("header nav") ||
-      document.querySelector("nav");
-
-    if (nav && !nav.querySelector('[href="/build-my-framework/"]')) {
-      var navLink = document.createElement("a");
-      navLink.href = "/build-my-framework/";
-      navLink.className = "framework-nav-link";
-      navLink.textContent = "Build My Framework";
-      nav.insertBefore(navLink, nav.firstChild);
+    var nav = document.querySelector('.nav-links');
+    if (!nav) return;
+    Array.prototype.forEach.call(nav.querySelectorAll('a[href="/sports-research/"]'), function (link) { link.remove(); });
+    nav.id = 'framework-navigation';
+    nav.setAttribute('aria-label', 'Main navigation');
+    var items = [['/build-my-framework/', 'Build a framework'], ['/promptlab', 'Prompt Lab'], ['/tutorials/', 'Tutorials']];
+    items.forEach(function (item) {
+      if (!nav.querySelector('a[href="' + item[0] + '"]')) {
+        var link = document.createElement('a');
+        link.href = item[0]; link.textContent = item[1]; nav.appendChild(link);
+      }
+    });
+    var home = nav.querySelector('a[href="/"]');
+    if (home && home.textContent === 'Tree') home.textContent = 'Home';
+    Array.prototype.forEach.call(nav.querySelectorAll('a[href]'), function (link) {
+      var active = link.getAttribute('href').replace(/\/+$/, '') === window.location.pathname.replace(/\/+$/, '');
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    var parent = nav.parentElement;
+    if (!parent.querySelector('.framework-menu-toggle')) {
+      var toggle = document.createElement('button');
+      toggle.type = 'button'; toggle.className = 'framework-menu-toggle';
+      toggle.textContent = 'Menu'; toggle.setAttribute('aria-controls', nav.id);
+      toggle.setAttribute('aria-expanded', 'false');
+      function close() { toggle.setAttribute('aria-expanded', 'false'); nav.classList.remove('is-open'); }
+      toggle.addEventListener('click', function () {
+        var open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open)); nav.classList.toggle('is-open', open);
+      });
+      nav.addEventListener('click', function (event) { if (event.target.closest('a')) close(); });
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { close(); toggle.focus(); } });
+      parent.insertBefore(toggle, nav);
     }
+  }
 
-    if (nav && !nav.querySelector('[href="' + PROMPT_LAB_URL + '"]')) {
-      var promptLabLink = document.createElement("a");
-      promptLabLink.href = PROMPT_LAB_URL;
-      promptLabLink.className = "promptlab-nav-link";
-      promptLabLink.textContent = "Prompt Lab";
-      var buildLink = nav.querySelector('[href="/build-my-framework/"]');
-      nav.insertBefore(promptLabLink, buildLink ? buildLink.nextSibling : nav.firstChild);
-    }
-
-    if (nav && !nav.querySelector('[href="/sports-research/"]')) {
-      var sportsResearchLink = document.createElement("a");
-      sportsResearchLink.href = "/sports-research/";
-      sportsResearchLink.className = "sports-research-nav-link";
-      sportsResearchLink.textContent = "College Football Markets";
-      var playbooksLink = nav.querySelector('[href="/playbooks/"]');
-      nav.insertBefore(
-        sportsResearchLink,
-        playbooksLink ? playbooksLink.nextSibling : null,
-      );
-    }
-
-    var homeActions = document.querySelector(".header-actions");
-    if (
-      homeActions &&
-      !homeActions.querySelector('[href="/build-my-framework/"]')
-    ) {
-      var homeLink = document.createElement("a");
-      homeLink.href = "/build-my-framework/";
-      homeLink.className = "pill-btn framework-home-button";
-      homeLink.textContent = "Build My Framework";
-      homeActions.insertBefore(homeLink, homeActions.firstChild);
-    }
+  function addSecondaryResources() {
+    var footer = document.querySelector('footer');
+    if (!footer || footer.querySelector('.framework-secondary-resources')) return;
+    var resources = document.createElement('nav');
+    resources.className = 'framework-secondary-resources';
+    resources.setAttribute('aria-label', 'More resources');
+    var label = document.createElement('span');
+    label.textContent = 'More resources';
+    var link = document.createElement('a');
+    link.href = '/sports-research/'; link.textContent = 'Justin’s Advantage';
+    resources.appendChild(label); resources.appendChild(link); footer.appendChild(resources);
   }
 
   function improveHomepage() {
@@ -363,7 +366,8 @@
   }
 
   function setSavedTools(tools) {
-    localStorage.setItem(SAVED_KEY, JSON.stringify(tools));
+    try { localStorage.setItem(SAVED_KEY, JSON.stringify(tools)); return true; }
+    catch (error) { return false; }
   }
 
   function enhanceToolPage() {
@@ -413,7 +417,7 @@
         } else {
           saved.push({ slug: slug, name: text(heading) || slugToTitle(slug) });
         }
-        setSavedTools(saved);
+        if (!setSavedTools(saved)) { saveButton.textContent = "Storage unavailable"; return; }
         renderSaveState();
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -574,8 +578,32 @@
     });
   }
 
+  var approvedAffiliateLinks = {};
+  function labelConfiguredAffiliateLinks() {
+    Array.prototype.forEach.call(document.querySelectorAll('a[href^="/go/"]'), function (link) {
+      var slug = (link.getAttribute('href').split('/go/')[1] || '').split('?')[0];
+      if (!approvedAffiliateLinks[slug] || approvedAffiliateLinks[slug].approved !== true || link.getAttribute('data-affiliate-labeled') === 'true') return;
+      link.setAttribute('data-affiliate-labeled', 'true');
+      link.setAttribute('rel', 'sponsored nofollow noopener');
+      var note = document.createElement('span');
+      note.className = 'framework-affiliate-note';
+      note.textContent = 'Affiliate link · We may earn a commission.';
+      link.insertAdjacentElement('afterend', note);
+    });
+  }
+  fetch('/data/affiliate-links.json').then(function (response) {
+    if (!response.ok) return null;
+    return response.json();
+  }).then(function (config) {
+    if (!config || !config.links) return;
+    approvedAffiliateLinks = config.links;
+    labelConfiguredAffiliateLinks();
+  }).catch(function () { /* The directory remains usable if the optional config is unavailable. */ });
+
   function applyEnhancements() {
     addNavigationLinks();
+    addSecondaryResources();
+    labelConfiguredAffiliateLinks();
     simplifyNav();
     improveHomepage();
     simplifyCategoryBrowse();
@@ -650,3 +678,4 @@
     observer.disconnect();
   }, 12000);
 })();
+
