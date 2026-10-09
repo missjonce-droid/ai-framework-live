@@ -333,6 +333,8 @@ assert.ok(workflow.includes("secrets.ODDS_API_KEY"));
 assert.ok(workflow.includes("secrets.SPORTS_INGEST_TOKEN"));
 const wrangler = fs.readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
 assert.ok(wrangler.includes('name = "sports-research-api"'));
+assert.ok(wrangler.includes('main = "worker/src/index.ts"'));
+assert.ok(wrangler.includes("preview_urls = false"));
 assert.ok(wrangler.includes('binding = "SPORTS_DATA"'));
 assert.ok(wrangler.includes('namespace_id = "941001"'));
 

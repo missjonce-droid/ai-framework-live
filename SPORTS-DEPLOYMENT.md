@@ -57,10 +57,11 @@ will own the Worker:
    `sports-research-api` Cloudflare Workers Build with root directory `/`,
    deploy command `npx wrangler deploy --config wrangler.toml`, and production
    branch `main` so builds use this configuration from the default branch.
-   This Worker build setting is separate from the Pages project
-   settings.          Worker preview URLs are disabled with `preview_urls = false`; do not expose
-   preview builds as live API previews until separate preview KV and rate-limit
-   resources, the AI binding, and a preview ingest secret are configured.
+   Set the **Previews Base** command to `npx wrangler preview`; keep preview
+   URLs disabled with `preview_urls = false`. Worker build settings are
+   separate from the Pages project settings. Do not expose preview builds as
+   live API previews until separate preview KV and rate-limit resources, the
+   AI binding, and a preview ingest secret are configured.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:
