@@ -230,7 +230,7 @@ check(
   "The live college-football market board is missing its Worker API or forecast disclaimer.",
 );
 check(
-  sportsWorker.includes('@cf/meta/llama-3.1-8b-instruct') &&
+  sportsWorker.includes('@cf/meta/llama-3.1-8b-instruct-fp8') &&
     sportsWorker.includes("SPORTS_INGEST_TOKEN") &&
     sportsWorker.includes("MAX_INGEST_BYTES") &&
     sportsWorker.includes("access-control-allow-origin"),

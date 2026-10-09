@@ -19,7 +19,7 @@ the existing GitHub-connected build; the Worker is deployed separately.
   include bookmaker margin (vig); the feed does not claim they are calibrated
   outcome probabilities. Average spread/total lines are market summaries, not
   score forecasts.
-- Workers AI (`@cf/meta/llama-3.1-8b-instruct`, verified in Cloudflare's
+- Workers AI (`@cf/meta/llama-3.1-8b-instruct-fp8`, verified in Cloudflare's
   current model catalog) produces a short contextual paraphrase of the
   supplied market snapshot. It is not a validated prediction. AI summaries
   can be inaccurate.

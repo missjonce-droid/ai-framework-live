@@ -97,7 +97,7 @@ const env = {
   AI: {
     async run(model, input) {
       aiCalls += 1;
-      assert.equal(model, "@cf/meta/llama-3.1-8b-instruct");
+      assert.equal(model, "@cf/meta/llama-3.1-8b-instruct-fp8");
       assert.equal(input.max_tokens, 180);
       const aiInput = input.messages.map((message) => message.content).join("\n");
       assert.ok(aiInput.includes("Do not name teams or bookmakers"));
@@ -221,7 +221,7 @@ const summaryResponse = await request(summaryUrl, {
 });
 assert.equal(summaryResponse.status, 200);
 const summary = await summaryResponse.json();
-assert.equal(summary.model, "@cf/meta/llama-3.1-8b-instruct");
+assert.equal(summary.model, "@cf/meta/llama-3.1-8b-instruct-fp8");
 assert.ok(summary.notice.includes("not a statistically validated forecast"));
 assert.ok(summary.summary.includes("prices differ"));
 assert.equal(aiCalls, 1);
