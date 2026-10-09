@@ -117,15 +117,19 @@ j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefo
   footer a{color:var(--mint)}
   :focus-visible{outline:2px solid var(--mint);outline-offset:2px}
   @media (max-width:560px){.swap{grid-template-columns:1fr}.hero{padding:42px 0 4px}}
+
+  .nav .prompt-nav{max-width:1200px;min-height:72px;height:auto;gap:24px;padding-top:12px;padding-bottom:12px}.prompt-nav-links{display:flex;align-items:center;gap:22px}.prompt-nav-links a,.prompt-menu a{font-size:12px;color:var(--muted);text-decoration:none}.prompt-nav-links a:hover,.prompt-nav-links [aria-current],.prompt-menu a:hover,.prompt-menu [aria-current]{color:var(--mint)}.prompt-menu{display:none;position:relative}.prompt-menu summary{cursor:pointer;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font-size:13px;list-style:none}.prompt-menu>div{position:absolute;right:0;top:48px;width:230px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;box-shadow:0 15px 40px #0008}.prompt-menu a{display:block;padding:10px}.page-navigation{display:flex;align-items:center;justify-content:space-between;padding-top:20px;font-size:12px}.page-navigation>a{color:var(--muted);text-decoration:none}#history-controls:not([hidden]){display:flex;gap:10px}.page-navigation button{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--line);padding:7px 12px;border-radius:7px;cursor:pointer}.page-navigation button:disabled{opacity:.4;cursor:default}@media(max-width:900px){.prompt-nav-links{display:none}.prompt-menu{display:block}.nav .prompt-nav{min-height:64px}} 
 </style>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KFZ7N4LF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
-<nav class="nav"><div class="wrap">
-  <a class="brand" href="/">AI<span>/</span>Framework</a>
-  <a class="dir" href="/">Browse 1,500+ tools →</a>
+<nav class="nav" aria-label="Main navigation"><div class="wrap prompt-nav">
+  <a class="brand" href="/" aria-label="AI Framework home">AI<span>/</span>Framework</a>
+  <div class="prompt-nav-links"><a href="/">Home</a><a href="/#directory">Explore tools</a><a href="/start-here/">Start here</a><a href="/promptlab" aria-current="page">Prompt Lab</a><a href="/playbooks/">Playbooks</a><a href="/build-my-framework/">Build my framework ↗</a></div>
+  <details class="prompt-menu"><summary>Menu ☰</summary><div><a href="/">Home</a><a href="/#directory">Explore tools</a><a href="/start-here/">Start here</a><a href="/promptlab" aria-current="page">Prompt Lab</a><a href="/playbooks/">Playbooks</a><a href="/build-my-framework/">Build my framework ↗</a></div></details>
 </div></nav>
+<div class="wrap page-navigation" aria-label="Page navigation"><a href="/">← Home</a><div id="history-controls" hidden><button type="button" id="page-back">← Back</button><button type="button" id="page-forward">Forward →</button></div></div>
 
 <header class="hero"><div class="wrap">
   <p class="eyebrow">Prompt Lab · free</p>
@@ -414,6 +418,20 @@ $("copy").addEventListener("click",function(){
     $("copy").textContent="Press Ctrl/Cmd+C";setTimeout(function(){$("copy").textContent="Copy prompt";},2200);
   });
 });
+
+/* Page navigation remains independent of the prompt form. */
+var historyControls = $("history-controls");
+historyControls.hidden = false;
+function syncHistoryButtons(){
+  $("page-back").disabled = window.navigation ? !window.navigation.canGoBack : history.length < 2;
+  $("page-forward").disabled = window.navigation ? !window.navigation.canGoForward : false;
+}
+$("page-back").addEventListener("click",function(){history.back();});
+$("page-forward").addEventListener("click",function(){history.forward();});
+window.addEventListener("pageshow",syncHistoryButtons);
+window.addEventListener("popstate",syncHistoryButtons);
+syncHistoryButtons();
+document.addEventListener("keydown",function(event){if(event.key==="Escape"){var menu=document.querySelector(".prompt-menu");if(menu.open){menu.open=false;menu.querySelector("summary").focus();}}});
 
 /* render thesaurus */
 $("swaps").innerHTML=SWAPS.map(function(s){
