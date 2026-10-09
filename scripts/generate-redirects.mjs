@@ -165,10 +165,10 @@ const header = `# Cloudflare Pages redirects for AI Framework.
 # automatic index.html -> directory redirect can feed back into that proxy.
 
 # Aliases for the two standalone tools, which ship under shorter filenames.
-/promptlab             /promptlab.html                       200
-/prompt-lab            /promptlab.html                       200
-/prompt-lab/           /promptlab.html                       200
-/prompt-lab.html       /promptlab.html                       200
+# /promptlab is served automatically from promptlab.html (no self-rewrite).
+/prompt-lab            /promptlab                            302
+/prompt-lab/           /promptlab                            302
+/prompt-lab.html       /promptlab                            302
 /receipt               /receipt.html                         200
 /the-receipt           /receipt.html                         200
 /the-receipt/          /receipt.html                         200

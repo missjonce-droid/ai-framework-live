@@ -238,7 +238,7 @@
     var label = document.createElement('span');
     label.textContent = 'More resources';
     var link = document.createElement('a');
-    link.href = '/sports-research/'; link.textContent = 'College Football Markets';
+    link.href = '/sports-research/'; link.textContent = 'Justin’s Advantage';
     resources.appendChild(label); resources.appendChild(link); footer.appendChild(resources);
   }
 

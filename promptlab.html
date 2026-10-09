@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Prompt Lab — say it better, get better AI</title>
 <meta name="description" content="Type your rough idea and watch it become a real prompt. Plus the AI dictionary and the word upgrades that make any prompt sharper.">
-<link rel="canonical" href="https://ai-framework.io/prompt-lab">
+<link rel="canonical" href="https://ai-framework.io/promptlab">
 <meta name="theme-color" content="#0b1220">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AI Framework">
@@ -390,7 +390,7 @@ function runFix(){
   var s={core:cleanCore(raw),tone:detectTone(raw),article:/\breply|respond\b/i.test(raw)?"a reply":"an email"};
   var lines=intent.build(s);
   $("intent").textContent="Detected: "+intent.label;
-  $("out").innerHTML=lines.join("\n").replace(/\[([^\]]+)\]/g,'[<span class="ph">$1</span>]');
+  $("out").innerHTML=lines.join("\n").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\[([^\]]+)\]/g,'[<span class="ph">$1</span>]');
   var chips=[];
   for(var w=0;w<WEAK.length;w++){if(WEAK[w][0].test(raw)){chips.push('<span class="chip"><s>'+WEAK[w][1]+'</s> \u2192 <b>'+WEAK[w][2]+'</b></span>');}}
   $("chips").innerHTML=chips.join("");
