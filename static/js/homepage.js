@@ -55,6 +55,7 @@
       var filter = pricing.value;
       currentMatches = engine.filter(catalog, input.value, filter);
       renderPage();
+      results.scrollIntoView({block: 'start'});
       var url = new URL(window.location.href); input.value.trim() ? url.searchParams.set('q', input.value.trim().slice(0, 160)) : url.searchParams.delete('q'); filter === 'all' ? url.searchParams.delete('plan') : url.searchParams.set('plan', filter); history.replaceState(null, '', url.pathname + url.search + '#directory');
       track('directory_search', {result_count: currentMatches.length, plan_filter: filter});
     } catch (error) { grid.replaceChildren(); status.textContent = 'Search is temporarily unavailable. Please open the full directory using the link above.'; results.setAttribute('aria-busy', 'false'); next.hidden = true; prev.hidden = true; }
