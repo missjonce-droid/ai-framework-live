@@ -52,11 +52,10 @@ will own the Worker:
    The Worker uses `workers.dev`; this does not require changing GoDaddy DNS
    or the existing Pages custom-domain records.
    The Wrangler configuration is at the repository root. Configure the
-   `sports-research-api` Cloudflare Workers Build with root directory `/` and
-   deploy command `npx wrangler deploy --config wrangler.toml` so builds use
-   this configuration. The build's production branch must contain the Worker
-   files; after this change is merged, set it to the repository's `main`
-   branch. This Worker build setting is separate from the Pages project
+   `sports-research-api` Cloudflare Workers Build with root directory `/`,
+   deploy command `npx wrangler deploy --config wrangler.toml`, and production
+   branch `main` so builds use this configuration from the default branch.
+   This Worker build setting is separate from the Pages project
    settings. The `previews` block is intentionally empty: previews
    do not inherit production bindings, and Cloudflare preview URLs are disabled
    for this Worker. The pull-request check validates the build, but it does not
@@ -72,9 +71,9 @@ will own the Worker:
 
    Enter the same value securely as the GitHub Actions repository secret in
    the next section. Never put it in a GitHub Actions variable.
-5. Note the Worker URL printed by Wrangler, for example
-   `https://sports-research-api.<account-subdomain>.workers.dev`.
-   Keep the URL; it is used to configure both the workflow and the site.
+5. The deployed Worker URL for this site is
+   `https://sports-research-api.ai-framework-io.workers.dev`. It is used by
+   both the workflow and the frontend.
 
 The Worker accepts browser requests only from `https://ai-framework.io` and
 `https://www.ai-framework.io`. The ingest endpoint requires the bearer secret;
@@ -96,9 +95,9 @@ add:
 | `SPORTS_INGEST_TOKEN` | Repository secret | The exact token entered as the Worker secret |
 | `SPORTS_INGEST_URL` | Repository variable | The Worker URL plus `/internal/college-football/ingest` |
 
-`SPORTS_INGEST_URL` must be the HTTPS
-`https://sports-research-api.<account-subdomain>.workers.dev/internal/college-football/ingest`
-URL. The workflow never prints the provider key or bearer token. The provider
+`SPORTS_INGEST_URL` is set to
+`https://sports-research-api.ai-framework-io.workers.dev/internal/college-football/ingest`.
+The workflow never prints the provider key or bearer token. The provider
 key is sent only to The Odds API; the ingest token is sent only to the
 configured Worker URL.
 
@@ -120,26 +119,23 @@ data older than 12 hours as stale.
 
 ## 3. Connect the static frontend to the Worker
 
-After deploying the Worker, replace the placeholder in
-`frontend/index.html`:
+The frontend is configured to use the deployed Worker:
 
 ```html
-<meta name="sports-api-base" content="https://sports-research-api.<YOUR_ACCOUNT_SUBDOMAIN>.workers.dev">
+<meta name="sports-api-base" content="https://sports-research-api.ai-framework-io.workers.dev">
 ```
 
-with the exact HTTPS `workers.dev` Worker URL. Commit and push that change to
-the Pages production branch only when you want it published. The existing
-Cloudflare Pages GitHub integration will rebuild the site using
+The existing Cloudflare Pages GitHub integration rebuilds the site using
 `node scripts/generate-redirects.mjs`; the generator exposes the board at
-`/sports-research/`. No separate frontend hosting project is needed.
+`/sports-research/`. No separate frontend hosting project or GoDaddy DNS
+change is needed for this workers.dev API setup.
 
 Before promoting, check `/sports-research/`, the Worker odds endpoint
 `/api/college-football/odds`, and an event's AI summary button. Confirm the
 response's `fetchedAt`, freshness label, sportsbook market values, and
 disclaimers. If the feed is absent, check the scheduled workflow run and
-Cloudflare Worker logs. Do not publish an unconfigured page expecting it to
-load: it deliberately shows an actionable configuration error while the
-placeholder remains.
+Cloudflare Worker logs. If the Worker URL changes, update the page metadata
+and this document together before deploying.
 
 ## Local checks
 
