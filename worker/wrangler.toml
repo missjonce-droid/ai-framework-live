@@ -35,6 +35,37 @@ namespace_id = "941002"
 name = "INGEST_RATE_LIMITER"
 namespace_id = "941003"
 
+[[previews.kv_namespaces]]
+binding = "SPORTS_DATA"
+id = "86f752c09dda47cc91f6109a0bb03373"
+
+[[previews.ratelimits]]
+name = "MARKET_RATE_LIMITER"
+namespace_id = "941001"
+
+[previews.ratelimits.simple]
+limit = 60
+period = 60
+
+[[previews.ratelimits]]
+name = "SUMMARY_RATE_LIMITER"
+namespace_id = "941002"
+
+[previews.ratelimits.simple]
+limit = 8
+period = 60
+
+[[previews.ratelimits]]
+name = "INGEST_RATE_LIMITER"
+namespace_id = "941003"
+
+[previews.ratelimits.simple]
+limit = 4
+period = 60
+
+[previews.ai]
+binding = "AI"
+
   [ratelimits.simple]
   limit = 4
   period = 60
