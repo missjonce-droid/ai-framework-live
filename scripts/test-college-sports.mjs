@@ -246,6 +246,17 @@ assert.equal(fallbackSummary.model, undefined);
 assert.ok(fallbackSummary.summary.includes("2 listed bookmakers"));
 assert.equal(fallbackSummary.summary.includes("60%"), false);
 assert.ok(fallbackSummary.notice.includes("assembled from the current event feed"));
+unsafeFeed.fetchedAt = new Date(Date.parse(fetchedAt) + 2_000).toISOString();
+values.set("college-football:latest", JSON.stringify(unsafeFeed));
+env.AI.run = async () => {
+  throw new Error("model unavailable");
+};
+const unavailableSummary = await request(summaryUrl);
+assert.equal(unavailableSummary.status, 200, "AI service errors should fall back to a safe feed summary");
+const unavailableSummaryBody = await unavailableSummary.json();
+assert.equal(unavailableSummaryBody.summarySource, "market-data-fallback");
+assert.ok(unavailableSummaryBody.notice.includes("Workers AI could not generate text"));
+assert.equal(unavailableSummaryBody.summary.includes("model unavailable"), false);
 env.AI.run = async () => ({ response: "The current price range differs moderately among contributing books." });
 ingestAllowed = false;
 assert.equal((await request("/internal/college-football/ingest", {

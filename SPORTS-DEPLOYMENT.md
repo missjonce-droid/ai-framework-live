@@ -22,8 +22,9 @@ the existing GitHub-connected build; the Worker is deployed separately.
 - Workers AI (`@cf/meta/llama-3.1-8b-instruct-fp8`, verified in Cloudflare's
   current model catalog) produces a short contextual paraphrase of the
   supplied market snapshot. Unsafe or empty generated text is replaced by a
-  clearly labeled, data-derived summary; an AI service error remains an error.
-  Neither summary is a validated prediction, and AI summaries can be inaccurate.
+  clearly labeled, data-derived summary, including when Workers AI is
+  unavailable. Neither summary is a validated prediction, and AI summaries
+  can be inaccurate.
 - No payment or premium checkout is configured.
 
 ## 1. Create and configure the Worker
@@ -57,10 +58,9 @@ will own the Worker:
    deploy command `npx wrangler deploy --config wrangler.toml`, and production
    branch `main` so builds use this configuration from the default branch.
    This Worker build setting is separate from the Pages project
-   settings.       Worker preview URLs are enabled with `preview_urls = true`. Preview Workers
-   must not receive production bindings or secrets; configure separate preview
-   KV and rate-limit resources, the AI binding, and a preview ingest secret
-   before using them as live API previews.
+   settings.          Worker preview URLs are disabled with `preview_urls = false`; do not expose
+   preview builds as live API previews until separate preview KV and rate-limit
+   resources, the AI binding, and a preview ingest secret are configured.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:

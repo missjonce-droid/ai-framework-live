@@ -184,7 +184,7 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
       card.appendChild(renderBookmakerPrices(event));
       var summary=node("section","summary");
       summary.setAttribute("aria-label","Market-context summary");
-      var summaryButton=node("button","","Generate AI market summary");
+      var summaryButton=node("button","","Generate market summary");
       summaryButton.type="button";
       summaryButton.addEventListener("click",function(){showSummary(event.eventId,summary,summaryButton);});
       summary.appendChild(summaryButton);

@@ -474,6 +474,7 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
     JSON.stringify(marketContext),
   ].join("\n\n");
   let aiResult: unknown;
+  let aiFailed = false;
   try {
     aiResult = await env.AI.run(MODEL, {
       messages: [
@@ -492,7 +493,7 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
       "Workers AI summary request failed:",
       error instanceof Error ? error.message : "Unknown error",
     );
-    return jsonResponse(502, { error: "Cloudflare Workers AI could not create a market summary." }, origin);
+    aiFailed = true;
   }
   const rawSummary =
     typeof aiResult === "string"
@@ -501,10 +502,15 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
         ? String((aiResult as { response: unknown }).response || "")
         : "";
   const summary = rawSummary.replace(/\s+/g, " ").trim().slice(0, 800);
-  const aiSummaryIsSafe = Boolean(summary) && !UNSAFE_SUMMARY_PATTERN.test(summary);
+  const aiSummaryIsSafe = !aiFailed && Boolean(summary) && !UNSAFE_SUMMARY_PATTERN.test(summary);
   const finalSummary = aiSummaryIsSafe
     ? summary
     : `This event's feed includes data from ${event.bookmakers.length} listed bookmakers. The board shows moneyline, point spread, and game total markets where available.`;
+  const fallbackReason = aiFailed
+    ? "Workers AI could not generate text"
+    : summary
+      ? "AI text did not pass the safety checks"
+      : "Workers AI returned no usable text";
 
   const result = {
     mode: aiSummaryIsSafe ? "ai-market-context-summary" : "market-data-context-summary",
@@ -516,7 +522,7 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
     summary: finalSummary,
     notice: aiSummaryIsSafe
       ? "AI-generated context about the supplied bookmaker snapshot only. It is not a statistically validated forecast, score projection, prediction, or betting advice. Market-implied percentages include vig."
-      : "AI text did not pass the safety checks, so this neutral summary was assembled from the current event feed only. It is not a forecast, prediction, or betting advice.",
+      : `${fallbackReason}, so this neutral summary was assembled from the current event feed only. It is not a forecast, prediction, or betting advice.`,
   };
   const encoded = JSON.stringify(result);
   if (new TextEncoder().encode(encoded).byteLength <= MAX_SUMMARY_BYTES) {
