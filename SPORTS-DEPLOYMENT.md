@@ -57,11 +57,11 @@ will own the Worker:
    deploy command `npx wrangler deploy --config wrangler.toml`, and production
    branch `main` so builds use this configuration from the default branch.
    This Worker build setting is separate from the Pages project
-   settings. The `previews` block is intentionally empty: previews
-   do not inherit production bindings, and Cloudflare preview URLs are disabled
-   for this Worker. The pull-request check validates the build, but it does not
-   provide a live API preview. To enable one, configure separate preview KV and
-   rate-limit resources, the AI binding, and a preview ingest secret first.
+   settings.    Worker preview URLs are disabled with `preview_urls = false`; previews do
+   not inherit production bindings. The pull-request check validates the build,
+   but it does not provide a live API preview. To enable one, configure
+   separate preview KV and rate-limit resources, the AI binding, and a preview
+   ingest secret first.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:
