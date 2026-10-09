@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f1216">
+<meta name="robots" content="index,follow">
+<title>Sports Matchup Preview Demo | AI Framework</title>
+<meta name="description" content="Organize a side-by-side sports matchup preview using details you provide. No live data, predictions, or betting odds.">
+<link rel="canonical" href="https://ai-framework.io/sports-matchup">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Framework">
+<meta property="og:title" content="Sports Matchup Preview Demo">
+<meta property="og:description" content="A transparent, user-input-only sports matchup organizer. No predictions or odds.">
+<meta property="og:url" content="https://ai-framework.io/sports-matchup">
+<meta property="og:image" content="https://ai-framework.io/social-card.png">
+<style>
+:root{color-scheme:dark;--bg:#0f1216;--surface:#151a21;--surface2:#1b222b;--border:#2a323d;--text:#eef2f7;--muted:#aab4c0;--accent:#c9a227;--danger:#ffd7a3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit}
+.wrap{width:min(900px,calc(100% - 32px));margin:auto}
+header{background:var(--surface);border-bottom:1px solid var(--border)}
+nav{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0}
+.brand{font-weight:800;text-decoration:none}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}
+.links a{color:var(--muted)}
+main{padding:40px 0 64px}
+.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.08;margin:8px 0 12px}
+.intro{max-width:680px;color:var(--muted)}
+.notice{margin:24px 0;padding:16px;border:1px solid #745b2d;border-radius:12px;background:#241f15;color:#f3e4c6}
+.notice strong{display:block;margin-bottom:4px}
+form,.result{margin-top:24px;padding:24px;border:1px solid var(--border);border-radius:16px;background:var(--surface)}
+.fields,.teams,.comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.teams{margin-top:18px}
+label{display:block;margin-bottom:6px;font-weight:650}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);font:inherit}
+textarea{min-height:100px;resize:vertical}
+.team{padding:18px;border:1px solid var(--border);border-radius:12px;background:var(--surface2)}
+.team h2{margin:0 0 14px;font-size:18px}
+button{margin-top:18px;padding:12px 18px;border:0;border-radius:9px;background:var(--accent);color:#17140c;font:700 15px system-ui;cursor:pointer}
+button:disabled{opacity:.65;cursor:wait}
+.status{min-height:24px;margin:12px 0 0;color:var(--muted)}
+.result h2{margin-top:0}
+.comparison article{padding:16px;border:1px solid var(--border);border-radius:12px}
+.comparison h3{margin:0 0 8px}
+.comparison p{white-space:pre-wrap;overflow-wrap:anywhere}
+.tag{color:var(--accent);font-size:12px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+.small{font-size:13px;color:var(--muted)}
+footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted);font-size:14px}
+@media(max-width:620px){nav{align-items:flex-start;flex-direction:column}.fields,.teams,.comparison{grid-template-columns:1fr}form,.result{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="wrap" aria-label="Main navigation">
+    <a class="brand" href="/">AI Framework</a>
+    <div class="links">
+      <a href="/sports-matchup" aria-current="page">Matchup Demo</a>
+      <a href="/calculator/">Odds Calculator</a>
+      <a href="/news">The AI Wire</a>
+      <a href="/build-my-framework/">Build My Framework</a>
+      <a href="/browse">Directory</a>
+    </div>
+  </nav>
+</header>
+<main class="wrap">
+  <p class="eyebrow">Transparent demo · User-entered details only</p>
+  <h1>Sports Matchup Preview</h1>
+  <p class="intro">Put two teams and your own notes side by side. This tool does not fetch sports data or decide who will win.</p>
+  <aside class="notice" aria-label="Important limitation">
+    <strong>No predictions or betting information</strong>
+    No live data provider or predictive model is connected. This demo does not generate scores, win probabilities, odds, picks, or betting advice. If sports betting is becoming hard to control, consider contacting a local gambling-support service.
+  </aside>
+  <form id="matchup-form">
+    <div class="fields">
+      <div>
+        <label for="sport">Sport</label>
+        <select id="sport" name="sport" required>
+          <option value="NFL">NFL</option><option value="NBA">NBA</option>
+          <option value="MLB">MLB</option><option value="NHL">NHL</option>
+          <option value="Soccer">Soccer</option><option value="Other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="date">Match date (optional)</label>
+        <input id="date" name="date" type="date">
+      </div>
+    </div>
+    <div class="teams">
+      <section class="team">
+        <h2>First team</h2>
+        <label for="home-team">Team name</label>
+        <input id="home-team" name="homeTeam" maxlength="60" autocomplete="off" required>
+        <label for="home-notes">Your notes (optional)</label>
+        <textarea id="home-notes" name="homeNotes" maxlength="280"></textarea>
+      </section>
+      <section class="team">
+        <h2>Second team</h2>
+        <label for="away-team">Team name</label>
+        <input id="away-team" name="awayTeam" maxlength="60" autocomplete="off" required>
+        <label for="away-notes">Your notes (optional)</label>
+        <textarea id="away-notes" name="awayNotes" maxlength="280"></textarea>
+      </section>
+    </div>
+    <button id="submit-button" type="submit">Create matchup preview</button>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </form>
+  <section id="result" class="result" aria-labelledby="result-title" hidden>
+    <p class="tag">Illustrative demo · Your input only</p>
+    <h2 id="result-title"></h2>
+    <p id="result-date" class="small"></p>
+    <div class="comparison">
+      <article><h3 id="result-home"></h3><p id="result-home-notes"></p></article>
+      <article><h3 id="result-away"></h3><p id="result-away-notes"></p></article>
+    </div>
+    <p class="small">No sports data or model output was used. No forecast, odds, or pick is available.</p>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <p>This demo only formats information you enter. It is not a prediction or betting tool. Never gamble money you cannot afford to lose; seek local support if gambling is affecting you.</p>
+    <p><a href="/">AI Framework</a> · <a href="/disclosure">Disclosure</a> · <a href="/contact">Contact</a></p>
+  </div>
+</footer>
+<script>
+(function(){
+  var form=document.getElementById("matchup-form");
+  var button=document.getElementById("submit-button");
+  var status=document.getElementById("status");
+  var result=document.getElementById("result");
+
+  function setText(id,value){
+    document.getElementById(id).textContent=value||"No notes provided.";
+  }
+
+  form.addEventListener("submit",async function(event){
+    event.preventDefault();
+    button.disabled=true;
+    status.textContent="Preparing your demo preview…";
+    result.hidden=true;
+    var values=new FormData(form);
+    var payload={
+      sport:values.get("sport"),
+      date:values.get("date"),
+      homeTeam:values.get("homeTeam"),
+      awayTeam:values.get("awayTeam"),
+      homeNotes:values.get("homeNotes"),
+      awayNotes:values.get("awayNotes")
+    };
+
+    try{
+      var response=await fetch("/api/sports-matchup",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});
+      var data=await response.json();
+      if(!response.ok)throw new Error(data.error||"The preview could not be created.");
+      document.getElementById("result-title").textContent=data.matchup.sport+" matchup";
+      document.getElementById("result-date").textContent=data.matchup.date?"Match date: "+data.matchup.date:"No match date provided.";
+      setText("result-home",data.matchup.homeTeam);
+      setText("result-away",data.matchup.awayTeam);
+      setText("result-home-notes",data.matchup.notes.home);
+      setText("result-away-notes",data.matchup.notes.away);
+      result.hidden=false;
+      status.textContent="Demo preview ready. No predictions or odds were generated.";
+    }catch(error){
+      status.textContent=error.message||"The preview could not be created.";
+    }finally{
+      button.disabled=false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

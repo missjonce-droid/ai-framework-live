@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f1216">
+<meta name="robots" content="index,follow">
+<title>College Football Market Board | AI Framework</title>
+<meta name="description" content="Review timestamped US college football sportsbook moneyline, spread, and total markets. No picks or forecasts.">
+<link rel="canonical" href="https://ai-framework.io/sports-research/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Framework">
+<meta property="og:title" content="College Football Market Board">
+<meta property="og:description" content="Current college-football sportsbook markets and an AI-written context summary, not a forecast.">
+<meta property="og:url" content="https://ai-framework.io/sports-research/">
+<meta property="og:image" content="https://ai-framework.io/social-card.png">
+<meta name="sports-api-base" content="https://sports-research-api.<YOUR_ACCOUNT_SUBDOMAIN>.workers.dev">
+<style>
+:root{color-scheme:dark;--bg:#0f1216;--surface:#151a21;--surface2:#1b222b;--border:#2a323d;--text:#eef2f7;--muted:#aab4c0;--accent:#c9a227;--warning:#f3e4c6;--bad:#ffb4a9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit}
+.wrap{width:min(1050px,calc(100% - 32px));margin:auto}
+header{background:var(--surface);border-bottom:1px solid var(--border)}
+nav{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0}
+.brand{font-weight:800;text-decoration:none}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}
+.links a{color:var(--muted)}
+main{padding:40px 0 64px}
+.eyebrow,.tag{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.08;margin:8px 0 12px}
+.intro{max-width:780px;color:var(--muted)}
+.notice,.status,.event,.summary{margin:20px 0;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.notice{border-color:#745b2d;background:#241f15;color:var(--warning)}
+.notice strong{display:block;margin-bottom:4px}
+.toolbar{display:flex;gap:12px;align-items:center;margin:24px 0}
+input,button{padding:11px 14px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);font:inherit}
+input{flex:1;min-width:180px}
+button{background:var(--accent);border:0;color:#17140c;font-weight:700;cursor:pointer}
+button:disabled{opacity:.65;cursor:wait}
+.event h2{margin:0;font-size:22px}
+.event-meta,.muted,.event-foot{color:var(--muted);font-size:14px}
+.market-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.market{padding:14px;border:1px solid var(--border);border-radius:10px;background:var(--surface2)}
+.market h3{margin:0 0 10px;font-size:16px}
+.market ul{margin:0;padding-left:18px}
+.market li{margin:5px 0}
+.summary{margin:12px 0 0;border-style:dashed}
+.summary p{margin-bottom:0}
+.error{color:var(--bad)}
+footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted);font-size:14px}
+@media(max-width:720px){.market-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){nav{align-items:flex-start;flex-direction:column}.market-grid{grid-template-columns:1fr}.toolbar{align-items:stretch;flex-direction:column}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="wrap" aria-label="Main navigation">
+    <a class="brand" href="/">AI Framework</a>
+    <div class="links">
+      <a href="/sports-research/" aria-current="page">College Football Markets</a>
+      <a href="/calculator/">Odds Calculator</a>
+      <a href="/sports-matchup">Matchup Demo</a>
+      <a href="/news">The AI Wire</a>
+      <a href="/browse">Directory</a>
+    </div>
+  </nav>
+</header>
+<main class="wrap">
+  <p class="eyebrow">College football · sportsbook market data</p>
+  <h1>Market board, not a prediction</h1>
+  <p class="intro">Browse current US bookmaker moneyline, spread, and totals markets gathered from The Odds API. Prices are shown with their provider timestamps. A short AI-generated summary may describe the supplied market snapshot only; it is not a statistically validated forecast.</p>
+  <aside class="notice">
+    <strong>Important limitations</strong>
+    Implied percentages are mathematical conversions of listed prices and include bookmaker margin (vig); they are not independently calibrated chances of winning. Average lines are derived only from actual sportsbook markets in the feed. No team-statistics or injury dataset is connected, and no projected score, pick, or betting advice is provided.
+  </aside>
+  <div class="toolbar">
+    <label for="search">Filter teams</label>
+    <input id="search" type="search" maxlength="80" placeholder="Search college teams" autocomplete="off">
+    <button id="refresh" type="button">Refresh markets</button>
+  </div>
+  <p id="status" class="status" role="status" aria-live="polite">Set the Worker URL in the page metadata to load market data.</p>
+  <div id="events" aria-live="polite"></div>
+</main>
+<footer>
+  <div class="wrap">
+    <p>Source: The Odds API v4, US region. Bookmaker offerings and freshness vary; this feed is refreshed by GitHub Actions every six hours when configured. Always verify current prices with the source.</p>
+    <p>AI-generated summaries can be inaccurate. This is market context, not a validated forecast or betting recommendation. Do not gamble money you cannot afford to lose; seek local support if gambling is affecting you.</p>
+    <p><a href="/">AI Framework</a> · <a href="/calculator/">Odds Calculator</a> · <a href="/disclosure">Disclosure</a></p>
+  </div>
+</footer>
+<script>
+(function(){
+  "use strict";
+  var base=document.querySelector('meta[name="sports-api-base"]').content.trim().replace(/\/+$/,"");
+  var status=document.getElementById("status");
+  var eventsNode=document.getElementById("events");
+  var search=document.getElementById("search");
+  var refresh=document.getElementById("refresh");
+  var events=[];
+  var configured=!base.includes("<")&&!base.includes(">")&&/^https:\/\/[a-z0-9.-]+\.workers\.dev$/i.test(base);
+  function node(tag,className,text){
+    var el=document.createElement(tag);
+    if(className)el.className=className;
+    if(text!==undefined)el.textContent=text;
+    return el;
+  }
+  function percent(value){
+    return typeof value==="number"?value.toFixed(1)+"%":"Unavailable";
+  }
+  function renderMarket(title,data,formatPoint){
+    var section=node("section","market");
+    section.appendChild(node("h3","",title));
+    if(!data||!data.outcomes||!data.outcomes.length){
+      section.appendChild(node("p","muted","No current market data."));
+      return section;
+    }
+    function renderBookmakerPrices(event){
+      var details=node("details","event-foot");
+      details.appendChild(node("summary","","View listed bookmaker prices"));
+      event.bookmakers.forEach(function(book){
+        details.appendChild(node("h3","",book.title+" · updated "+new Date(book.lastUpdate).toLocaleString()));
+        ["h2h","spreads","totals"].forEach(function(key){
+          var market=book.markets&&book.markets[key];
+          if(!market)return;
+          var prices=market.outcomes.map(function(outcome){
+            var line=typeof outcome.point==="number"?" ("+(outcome.point>0?"+":"")+outcome.point+")":"";
+            var odds=outcome.price>0?"+"+outcome.price:String(outcome.price);
+            return outcome.name+line+" "+odds;
+          }).join(" · ");
+          details.appendChild(node("p","",key+": "+prices));
+        });
+      });
+      return details;
+    }
+    var list=node("ul");
+    data.outcomes.forEach(function(outcome){
+      var label=outcome.name;
+      if(formatPoint&&typeof outcome.averageMarketPoint==="number"){
+        label+=": "+(outcome.averageMarketPoint>0?"+":"")+outcome.averageMarketPoint;
+      }
+      label+=" · "+percent(outcome.averageImpliedPercent)+" implied";
+      list.appendChild(node("li","",label));
+    });
+    section.appendChild(list);
+    section.appendChild(node("p","muted",data.bookmakerCount+" bookmaker markets; avg. overround/vig "+percent(data.averageBookOverroundPercent)));
+    return section;
+  }
+  function showSummary(eventId,container,button){
+    button.disabled=true;
+    var output=node("p","muted","Generating a contextual summary of this market snapshot…");
+    container.replaceChildren(output);
+    fetch(base+"/api/college-football/summary?eventId="+encodeURIComponent(eventId),{headers:{accept:"application/json"}})
+      .then(function(response){return response.json().then(function(body){if(!response.ok)throw new Error(body.error||"AI summary request failed.");return body;});})
+      .then(function(body){
+        container.replaceChildren(node("p","",body.summary));
+        container.appendChild(node("p","muted",body.notice));
+      })
+      .catch(function(error){container.replaceChildren(node("p","error",error.message||"AI summary unavailable."));})
+      .finally(function(){button.disabled=false;});
+  }
+  function render(){
+    var query=search.value.trim().toLocaleLowerCase();
+    eventsNode.replaceChildren();
+    var visible=events.filter(function(event){return (event.homeTeam+" "+event.awayTeam).toLocaleLowerCase().includes(query);});
+    if(!visible.length){
+      eventsNode.appendChild(node("p","status",events.length?"No match for that team filter.":"No events are currently in the feed."));
+      return;
+    }
+    visible.forEach(function(event){
+      var card=node("article","event");
+      card.appendChild(node("h2","",event.awayTeam+" at "+event.homeTeam));
+      card.appendChild(node("p","event-meta","Kickoff: "+new Date(event.commenceTime).toLocaleString()));
+      var grid=node("div","market-grid");
+      grid.appendChild(renderMarket("Moneyline · h2h",event.consensus.h2h,false));
+      grid.appendChild(renderMarket("Point spread",event.consensus.spreads,true));
+      grid.appendChild(renderMarket("Game total",event.consensus.totals,true));
+      card.appendChild(grid);
+      var bookUpdated=event.bookmakers.reduce(function(latest,book){return !latest||book.lastUpdate>latest?book.lastUpdate:latest;},"");
+      card.appendChild(node("p","event-foot",event.bookmakers.length+" bookmakers · latest provider update "+(bookUpdated?new Date(bookUpdated).toLocaleString():"not available")));
+      card.appendChild(renderBookmakerPrices(event));
+      var summary=node("section","summary");
+      summary.setAttribute("aria-label","AI market-context summary");
+      var summaryButton=node("button","","Generate AI market summary");
+      summaryButton.type="button";
+      summaryButton.addEventListener("click",function(){showSummary(event.eventId,summary,summaryButton);});
+      summary.appendChild(summaryButton);
+      card.appendChild(summary);
+      eventsNode.appendChild(card);
+    });
+  }
+  function load(){
+    if(!configured){
+      status.className="status error";
+      status.textContent="Sports API is not configured. After deploying the Worker, replace the account-subdomain placeholder in the sports-api-base metadata with its HTTPS workers.dev URL.";
+      refresh.disabled=true;
+      return;
+    }
+    refresh.disabled=true;
+    status.className="status";
+    status.textContent="Loading latest available bookmaker markets…";
+    fetch(base+"/api/college-football/odds",{headers:{accept:"application/json"}})
+      .then(function(response){return response.json().then(function(body){if(!response.ok)throw new Error(body.error||"Market data request failed.");return body;});})
+      .then(function(body){
+        events=Array.isArray(body.events)?body.events:[];
+        var fetched=new Date(body.fetchedAt).toLocaleString();
+        status.className=body.freshness==="current"?"status":"status error";
+        status.textContent=(body.freshness==="current"?"Current feed":"STALE FEED")+" · fetched "+fetched+" · "+events.length+" events · "+body.source+". "+body.notice;
+        render();
+      })
+      .catch(function(error){
+        status.className="status error";
+        status.textContent=error.message||"Could not load market data.";
+        events=[];
+        eventsNode.replaceChildren();
+      })
+      .finally(function(){refresh.disabled=false;});
+  }
+  search.addEventListener("input",render);
+  refresh.addEventListener("click",load);
+  if(configured)load();
+  else{
+    status.className="status error";
+    status.textContent="Sports API is not configured. After deploying the Worker, replace the account-subdomain placeholder in the sports-api-base metadata with its HTTPS workers.dev URL.";
+    refresh.disabled=true;
+  }
+})();
+</script>
+</body>
+</html>

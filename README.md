@@ -1,107 +1,84 @@
-[README-START-HERE.md](https://github.com/user-attachments/files/30883443/README-START-HERE.md)
-# Everything outstanding, in one package
+# AI Framework
 
-This replaces site-update-4, -5, -6, -7, -8, and buddy-fix. Those never got
-uploaded during the Netlify move. Nothing here needs those older zips — this
-is complete on its own.
+AI Framework is a static site and directory of AI tools, with Cloudflare Pages
+Functions for its API endpoints. The repository contains the deployable site
+at its root; no frontend bundle or package installation is needed.
 
-Built for **Cloudflare Pages** (the `_redirects` here has no `/api/*` lines,
-because Cloudflare routes functions by file path automatically).
+## Deploy with Cloudflare Pages
 
----
+1. In Cloudflare, create a Pages project and connect this GitHub repository.
+2. Set the production branch to `main`.
+3. Use the `None` framework preset, set the build command to
+   `node scripts/generate-redirects.mjs`, and set the build output directory
+   to `.` (the repository root).
+4. Add `ANTHROPIC_API_KEY` as an encrypted Pages environment variable for
+   production and preview environments. The framework builder and Prompt Lab
+   need it; the AI news endpoint does not.
+5. Deploy a preview first, check the routes listed below, then promote the
+   deployment and attach the custom domain in Cloudflare Pages.
 
-## What this adds
+`functions/api/` maps directly to `/api/` routes. Do not add `/api/*`
+redirects: Pages Functions handle those routes automatically. The redirect
+generator writes Cloudflare Pages-compatible rules for URL aliases, outbound
+tool links, and app routes. `_routes.json` limits Function invocations to
+`/api/*` so normal static page and asset requests stay static.
+`_headers` applies safe response headers to static Pages files and immutable
+cache headers to the content-hashed application bundles. API Function
+responses set their own headers.
 
-**The Receipt** (`/receipt`) — free audit tool. Someone lists the AI tools
-they pay for and gets a receipt-style report: monthly total, redundant
-subscriptions flagged, cheaper swaps from your catalog, dollars wasted, and
-a letter grade. Shareable. No signup, no backend.
+`/sports-matchup` is a no-data demo that only organizes user-entered team
+names and notes. It does not connect to a sports data provider or predictive
+model, and does not produce scores, odds, probabilities, picks, or betting
+advice.
 
-**The AI Wire** (`/news`) — daily newspaper-style page pulling real AI
-headlines from TechCrunch, VentureBeat, MIT Tech Review, The Verge, and Ars
-Technica. Free to run (publishers' own RSS feeds, cached 30 min at the edge).
+`/calculator/` converts American odds entered by the visitor to mathematical
+implied probabilities and decimal odds. It is not a win-probability estimate,
+does not remove bookmaker margin, and does not provide picks or a fair line.
+The Sports Data Pack is not for sale until a verified data provider and valid
+payment integration are configured.
 
-**Prompt Lab actually uses AI** — it currently matches your text with regex
-and fills one of ~8 templates. Now it sends your rough idea to Claude and
-returns a real rewrite. The old template engine stays as a fallback, so the
-button still works if the API is down or the daily cap is hit.
+`/sports-research/` is a separate college-football market board backed by a
+Cloudflare Worker. GitHub Actions can refresh actual US sportsbook
+moneyline/spread/total markets from The Odds API every six hours. Its
+market-derived implied percentages include vig; the optional Workers AI text
+is only a contextual summary, not a validated forecast. The Odds API does
+not supply the team-statistics datasets often used in sports analysis. See
+[SPORTS-DEPLOYMENT.md](SPORTS-DEPLOYMENT.md) for secrets, Cloudflare
+configuration, provider quota notes, testing, and deployment steps.
 
-**Builder Buddy removed** — the cartoon robot that peeked over the text box
-and got in the way on mobile. Replaced with a plain helper that just rotates
-example prompts through the placeholder.
+Cloudflare Pages builds from GitHub after the selected branch is pushed or
+merged. Connect the domain in Cloudflare Pages and follow Cloudflare's
+domain/DNS instructions there; this repository does not change GoDaddy or DNS
+settings.
 
-**Nav that actually appears** — the homepage had no `<nav>` element, so nav
-links silently never rendered there. Now one is created when none exists.
+## Validate locally
 
-**Real tool logos** — 1,557 tools show their company favicon instead of a
-letter-in-a-circle.
+With Node.js installed, run:
 
-**Copy fix** — "Stop collecting AI tools" (which argued against your own
-directory) is now "Stop guessing. Start building."
+```sh
+node scripts/generate-redirects.mjs
+node scripts/validate-site.mjs
+node scripts/test-sports-tools.mjs
+node scripts/test-college-sports.mjs
+```
 
----
+The redirect generator reads the directory embedded in the checked-in
+JavaScript bundle. Commit its generated `_redirects` file with any change that
+affects the directory's outbound links. It checks the Cloudflare Pages
+redirect limits before writing the file.
 
-## Files: 11 total
+## Before promoting
 
-### NEW — create these (Add file -> Create new file, type the full path)
-1. `receipt.html`
-2. `news.html`
-3. `static/data/tools-lite.json`
-4. `static/data/tool-domains.json`
-5. `static/js/builder-input-helper.js`
+- `/` loads the homepage and static assets.
+- `/news` loads the headlines page and `/api/ai-news` returns JSON.
+- `/receipt` loads the receipt tool.
+- `/promptlab` and `/api/fix-prompt` work with the Pages secret configured.
+- `/build-my-framework/` and `/api/build-framework` work with the Pages secret.
+- `/sports-matchup` labels the feature as a demo and shows only user-provided details.
+- `/calculator/` converts valid user-entered American odds without claiming to predict an outcome.
+- `/sports-research/` shows sourced sportsbook markets only when the Worker, API key, KV binding, and site Worker URL are configured.
+- A `/tool/...` profile and an outbound `/go/...` link resolve correctly.
 
-### REPLACE — open each, pencil icon, select all, delete, paste, commit
-6. `promptlab.html`
-7. `build-my-framework/index.html`
-8. `static/js/site-enhancements.js`
-9. `static/css/site-enhancements.css`
-10. `static/css/framework-builder.css`
-11. `_redirects`
-
-### DELETE
-- `static/js/builder-buddy.js`
-
----
-
-## Before you start
-
-**Close PR #7 without merging.** It's from an agent branch
-(`agent-to-the-management-system-0c2f`) and would overwrite several files
-here with older versions. GitHub -> Pull requests -> #7 -> Close pull request.
-Do NOT resolve its conflicts.
-
-Also worth deleting while you're in there (leftover, unused, not referenced
-by anything):
-- `ai-framework-the-receipt-v1/` folder — its useful parts are merged into
-  `receipt.html` above
-- `ai-framework-usability-fixes-v9/` folder
-- any stray `.zip` files at the repo root
-
----
-
-## Watch the filename box
-
-Two uploads broke earlier because the filename kept the downloaded name
-(`build-framework-v5-debug.js` instead of `build-framework.js`). Before
-committing each file, check the filename field says exactly the target name.
-
----
-
-## After it deploys, test on ai-framework-live.pages.dev
-
-- `/receipt` — enter 2+ tools, get a receipt
-- `/news` — real, recent headlines that link out
-- `/promptlab` — "Fix my prompt" gives something specific to what you typed,
-  not a generic template
-- `/build-my-framework/` — AI box still works, and no robot on the page
-- Homepage — nav row visible, including on your phone
-- Any `/tool/...` page — real logo instead of a letter
-
----
-
-## Known gap: the newsletter form
-
-Your signup form used Netlify Forms, which doesn't exist on Cloudflare. It
-will submit and silently fail. Options: Formspree's free tier, a small
-Cloudflare Function, or your email tool's own hosted form. Worth fixing
-before you promote the newsletter — say the word and I'll wire one up.
+There is no working newsletter signup service wired up for Cloudflare Pages.
+Do not promote a signup form until it is connected to a real form or email
+service.

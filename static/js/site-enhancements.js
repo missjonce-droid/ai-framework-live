@@ -214,6 +214,18 @@
       nav.insertBefore(promptLabLink, buildLink ? buildLink.nextSibling : nav.firstChild);
     }
 
+    if (nav && !nav.querySelector('[href="/sports-research/"]')) {
+      var sportsResearchLink = document.createElement("a");
+      sportsResearchLink.href = "/sports-research/";
+      sportsResearchLink.className = "sports-research-nav-link";
+      sportsResearchLink.textContent = "College Football Markets";
+      var playbooksLink = nav.querySelector('[href="/playbooks/"]');
+      nav.insertBefore(
+        sportsResearchLink,
+        playbooksLink ? playbooksLink.nextSibling : null,
+      );
+    }
+
     var homeActions = document.querySelector(".header-actions");
     if (
       homeActions &&
@@ -257,9 +269,9 @@
     // (category anchor, playbooks link, map toggle) are hidden via CSS.
   }
 
-  // Nav: exactly four items (Browse Tools, Build My Framework, Prompt Lab,
-  // Playbooks). The rest already live in the footer; CSS handles hiding and
-  // reordering, this just fixes the "Directory" label text.
+  // Nav: Browse Tools, Build My Framework, Prompt Lab, Playbooks, and the
+  // college-football market board. CSS handles hiding and reordering the
+  // remaining links and fixes the "Directory" label text.
   function simplifyNav() {
     var browseLink = document.querySelector('.nav-links > a[href="/browse"]');
     if (!browseLink || browseLink.getAttribute("data-framework-relabeled") === "true")

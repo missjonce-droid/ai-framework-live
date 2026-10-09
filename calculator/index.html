@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f1216">
+<meta name="robots" content="index,follow">
+<title>American Odds Calculator Demo | AI Framework</title>
+<meta name="description" content="Convert American odds you provide to decimal odds and implied probability. No live sports data, predictions, or betting picks.">
+<link rel="canonical" href="https://ai-framework.io/calculator/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI Framework">
+<meta property="og:title" content="American Odds Calculator Demo">
+<meta property="og:description" content="A transparent calculator for user-entered American odds. No predictions or picks.">
+<meta property="og:url" content="https://ai-framework.io/calculator/">
+<meta property="og:image" content="https://ai-framework.io/social-card.png">
+<style>
+:root{color-scheme:dark;--bg:#0f1216;--surface:#151a21;--surface2:#1b222b;--border:#2a323d;--text:#eef2f7;--muted:#aab4c0;--accent:#c9a227;--warning:#f3e4c6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit}
+.wrap{width:min(900px,calc(100% - 32px));margin:auto}
+header{background:var(--surface);border-bottom:1px solid var(--border)}
+nav{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0}
+.brand{font-weight:800;text-decoration:none}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}
+.links a{color:var(--muted)}
+main{padding:40px 0 64px}
+.eyebrow,.tag{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.08;margin:8px 0 12px}
+.intro{max-width:680px;color:var(--muted)}
+.notice{margin:24px 0;padding:16px;border:1px solid #745b2d;border-radius:12px;background:#241f15;color:var(--warning)}
+.notice strong{display:block;margin-bottom:4px}
+form,.result,.pack{margin-top:24px;padding:24px;border:1px solid var(--border);border-radius:16px;background:var(--surface)}
+.fields,.teams,.results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.teams{margin-top:18px}
+label,.field-label{display:block;margin-bottom:6px;font-weight:650}
+input,select{width:100%;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--text);font:inherit}
+.format-value{margin:0;padding:12px;border:1px solid var(--border);border-radius:9px;background:var(--bg);color:var(--muted)}
+.team,.metric{padding:18px;border:1px solid var(--border);border-radius:12px;background:var(--surface2)}
+.team h2,.metric h3{margin:0 0 14px;font-size:18px}
+button{margin-top:18px;padding:12px 18px;border:0;border-radius:9px;background:var(--accent);color:#17140c;font:700 15px system-ui;cursor:pointer}
+button:disabled{opacity:.65;cursor:wait}
+.status{min-height:24px;margin:12px 0 0;color:var(--muted)}
+.metric strong{display:block;font-size:clamp(26px,5vw,36px)}
+.metric span{color:var(--muted);font-size:14px}
+.small{font-size:13px;color:var(--muted)}
+.pack{border-style:dashed}
+.badge{display:inline-block;padding:4px 9px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px}
+footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted);font-size:14px}
+@media(max-width:620px){nav{align-items:flex-start;flex-direction:column}.fields,.teams,.results{grid-template-columns:1fr}form,.result,.pack{padding:18px}}
+</style>
+</head>
+<body>
+<header>
+  <nav class="wrap" aria-label="Main navigation">
+    <a class="brand" href="/">AI Framework</a>
+    <div class="links">
+      <a href="/calculator/" aria-current="page">Odds Calculator</a>
+      <a href="/sports-research/">College Football Markets</a>
+      <a href="/sports-matchup">Matchup Demo</a>
+      <a href="/news">The AI Wire</a>
+      <a href="/browse">Directory</a>
+    </div>
+  </nav>
+</header>
+<main class="wrap">
+  <p class="eyebrow">Educational calculator · User-entered odds</p>
+  <h1>American Odds Calculator</h1>
+  <p class="intro">Convert two sets of American odds into their mathematical implied probabilities and decimal equivalents.</p>
+  <aside class="notice" aria-label="Important limitation">
+    <strong>This is not a prediction or betting recommendation</strong>
+    The percentages below are formula conversions of odds you enter. They are not estimates of a team's chance to win, and this tool does not remove bookmaker margin or provide fair lines, picks, live data, or model output. If sports betting is becoming hard to control, consider contacting a local gambling-support service.
+  </aside>
+  <form id="calculator-form">
+    <div class="fields">
+      <div>
+        <label for="sport">Sport</label>
+        <select id="sport" name="sport" required>
+          <option value="NFL">NFL</option><option value="NBA">NBA</option>
+          <option value="MLB">MLB</option><option value="NHL">NHL</option>
+          <option value="Soccer">Soccer</option><option value="Other">Other</option>
+        </select>
+      </div>
+      <div><span class="field-label">Accepted odds format</span><p class="format-value">American (US moneyline)</p></div>
+    </div>
+    <div class="teams">
+      <section class="team">
+        <h2>First side</h2>
+        <label for="first-team">Team or side</label>
+        <input id="first-team" name="firstTeam" maxlength="60" autocomplete="off" required>
+        <label for="first-odds">American odds (e.g. +150 or -110)</label>
+        <input id="first-odds" name="firstOdds" type="number" step="1" min="-100000" max="100000" required>
+      </section>
+      <section class="team">
+        <h2>Second side</h2>
+        <label for="second-team">Team or side</label>
+        <input id="second-team" name="secondTeam" maxlength="60" autocomplete="off" required>
+        <label for="second-odds">American odds (e.g. +150 or -110)</label>
+        <input id="second-odds" name="secondOdds" type="number" step="1" min="-100000" max="100000" required>
+      </section>
+    </div>
+    <button id="submit-button" type="submit">Convert entered odds</button>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </form>
+  <section id="result" class="result" aria-labelledby="result-title" hidden>
+    <p class="tag">Formula output · No model or sports data</p>
+    <h2 id="result-title"></h2>
+    <div class="results">
+      <article class="metric">
+        <h3 id="first-result-name"></h3>
+        <strong id="first-probability"></strong>
+        <span>Implied probability from entered odds</span>
+        <p class="small">Decimal odds: <b id="first-decimal"></b></p>
+      </article>
+      <article class="metric">
+        <h3 id="second-result-name"></h3>
+        <strong id="second-probability"></strong>
+        <span>Implied probability from entered odds</span>
+        <p class="small">Decimal odds: <b id="second-decimal"></b></p>
+      </article>
+    </div>
+    <p id="result-notice" class="small"></p>
+  </section>
+  <section class="pack" aria-labelledby="pack-title">
+    <span class="badge">Not available yet</span>
+    <h2 id="pack-title">Sports Data Pack</h2>
+    <p>Live schedules, injuries, weather, officiating, paid data, and checkout are not connected. This section stays informational until a verified data provider and working payment link are configured.</p>
+    <button type="button" disabled aria-disabled="true">Coming soon — no purchase available</button>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <p>This educational tool only converts odds you enter. It does not predict outcomes or recommend wagers. Never gamble money you cannot afford to lose; seek local support if gambling is affecting you.</p>
+    <p><a href="/">AI Framework</a> · <a href="/sports-matchup">Matchup Demo</a> · <a href="/sports-research/">College Football Markets</a> · <a href="/disclosure">Disclosure</a></p>
+  </div>
+</footer>
+<script>
+(function(){
+  var form=document.getElementById("calculator-form");
+  var button=document.getElementById("submit-button");
+  var status=document.getElementById("status");
+  var result=document.getElementById("result");
+  var percent=new Intl.NumberFormat(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  form.addEventListener("submit",async function(event){
+    event.preventDefault();
+    button.disabled=true;
+    status.textContent="Converting the odds you entered…";
+    result.hidden=true;
+    var values=new FormData(form);
+    var payload={
+      firstTeam:values.get("firstTeam"),
+      secondTeam:values.get("secondTeam"),
+      sport:values.get("sport"),
+      firstOdds:Number(values.get("firstOdds")),
+      secondOdds:Number(values.get("secondOdds"))
+    };
+
+    try{
+      var response=await fetch("/api/american-odds",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});
+      var data=await response.json();
+      if(!response.ok)throw new Error(data.error||"The odds could not be converted.");
+      document.getElementById("result-title").textContent=data.matchup.sport+" · "+data.matchup.firstTeam+" vs. "+data.matchup.secondTeam;
+      document.getElementById("first-result-name").textContent=data.matchup.firstTeam;
+      document.getElementById("second-result-name").textContent=data.matchup.secondTeam;
+      document.getElementById("first-probability").textContent=percent.format(data.calculations.first.impliedProbabilityPercent)+"%";
+      document.getElementById("second-probability").textContent=percent.format(data.calculations.second.impliedProbabilityPercent)+"%";
+      document.getElementById("first-decimal").textContent=data.calculations.first.decimalOdds.toFixed(3);
+      document.getElementById("second-decimal").textContent=data.calculations.second.decimalOdds.toFixed(3);
+      document.getElementById("result-notice").textContent=data.notice;
+      result.hidden=false;
+      status.textContent="Conversion complete. These are not win-probability estimates.";
+    }catch(error){
+      status.textContent=error.message||"The odds could not be converted.";
+    }finally{
+      button.disabled=false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -16,6 +16,10 @@
   color: var(--framework-purple) !important;
 }
 
+.sports-research-nav-link {
+  color: var(--framework-brass) !important;
+}
+
 .promptlab-hero-link {
   border-color: var(--framework-purple) !important;
   color: var(--framework-purple) !important;
@@ -163,9 +167,8 @@
   text-transform: uppercase;
 }
 
-/* Nav: exactly four items — Browse Tools, Build My Framework, Prompt Lab,
-   Playbooks. Submit / Contact / Discover / the redundant home link already
-   live in the footer, so they're demoted from the header nav only. */
+/* Keep the primary tool and product links in the header nav. Submit / Contact
+   / Discover / the redundant home link already live in the footer. */
 .nav-links > a[href="/"],
 .nav-links > a[href="/discover"],
 .nav-links > a[href="/submit"],
@@ -187,6 +190,10 @@
 
 .nav-links > a[href="/playbooks/"] {
   order: 4;
+}
+
+.nav-links > a.sports-research-nav-link {
+  order: 5;
 }
 
 /* Homepage hero: headline, search bar (with the Prompt Lab hint), one
