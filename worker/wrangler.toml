@@ -1,0 +1,38 @@
+# Keep this compatibility config aligned with ../wrangler.toml while Cloudflare
+# Worker build settings may still reference this path.
+name = "sports-research-api"
+main = "src/index.ts"
+compatibility_date = "2026-10-09"
+workers_dev = true
+preview_urls = false
+
+[ai]
+binding = "AI"
+
+[[kv_namespaces]]
+binding = "SPORTS_DATA"
+id = "86f752c09dda47cc91f6109a0bb03373"
+
+[[ratelimits]]
+name = "MARKET_RATE_LIMITER"
+namespace_id = "941001"
+
+  [ratelimits.simple]
+  limit = 60
+  period = 60
+
+[[ratelimits]]
+name = "SUMMARY_RATE_LIMITER"
+namespace_id = "941002"
+
+  [ratelimits.simple]
+  limit = 8
+  period = 60
+
+[[ratelimits]]
+name = "INGEST_RATE_LIMITER"
+namespace_id = "941003"
+
+  [ratelimits.simple]
+  limit = 4
+  period = 60

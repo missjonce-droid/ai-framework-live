@@ -53,7 +53,10 @@ will own the Worker:
    Wrangler creates the `AI` binding and the configured rate-limit bindings.
    The Worker uses `workers.dev`; this does not require changing GoDaddy DNS
    or the existing Pages custom-domain records.
-   The Wrangler configuration is at the repository root. Configure the
+   The canonical Wrangler configuration is at the repository root. The
+   `worker/wrangler.toml` file is a compatibility copy for Cloudflare Worker
+   builds still referencing the previous config path; keep its bindings and
+   limits aligned with the root configuration. Configure the
    `sports-research-api` Cloudflare Workers Build with root directory `/`,
    deploy command `npx wrangler deploy --config wrangler.toml`, and production
    branch `main` so builds use this configuration from the default branch.
