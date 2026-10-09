@@ -73,6 +73,8 @@ const MAX_BOOKMAKERS = 25;
 const MAX_OUTCOMES = 4;
 const MAX_SUMMARY_BYTES = 4_000;
 const MAX_FEED_AGE_SECONDS = 12 * 60 * 60;
+const UNSAFE_SUMMARY_PATTERN =
+  /\b(?:predict(?:ion|ed|s|ing)?|forecast(?:s|ed|ing)?|project(?:ed|ion|s|ing)?|winner|will win|pick(?:s)?|wager(?:s|ed|ing)?|betting advice|score|probabilit(?:y|ies)|true chance|chance|likely|favorite|favourite|underdog)\b|\b\d+(?:\.\d+)?\s*%/i;
 const ALLOWED_ORIGINS = new Set([
   "https://ai-framework.io",
   "https://www.ai-framework.io",
@@ -472,6 +474,7 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
     JSON.stringify(marketContext),
   ].join("\n\n");
   let aiResult: unknown;
+  let aiFailed = false;
   try {
     aiResult = await env.AI.run(MODEL, {
       messages: [
@@ -490,7 +493,7 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
       "Workers AI summary request failed:",
       error instanceof Error ? error.message : "Unknown error",
     );
-    return jsonResponse(502, { error: "Cloudflare Workers AI could not create a market summary." }, origin);
+    aiFailed = true;
   }
   const rawSummary =
     typeof aiResult === "string"
@@ -499,26 +502,27 @@ async function aiSummary(request: Request, env: Env, origin: string | null): Pro
         ? String((aiResult as { response: unknown }).response || "")
         : "";
   const summary = rawSummary.replace(/\s+/g, " ").trim().slice(0, 800);
-  if (!summary) return jsonResponse(502, { error: "Workers AI returned an empty market summary." }, origin);
-  if (
-    /\b(?:predict(?:ion|ed|s|ing)?|forecast(?:s|ed|ing)?|project(?:ed|ion|s|ing)?|winner|will win|pick(?:s)?|wager(?:s|ed|ing)?|betting advice|score|probabilit(?:y|ies)|true chance|chance|likely|favorite|favourite|underdog)\b|\b\d+(?:\.\d+)?\s*%/i.test(
-      summary,
-    )
-  ) {
-    return jsonResponse(502, {
-      error: "Generated text did not meet the market-context-only safety checks.",
-    }, origin);
-  }
+  const aiSummaryIsSafe = !aiFailed && Boolean(summary) && !UNSAFE_SUMMARY_PATTERN.test(summary);
+  const finalSummary = aiSummaryIsSafe
+    ? summary
+    : `This event's feed includes data from ${event.bookmakers.length} listed bookmakers. The board shows moneyline, point spread, and game total markets where available.`;
+  const fallbackReason = aiFailed
+    ? "Workers AI could not generate text"
+    : summary
+      ? "AI text did not pass the safety checks"
+      : "Workers AI returned no usable text";
 
   const result = {
-    mode: "ai-market-context-summary",
-    model: MODEL,
+    mode: aiSummaryIsSafe ? "ai-market-context-summary" : "market-data-context-summary",
+    summarySource: aiSummaryIsSafe ? "workers-ai" : "market-data-fallback",
+    ...(aiSummaryIsSafe ? { model: MODEL } : {}),
     source: feed.source,
     eventId,
     fetchedAt: feed.fetchedAt,
-    summary,
-    notice:
-      "AI-generated context about the supplied bookmaker snapshot only. It is not a statistically validated forecast, score projection, prediction, or betting advice. Market-implied percentages include vig.",
+    summary: finalSummary,
+    notice: aiSummaryIsSafe
+      ? "AI-generated context about the supplied bookmaker snapshot only. It is not a statistically validated forecast, score projection, prediction, or betting advice. Market-implied percentages include vig."
+      : `${fallbackReason}, so this neutral summary was assembled from the current event feed only. It is not a forecast, prediction, or betting advice.`,
   };
   const encoded = JSON.stringify(result);
   if (new TextEncoder().encode(encoded).byteLength <= MAX_SUMMARY_BYTES) {

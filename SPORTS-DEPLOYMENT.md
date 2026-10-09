@@ -21,7 +21,9 @@ the existing GitHub-connected build; the Worker is deployed separately.
   score forecasts.
 - Workers AI (`@cf/meta/llama-3.1-8b-instruct-fp8`, verified in Cloudflare's
   current model catalog) produces a short contextual paraphrase of the
-  supplied market snapshot. It is not a validated prediction. AI summaries
+  supplied market snapshot. Unsafe or empty generated text is replaced by a
+  clearly labeled, data-derived summary, including when Workers AI is
+  unavailable. Neither summary is a validated prediction, and AI summaries
   can be inaccurate.
 - No payment or premium checkout is configured.
 
@@ -51,16 +53,26 @@ will own the Worker:
    Wrangler creates the `AI` binding and the configured rate-limit bindings.
    The Worker uses `workers.dev`; this does not require changing GoDaddy DNS
    or the existing Pages custom-domain records.
-   The Wrangler configuration is at the repository root. Configure the
+   The canonical Wrangler configuration is at the repository root. The
+   `worker/wrangler.toml` file is a compatibility copy for Cloudflare Worker
+   builds still referencing the previous config path; keep its bindings and
+   limits aligned with the root configuration. Configure the
    `sports-research-api` Cloudflare Workers Build with root directory `/`,
    deploy command `npx wrangler deploy --config wrangler.toml`, and production
    branch `main` so builds use this configuration from the default branch.
-   This Worker build setting is separate from the Pages project
-   settings. The `previews` block is intentionally empty: previews
-   do not inherit production bindings, and Cloudflare preview URLs are disabled
-   for this Worker. The pull-request check validates the build, but it does not
-   provide a live API preview. To enable one, configure separate preview KV and
-   rate-limit resources, the AI binding, and a preview ingest secret first.
+   Set the **Previews Base** command to
+   `npx wrangler deploy --dry-run --config worker/wrangler.toml`. This checks
+   the Worker bundle without publishing a preview or sharing production
+   bindings; keep preview URLs disabled with `preview_urls = false`. Worker
+   build settings are separate from the Pages project settings.
+   Both Wrangler configs also include an intentionally empty `previews` block
+   for compatibility with Cloudflare builds still invoking the older
+   `npx wrangler preview` command. If Cloudflare invokes that older command, it
+   creates a branch Preview without runtime bindings; it is not a dry run or a
+   functional Preview. Preview URLs remain disabled, and the empty block
+   prevents sharing production resources. Do not add production KV, rate limits,
+   or secrets to it. Configure separate test resources before enabling
+   functional branch previews.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:

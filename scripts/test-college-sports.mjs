@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { runSportsFetch } from "../data-fetcher/index.js";
 import worker from "../worker/src/index.ts";
 
-const fetchedAt = "2026-10-08T18:00:00.000Z";
+const fetchedAt = new Date().toISOString();
 const providerFixture = [
   {
     id: "event_123",
@@ -234,11 +234,29 @@ summaryAllowed = false;
 assert.equal((await request(summaryUrl)).status, 429);
 summaryAllowed = true;
 const unsafeFeed = JSON.parse(values.get("college-football:latest"));
-unsafeFeed.fetchedAt = "2026-10-08T18:01:00.000Z";
+unsafeFeed.fetchedAt = new Date(Date.parse(fetchedAt) + 1_000).toISOString();
 values.set("college-football:latest", JSON.stringify(unsafeFeed));
 env.AI.run = async () => ({ response: "The home team has a 60% chance to win." });
 const unsafeSummary = await request(summaryUrl);
-assert.equal(unsafeSummary.status, 502, "unsafe forecast-like AI text must not be published");
+assert.equal(unsafeSummary.status, 200, "unsafe AI text should fall back to a safe feed summary");
+const fallbackSummary = await unsafeSummary.json();
+assert.equal(fallbackSummary.mode, "market-data-context-summary");
+assert.equal(fallbackSummary.summarySource, "market-data-fallback");
+assert.equal(fallbackSummary.model, undefined);
+assert.ok(fallbackSummary.summary.includes("2 listed bookmakers"));
+assert.equal(fallbackSummary.summary.includes("60%"), false);
+assert.ok(fallbackSummary.notice.includes("assembled from the current event feed"));
+unsafeFeed.fetchedAt = new Date(Date.parse(fetchedAt) + 2_000).toISOString();
+values.set("college-football:latest", JSON.stringify(unsafeFeed));
+env.AI.run = async () => {
+  throw new Error("model unavailable");
+};
+const unavailableSummary = await request(summaryUrl);
+assert.equal(unavailableSummary.status, 200, "AI service errors should fall back to a safe feed summary");
+const unavailableSummaryBody = await unavailableSummary.json();
+assert.equal(unavailableSummaryBody.summarySource, "market-data-fallback");
+assert.ok(unavailableSummaryBody.notice.includes("Workers AI could not generate text"));
+assert.equal(unavailableSummaryBody.summary.includes("model unavailable"), false);
 env.AI.run = async () => ({ response: "The current price range differs moderately among contributing books." });
 ingestAllowed = false;
 assert.equal((await request("/internal/college-football/ingest", {
@@ -314,8 +332,18 @@ assert.ok(workflow.includes("workflow_dispatch:"));
 assert.ok(workflow.includes("secrets.ODDS_API_KEY"));
 assert.ok(workflow.includes("secrets.SPORTS_INGEST_TOKEN"));
 const wrangler = fs.readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
+const legacyWrangler = fs.readFileSync(new URL("../worker/wrangler.toml", import.meta.url), "utf8");
 assert.ok(wrangler.includes('name = "sports-research-api"'));
+assert.ok(wrangler.includes('main = "worker/src/index.ts"'));
+assert.ok(wrangler.includes("preview_urls = false"));
+assert.ok(wrangler.includes("previews = {}"));
 assert.ok(wrangler.includes('binding = "SPORTS_DATA"'));
 assert.ok(wrangler.includes('namespace_id = "941001"'));
+assert.ok(legacyWrangler.includes('name = "sports-research-api"'));
+assert.ok(legacyWrangler.includes('main = "src/index.ts"'));
+assert.ok(legacyWrangler.includes("preview_urls = false"));
+assert.ok(legacyWrangler.includes("previews = {}"));
+assert.ok(legacyWrangler.includes('binding = "SPORTS_DATA"'));
+assert.ok(legacyWrangler.includes('namespace_id = "941001"'));
 
 console.log("College sports ingestion, Worker API, CORS, limits, and frontend tests passed.");
