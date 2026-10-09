@@ -397,7 +397,7 @@ ${sitemapRoutes
 </urlset>
 `;
 
-fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap);
+fs.writeFileSync(path.join(root, "sitemap.xml"), sitemap.replace("</urlset>", "<url><loc>https://ai-framework.io/start-here/</loc></url>\n</urlset>"));
 
 console.log(
   JSON.stringify(
