@@ -1,5 +1,5 @@
-// Netlify Function: rewrites a rough, vague prompt into a genuinely good
-// one using Claude.
+// Cloudflare Pages Function: rewrites a rough, vague prompt into a genuinely
+// good one using Claude.
 //
 // Prompt Lab previously ran on regex intent-detection against a set of
 // hand-written templates - it could only ever produce one of a fixed number
@@ -10,8 +10,7 @@
 // whenever this function is unavailable (no API key, rate limited, network
 // failure), so the page never ends up with a dead button.
 //
-// Requires the ANTHROPIC_API_KEY environment variable (Netlify dashboard ->
-// Site configuration -> Environment variables).
+// Requires the ANTHROPIC_API_KEY Pages environment variable.
 //
 // Cost control: small max_tokens budget per request, plus a soft per-browser
 // daily cap enforced client-side. The real backstop is the Anthropic

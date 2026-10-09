@@ -1,0 +1,31 @@
+name: Fetch college football odds
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: college-football-odds-ingest
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Fetch and ingest current bookmaker odds
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          SPORTS_INGEST_TOKEN: ${{ secrets.SPORTS_INGEST_TOKEN }}
+          SPORTS_INGEST_URL: ${{ vars.SPORTS_INGEST_URL }}
+        run: node data-fetcher/index.js

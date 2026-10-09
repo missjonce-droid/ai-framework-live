@@ -4,9 +4,8 @@
 == Small additive fixes layered on top of the compiled bundle in
 == /static/css/main.<hash>.css, which we do not have the source for.
 ==
-== This file is hand-edited and deliberately NOT content-hashed, so
-== it is excluded from the immutable cache rules in netlify.toml and
-== will always revalidate.
+== This file is hand-edited and deliberately NOT content-hashed, so it
+== can be revalidated independently from the immutable hashed bundle.
 ==
 == Loaded last in index.html so it wins on equal specificity.
 ============================================================ */

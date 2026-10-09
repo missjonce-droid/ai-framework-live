@@ -8,10 +8,10 @@
 // hand-written static homepage with no #root and no bundle, so those
 // 3,000+ links silently rendered the homepage instead of going anywhere.
 //
-// /go/<slug> is now an edge redirect straight to the tool's own site,
-// which is faster than booting the bundle to call location.replace and
-// works with JavaScript disabled. /alternatives/<slug> still needs the
-// router, so it rewrites to app.html, the SPA shell.
+// /go/<slug> is an edge redirect straight to the tool's own site, which is
+// faster than booting the bundle to call location.replace and works with
+// JavaScript disabled. /alternatives/<slug> still needs the router, so it
+// rewrites to app.html, the SPA shell.
 //
 // Run: node scripts/generate-redirects.mjs
 
@@ -133,28 +133,20 @@ const width = outboundRules.reduce(
   (widest, [from]) => Math.max(widest, from.length),
   0,
 );
-const outboundBlock = outboundRules
-  .map(([from, to]) => `${from.padEnd(width)}  ${to}  302`)
-  .join("\n");
+const outboundLines = outboundRules
+  .map(([from, to]) => `${from.padEnd(width)}  ${to}  302`);
+const outboundBlock = outboundLines.join("\n");
 
-const header = `# Netlify redirects for AI Framework.
+const header = `# Cloudflare Pages redirects for AI Framework.
 #
 # GENERATED FILE - edit scripts/generate-redirects.mjs and re-run
 #   node scripts/generate-redirects.mjs
 #
-# Netlify serves an existing static file before applying a rewrite, so the
-# SPA catch-all at the bottom cannot shadow the real pages, PDFs, or hashed
-# bundles. Everything above it exists for paths that have no file of their
-# own.
+# Pages Functions under functions/api handle /api/* directly.
+# Static files are served by Pages; these rules provide URL aliases and
+# rewrites for paths that do not have a corresponding file.
 
-# API endpoints, backed by netlify/functions/*.mjs.
-/api/ai-news           /.netlify/functions/ai-news           200
-/api/build-framework   /.netlify/functions/build-framework   200
-/api/fix-prompt        /.netlify/functions/fix-prompt        200
-
-# Downloads and standalone pages serve their own files.
-/vault/*               /vault/:splat                         200
-/downloads/*           /downloads/:splat                     200
+# Standalone pages and directory index aliases.
 /vault-thank-you       /vault-thank-you/index.html           200
 /playbooks             /playbooks/index.html                 200
 /tutorials             /tutorials/index.html                 200
@@ -170,15 +162,15 @@ const header = `# Netlify redirects for AI Framework.
 /the-receipt/          /receipt.html                         200
 /the-receipt.html      /receipt.html                         200
 /news                  /news.html                            200
+/sports-matchup        /sports-matchup.html                  200
+/calculator            /calculator/index.html                200
+/sports-research       /frontend/index.html                  200
+/sports-research/      /frontend/index.html                  200
 
-# Client-side routes with no file of their own. These rewrite to app.html,
-# the SPA shell, because index.html is the static homepage and carries
-# neither #root nor the bundle, so the router cannot start there. The
-# prerendered /tool, /category, /creator and /company pages are real files
-# and are served directly, ahead of any rule here.
+# Static client-side route aliases rewrite to app.html, the SPA shell,
+# because index.html is a static homepage and carries neither #root nor the
+# bundle, so the router cannot start there.
 /alternatives          /app.html                             200
-/alternatives/*        /app.html                             200
-/discover/*            /app.html                             200
 /tree                  /app.html                             200
 /advanced              /advanced/index.html                  200
 
@@ -187,15 +179,39 @@ const header = `# Netlify redirects for AI Framework.
 # can be corrected without a cached permanent redirect getting in the way.
 `;
 
-const footer = `
+const dynamicRules = `
 
-# SPA fallback - must stay last so it can't swallow the rules above.
-/*                     /index.html                           200
+# Dynamic routes must follow static routes in Cloudflare Pages.
+/alternatives/*        /app.html                             200
 `;
+
+function rulesFrom(contents) {
+  return contents
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"));
+}
+
+const staticRuleCount = rulesFrom(header).length + outboundRules.length;
+const dynamicRuleCount = rulesFrom(dynamicRules).length;
+const overlongRule = [
+  ...rulesFrom(header),
+  ...outboundLines,
+  ...rulesFrom(dynamicRules),
+].find((line) => line.length > 1000);
+
+if (staticRuleCount > 2000 || dynamicRuleCount > 100) {
+  throw new Error(
+    `Generated redirects exceed Cloudflare Pages limits (${staticRuleCount} static, ${dynamicRuleCount} dynamic; maximum 2000 static and 100 dynamic).`,
+  );
+}
+if (overlongRule) {
+  throw new Error("A generated redirect exceeds Cloudflare Pages' 1000-character limit.");
+}
 
 fs.writeFileSync(
   path.join(root, "_redirects"),
-  `${header}${outboundBlock}${footer}`,
+  `${header}${outboundBlock}${dynamicRules}`,
 );
 
 console.log(

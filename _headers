@@ -1,0 +1,12 @@
+/static/js/main.cd845d6d.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/static/css/main.fe123445.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Strict-Transport-Security: max-age=31536000
