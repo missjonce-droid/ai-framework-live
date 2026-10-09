@@ -194,9 +194,10 @@
   function addNavigationLinks() {
     var nav = document.querySelector('.nav-links');
     if (!nav) return;
+    Array.prototype.forEach.call(nav.querySelectorAll('a[href="/sports-research/"]'), function (link) { link.remove(); });
     nav.id = 'framework-navigation';
     nav.setAttribute('aria-label', 'Main navigation');
-    var items = [['/build-my-framework/', 'Build a framework'], ['/promptlab', 'Prompt Lab'], ['/tutorials/', 'Tutorials'], ['/sports-research/', 'College Football Markets']];
+    var items = [['/build-my-framework/', 'Build a framework'], ['/promptlab', 'Prompt Lab'], ['/tutorials/', 'Tutorials']];
     items.forEach(function (item) {
       if (!nav.querySelector('a[href="' + item[0] + '"]')) {
         var link = document.createElement('a');
@@ -226,6 +227,19 @@
       document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { close(); toggle.focus(); } });
       parent.insertBefore(toggle, nav);
     }
+  }
+
+  function addSecondaryResources() {
+    var footer = document.querySelector('footer');
+    if (!footer || footer.querySelector('.framework-secondary-resources')) return;
+    var resources = document.createElement('nav');
+    resources.className = 'framework-secondary-resources';
+    resources.setAttribute('aria-label', 'More resources');
+    var label = document.createElement('span');
+    label.textContent = 'More resources';
+    var link = document.createElement('a');
+    link.href = '/sports-research/'; link.textContent = 'College Football Markets';
+    resources.appendChild(label); resources.appendChild(link); footer.appendChild(resources);
   }
 
   function improveHomepage() {
@@ -566,6 +580,7 @@
 
   function applyEnhancements() {
     addNavigationLinks();
+    addSecondaryResources();
     simplifyNav();
     improveHomepage();
     simplifyCategoryBrowse();
