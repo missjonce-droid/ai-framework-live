@@ -187,7 +187,7 @@ function requireWorkerUrl(value) {
     url.search ||
     url.hash ||
     url.pathname !== "/internal/college-football/ingest" ||
-    !url.hostname.startsWith("ai-framework-college-sports.") ||
+    !url.hostname.startsWith("sports-research-api.") ||
     !url.hostname.endsWith(".workers.dev")
   ) {
     throw new Error(

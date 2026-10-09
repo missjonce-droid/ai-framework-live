@@ -1,5 +1,5 @@
-name = "ai-framework-college-sports"
-main = "src/index.ts"
+name = "sports-research-api"
+main = "worker/src/index.ts"
 compatibility_date = "2026-10-08"
 workers_dev = true
 previews = {}

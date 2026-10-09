@@ -30,45 +30,43 @@ the existing GitHub-connected build; the Worker is deployed separately.
 Use Node.js 24 and Wrangler 4.36.0 or newer. In the Cloudflare account that
 will own the Worker:
 
-1. Create a KV namespace:
+1. The `SPORTS_DATA` KV namespace is already created for this account. If
+   setting up a different account, create one with:
 
    ```sh
    npx wrangler kv namespace create SPORTS_DATA
    ```
 
-2. Put the returned **production namespace ID** into
-   `worker/wrangler.toml`, replacing
-   `REPLACE_WITH_PRODUCTION_KV_NAMESPACE_ID`. The three rate-limit
-   `namespace_id` values in that file must be unique positive integers in your
-   Cloudflare account. If any are already in use, change them to unused IDs.
-   Rate-limit bindings require Wrangler 4.36.0 or later.
+2. For another Cloudflare account, put its returned **production namespace ID**
+   into `wrangler.toml`. The three rate-limit `namespace_id` values in that
+   file must be unique positive integers in your account. If any are already in
+   use, change them to unused IDs. Rate-limit bindings require Wrangler 4.36.0
+   or later.
 3. From the repository root, deploy the Worker:
 
    ```sh
-   npx wrangler deploy --config worker/wrangler.toml
+   npx wrangler deploy
    ```
 
    Wrangler creates the `AI` binding and the configured rate-limit bindings.
    The Worker uses `workers.dev`; this does not require changing GoDaddy DNS
    or the existing Pages custom-domain records.
-   If deploying through Cloudflare Workers Builds with the repository root
-   (`/`) as its root directory, use
-   `npx wrangler deploy --config worker/wrangler.toml` for **Production** and
-   `npx wrangler preview --config worker/wrangler.toml` for **Previews Base**.
-   The explicit config path ensures both commands load the nested Worker
-   configuration.
+   The Wrangler configuration is at the repository root, matching the
+   Cloudflare Workers Builds commands (`npx wrangler deploy` and
+   `npx wrangler preview`) so both production and pull-request previews load
+   the same bindings and preview settings.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:
 
    ```sh
-   npx wrangler secret put SPORTS_INGEST_TOKEN --config worker/wrangler.toml
+   npx wrangler secret put SPORTS_INGEST_TOKEN
    ```
 
    Enter the same value securely as the GitHub Actions repository secret in
    the next section. Never put it in a GitHub Actions variable.
 5. Note the Worker URL printed by Wrangler, for example
-   `https://ai-framework-college-sports.<account-subdomain>.workers.dev`.
+   `https://sports-research-api.<account-subdomain>.workers.dev`.
    Keep the URL; it is used to configure both the workflow and the site.
 
 The Worker accepts browser requests only from `https://ai-framework.io` and
@@ -92,7 +90,7 @@ add:
 | `SPORTS_INGEST_URL` | Repository variable | The Worker URL plus `/internal/college-football/ingest` |
 
 `SPORTS_INGEST_URL` must be the HTTPS
-`https://ai-framework-college-sports.<account-subdomain>.workers.dev/internal/college-football/ingest`
+`https://sports-research-api.<account-subdomain>.workers.dev/internal/college-football/ingest`
 URL. The workflow never prints the provider key or bearer token. The provider
 key is sent only to The Odds API; the ingest token is sent only to the
 configured Worker URL.
@@ -119,7 +117,7 @@ After deploying the Worker, replace the placeholder in
 `frontend/index.html`:
 
 ```html
-<meta name="sports-api-base" content="https://ai-framework-college-sports.<YOUR_ACCOUNT_SUBDOMAIN>.workers.dev">
+<meta name="sports-api-base" content="https://sports-research-api.<YOUR_ACCOUNT_SUBDOMAIN>.workers.dev">
 ```
 
 with the exact HTTPS `workers.dev` Worker URL. Commit and push that change to

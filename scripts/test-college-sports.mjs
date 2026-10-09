@@ -161,7 +161,7 @@ const fetcherResult = await runSportsFetch(
   {
     ODDS_API_KEY: "provider-secret",
     SPORTS_INGEST_TOKEN: "private-ingest-token",
-    SPORTS_INGEST_URL: "https://ai-framework-college-sports.account.workers.dev/internal/college-football/ingest",
+    SPORTS_INGEST_URL: "https://sports-research-api.account.workers.dev/internal/college-football/ingest",
   },
   async (input, options = {}) => {
     const url = new URL(input);
@@ -293,7 +293,7 @@ await assert.rejects(
     {
       ODDS_API_KEY: "key",
       SPORTS_INGEST_TOKEN: "token",
-      SPORTS_INGEST_URL: "https://ai-framework-college-sports.account.workers.dev/internal/college-football/ingest",
+      SPORTS_INGEST_URL: "https://sports-research-api.account.workers.dev/internal/college-football/ingest",
     },
     async () =>
       new Response("provider rejected key", {
@@ -313,8 +313,8 @@ assert.ok(workflow.includes('cron: "0 */6 * * *"'));
 assert.ok(workflow.includes("workflow_dispatch:"));
 assert.ok(workflow.includes("secrets.ODDS_API_KEY"));
 assert.ok(workflow.includes("secrets.SPORTS_INGEST_TOKEN"));
-const wrangler = fs.readFileSync(new URL("../worker/wrangler.toml", import.meta.url), "utf8");
-assert.ok(wrangler.includes('name = "ai-framework-college-sports"'));
+const wrangler = fs.readFileSync(new URL("../wrangler.toml", import.meta.url), "utf8");
+assert.ok(wrangler.includes('name = "sports-research-api"'));
 assert.ok(wrangler.includes('binding = "SPORTS_DATA"'));
 assert.ok(wrangler.includes('namespace_id = "941001"'));
 
