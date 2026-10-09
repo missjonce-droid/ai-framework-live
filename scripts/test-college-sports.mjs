@@ -3,7 +3,7 @@ import fs from "node:fs";
 import { runSportsFetch } from "../data-fetcher/index.js";
 import worker from "../worker/src/index.ts";
 
-const fetchedAt = "2026-10-08T18:00:00.000Z";
+const fetchedAt = new Date().toISOString();
 const providerFixture = [
   {
     id: "event_123",
@@ -234,7 +234,7 @@ summaryAllowed = false;
 assert.equal((await request(summaryUrl)).status, 429);
 summaryAllowed = true;
 const unsafeFeed = JSON.parse(values.get("college-football:latest"));
-unsafeFeed.fetchedAt = "2026-10-08T18:01:00.000Z";
+unsafeFeed.fetchedAt = new Date(Date.parse(fetchedAt) + 1_000).toISOString();
 values.set("college-football:latest", JSON.stringify(unsafeFeed));
 env.AI.run = async () => ({ response: "The home team has a 60% chance to win." });
 const unsafeSummary = await request(summaryUrl);
