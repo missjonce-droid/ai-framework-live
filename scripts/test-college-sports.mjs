@@ -238,7 +238,14 @@ unsafeFeed.fetchedAt = "2026-10-08T18:01:00.000Z";
 values.set("college-football:latest", JSON.stringify(unsafeFeed));
 env.AI.run = async () => ({ response: "The home team has a 60% chance to win." });
 const unsafeSummary = await request(summaryUrl);
-assert.equal(unsafeSummary.status, 502, "unsafe forecast-like AI text must not be published");
+assert.equal(unsafeSummary.status, 200, "unsafe AI text should fall back to a safe feed summary");
+const fallbackSummary = await unsafeSummary.json();
+assert.equal(fallbackSummary.mode, "market-data-context-summary");
+assert.equal(fallbackSummary.summarySource, "market-data-fallback");
+assert.equal(fallbackSummary.model, undefined);
+assert.ok(fallbackSummary.summary.includes("2 listed bookmakers"));
+assert.equal(fallbackSummary.summary.includes("60%"), false);
+assert.ok(fallbackSummary.notice.includes("assembled from the current event feed"));
 env.AI.run = async () => ({ response: "The current price range differs moderately among contributing books." });
 ingestAllowed = false;
 assert.equal((await request("/internal/college-football/ingest", {

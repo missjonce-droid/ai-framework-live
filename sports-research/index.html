@@ -153,8 +153,11 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
     fetch(base+"/api/college-football/summary?eventId="+encodeURIComponent(eventId),{headers:{accept:"application/json"}})
       .then(function(response){return response.json().then(function(body){if(!response.ok)throw new Error(body.error||"AI summary request failed.");return body;});})
       .then(function(body){
-        container.replaceChildren(node("p","",body.summary));
-        container.appendChild(node("p","muted",body.notice));
+        container.replaceChildren(
+          node("p","muted",body.summarySource==="market-data-fallback"?"Market-data summary":"AI-generated summary"),
+          node("p","",body.summary),
+          node("p","muted",body.notice)
+        );
       })
       .catch(function(error){container.replaceChildren(node("p","error",error.message||"AI summary unavailable."));})
       .finally(function(){button.disabled=false;});
@@ -180,7 +183,7 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
       card.appendChild(node("p","event-foot",event.bookmakers.length+" bookmakers · latest provider update "+(bookUpdated?new Date(bookUpdated).toLocaleString():"not available")));
       card.appendChild(renderBookmakerPrices(event));
       var summary=node("section","summary");
-      summary.setAttribute("aria-label","AI market-context summary");
+      summary.setAttribute("aria-label","Market-context summary");
       var summaryButton=node("button","","Generate AI market summary");
       summaryButton.type="button";
       summaryButton.addEventListener("click",function(){showSummary(event.eventId,summary,summaryButton);});

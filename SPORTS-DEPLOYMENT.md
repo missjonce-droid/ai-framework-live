@@ -21,8 +21,9 @@ the existing GitHub-connected build; the Worker is deployed separately.
   score forecasts.
 - Workers AI (`@cf/meta/llama-3.1-8b-instruct-fp8`, verified in Cloudflare's
   current model catalog) produces a short contextual paraphrase of the
-  supplied market snapshot. It is not a validated prediction. AI summaries
-  can be inaccurate.
+  supplied market snapshot. Unsafe or empty generated text is replaced by a
+  clearly labeled, data-derived summary; an AI service error remains an error.
+  Neither summary is a validated prediction, and AI summaries can be inaccurate.
 - No payment or premium checkout is configured.
 
 ## 1. Create and configure the Worker
