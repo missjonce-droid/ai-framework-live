@@ -51,9 +51,10 @@ will own the Worker:
    Wrangler creates the `AI` binding and the configured rate-limit bindings.
    The Worker uses `workers.dev`; this does not require changing GoDaddy DNS
    or the existing Pages custom-domain records.
-   If deploying through Cloudflare Workers Builds, set its root directory to
-   `/worker` so both `wrangler deploy` and the pull-request preview command
-   load `wrangler.toml` from this directory.
+   If deploying through Cloudflare Workers Builds, set the root directory to
+   `/worker` in both **Production** and **Previews Base** build settings, so
+   `wrangler deploy` and the pull-request preview command load `wrangler.toml`
+   from this directory.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:
