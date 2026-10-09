@@ -1,18 +1,24 @@
 {
   "short_name": "AI Framework",
-  "name": "AI Framework — AI Tool Directory and Framework Builder",
+  "name": "AI Framework \u2014 AI Tool Directory and Framework Builder",
   "description": "Find, compare, and combine AI tools into a practical system for your exact goal.",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ],
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#0b1220",
-  "background_color": "#0b1220",
+  "theme_color": "#101722",
+  "background_color": "#101722",
   "orientation": "any",
-  "categories": ["productivity", "business", "education", "utilities"]
+  "categories": [
+    "productivity",
+    "business",
+    "education",
+    "utilities"
+  ]
 }

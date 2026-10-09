@@ -4,6 +4,7 @@
   var SITE = "https://ai-framework.io";
   var SAVED_KEY = "ai_fw_saved_tools";
   var SOCIAL_IMAGE = SITE + "/social-card.png";
+  var PROMPT_LAB_URL = "/promptlab"; // the live route (no dash)
 
   function text(element) {
     return (element && element.textContent ? element.textContent : "")
@@ -158,6 +159,10 @@
         "Discover Useful, New & Under-the-Radar AI Tools | AI Framework",
         "Explore editor picks, hidden gems, beginner-friendly tools, operator stacks, and practical AI discoveries.",
       ],
+      "/promptlab": [
+        "Prompt Lab — Fix Your Prompt Free | AI Framework",
+        "Type your rough idea and watch it become a real prompt. Free AI dictionary and word upgrades included.",
+      ],
       "/submit": [
         "Submit an AI Tool for Editorial Review | AI Framework",
         "Submit an AI product, service, agent, or resource for consideration in the AI Framework directory.",
@@ -187,34 +192,39 @@
   }
 
   function addNavigationLinks() {
-    var nav = document.querySelector(".nav-links");
-    if (nav && !nav.querySelector('[href="/build-my-framework/"]')) {
-      var navLink = document.createElement("a");
-      navLink.href = "/build-my-framework/";
-      navLink.className = "framework-nav-link";
-      navLink.textContent = "Build My Framework";
-      nav.insertBefore(navLink, nav.firstChild);
-    }
-
-    if (nav && !nav.querySelector('[href="/prompt-lab"]')) {
-      var promptLabLink = document.createElement("a");
-      promptLabLink.href = "/prompt-lab";
-      promptLabLink.className = "promptlab-nav-link";
-      promptLabLink.textContent = "Prompt Lab";
-      var buildLink = nav.querySelector('[href="/build-my-framework/"]');
-      nav.insertBefore(promptLabLink, buildLink ? buildLink.nextSibling : nav.firstChild);
-    }
-
-    var homeActions = document.querySelector(".header-actions");
-    if (
-      homeActions &&
-      !homeActions.querySelector('[href="/build-my-framework/"]')
-    ) {
-      var homeLink = document.createElement("a");
-      homeLink.href = "/build-my-framework/";
-      homeLink.className = "pill-btn framework-home-button";
-      homeLink.textContent = "Build My Framework";
-      homeActions.insertBefore(homeLink, homeActions.firstChild);
+    var nav = document.querySelector('.nav-links');
+    if (!nav) return;
+    nav.id = 'framework-navigation';
+    nav.setAttribute('aria-label', 'Main navigation');
+    var items = [['/build-my-framework/', 'Build a framework'], ['/promptlab', 'Prompt Lab'], ['/tutorials/', 'Tutorials'], ['/sports-research/', 'College Football Markets']];
+    items.forEach(function (item) {
+      if (!nav.querySelector('a[href="' + item[0] + '"]')) {
+        var link = document.createElement('a');
+        link.href = item[0]; link.textContent = item[1]; nav.appendChild(link);
+      }
+    });
+    var home = nav.querySelector('a[href="/"]');
+    if (home && home.textContent === 'Tree') home.textContent = 'Home';
+    Array.prototype.forEach.call(nav.querySelectorAll('a[href]'), function (link) {
+      var active = link.getAttribute('href').replace(/\/+$/, '') === window.location.pathname.replace(/\/+$/, '');
+      link.classList.toggle('active', active);
+      if (active) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    var parent = nav.parentElement;
+    if (!parent.querySelector('.framework-menu-toggle')) {
+      var toggle = document.createElement('button');
+      toggle.type = 'button'; toggle.className = 'framework-menu-toggle';
+      toggle.textContent = 'Menu'; toggle.setAttribute('aria-controls', nav.id);
+      toggle.setAttribute('aria-expanded', 'false');
+      function close() { toggle.setAttribute('aria-expanded', 'false'); nav.classList.remove('is-open'); }
+      toggle.addEventListener('click', function () {
+        var open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open)); nav.classList.toggle('is-open', open);
+      });
+      nav.addEventListener('click', function (event) { if (event.target.closest('a')) close(); });
+      document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') { close(); toggle.focus(); } });
+      parent.insertBefore(toggle, nav);
     }
   }
 
@@ -243,17 +253,67 @@
       actions.insertBefore(builder, actions.firstChild);
     }
 
-    if (!actions.querySelector('[href="/prompt-lab"]')) {
-      var promptLab = document.createElement("a");
-      promptLab.href = "/prompt-lab";
-      promptLab.className = "clarity-link promptlab-hero-link";
-      promptLab.textContent = "Try Prompt Lab (free)";
-      var builderLink = actions.querySelector('[href="/build-my-framework/"]');
-      actions.insertBefore(promptLab, builderLink ? builderLink.nextSibling : actions.firstChild);
-    }
+    // One primary CTA above the fold. The Prompt Lab hint already lives next
+    // to the search bar (see addSearchHint), so the rest of the hero actions
+    // (category anchor, playbooks link, map toggle) are hidden via CSS.
+  }
 
-    var browse = actions.querySelector('a[href="#browse"]');
-    if (browse) browse.classList.remove("primary");
+  // Nav: Browse Tools, Build My Framework, Prompt Lab, Playbooks, and the
+  // college-football market board. CSS handles hiding and reordering the
+  // remaining links and fixes the "Directory" label text.
+  function simplifyNav() {
+    var browseLink = document.querySelector('.nav-links > a[href="/browse"]');
+    if (!browseLink || browseLink.getAttribute("data-framework-relabeled") === "true")
+      return;
+
+    var relabeled = false;
+    Array.prototype.forEach.call(browseLink.childNodes, function (node) {
+      if (node.nodeType === 3 && node.textContent.trim() === "Directory") {
+        node.textContent = " Browse Tools";
+        relabeled = true;
+      }
+    });
+    if (relabeled) browseLink.setAttribute("data-framework-relabeled", "true");
+  }
+
+  // Homepage: cap category tiles to 8 (CSS) and relabel the overflow link.
+  function simplifyCategoryBrowse() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/tree")
+      return;
+
+    var seeAll = document.querySelector(".cat-browse-all");
+    if (seeAll && seeAll.getAttribute("data-framework-relabeled") !== "true") {
+      seeAll.setAttribute("data-framework-relabeled", "true");
+      seeAll.textContent = "Browse all categories →";
+    }
+  }
+
+  function addSearchHint() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/browse")
+      return;
+
+    // On the homepage the hero has its own prominent search box
+    // (.clarity-search); that's the one "search bar" the task is about, not
+    // the smaller persistent one in the site header.
+    var input =
+      document.querySelector('.clarity-search input[placeholder*="earch"]') ||
+      document.querySelector('input[type="search"], input[placeholder*="earch"]');
+    if (!input) return;
+
+    var anchorPoint = input.closest("form") || input.parentElement;
+    if (!anchorPoint || anchorPoint.getAttribute("data-promptlab-hint") === "true")
+      return;
+    if (document.querySelector(".promptlab-search-hint")) return;
+
+    anchorPoint.setAttribute("data-promptlab-hint", "true");
+    var hint = document.createElement("div");
+    hint.className = "promptlab-search-hint";
+    hint.style.cssText = "margin-top:8px;font-size:14px;opacity:.85";
+    hint.innerHTML =
+      'Not sure what to type? <a href="' +
+      PROMPT_LAB_URL +
+      '" style="text-decoration:underline;text-underline-offset:3px;color:inherit">Fix your prompt free \u2192</a>';
+    anchorPoint.insertAdjacentElement("afterend", hint);
   }
 
   function removeEmptySocialProof() {
@@ -292,7 +352,8 @@
   }
 
   function setSavedTools(tools) {
-    localStorage.setItem(SAVED_KEY, JSON.stringify(tools));
+    try { localStorage.setItem(SAVED_KEY, JSON.stringify(tools)); return true; }
+    catch (error) { return false; }
   }
 
   function enhanceToolPage() {
@@ -303,6 +364,17 @@
     var heading = document.querySelector(".tool-page-title h1");
     var pageHead = document.querySelector(".tool-page-head");
     if (!heading || !pageHead) return;
+
+    // "← All tools" — the way back (friend-test fix #3)
+    if (!pageHead.querySelector(".framework-back-link")) {
+      var back = document.createElement("a");
+      back.href = "/";
+      back.className = "framework-back-link";
+      back.textContent = "\u2190 All tools";
+      back.style.cssText =
+        "display:inline-block;margin:0 0 10px;font-size:14px;opacity:.75;color:inherit;text-decoration:none";
+      pageHead.insertBefore(back, pageHead.firstChild);
+    }
 
     if (!pageHead.querySelector(".framework-tool-actions")) {
       var actions = document.createElement("div");
@@ -316,7 +388,7 @@
         var isSaved = getSavedTools().some(function (tool) {
           return tool.slug === slug;
         });
-        saveButton.textContent = isSaved ? "✓ Saved" : "＋ Save tool";
+        saveButton.textContent = isSaved ? "\u2713 Saved" : "\uFF0B Save tool";
         saveButton.classList.toggle("is-saved", isSaved);
         saveButton.setAttribute("aria-pressed", String(isSaved));
       }
@@ -331,7 +403,7 @@
         } else {
           saved.push({ slug: slug, name: text(heading) || slugToTitle(slug) });
         }
-        setSavedTools(saved);
+        if (!setSavedTools(saved)) { saveButton.textContent = "Storage unavailable"; return; }
         renderSaveState();
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
@@ -351,6 +423,42 @@
       renderSaveState();
     }
 
+    // Prominent "Visit [Tool] ↗" button (friend-test fix #2)
+    var actionsEl = pageHead.querySelector(".framework-tool-actions");
+    if (actionsEl && !actionsEl.querySelector(".framework-visit-btn")) {
+      var visitTarget =
+        document.querySelector(
+          '.tool-page-main a[href^="/go/"], .tool-page-head a[href^="/go/"], .tool-page a[href^="/go/"]',
+        ) ||
+        Array.prototype.filter.call(
+          document.querySelectorAll(
+            ".tool-page-main a[href], .tool-page-head a[href], .tool-page a[href], main a[href]",
+          ),
+          function (a) {
+            var href = a.getAttribute("href") || "";
+            return (
+              /visit/i.test(text(a)) ||
+              (a.getAttribute("target") === "_blank" && /^https?:/i.test(href))
+            );
+          },
+        )[0];
+
+      if (visitTarget) {
+        var visitHref = visitTarget.getAttribute("href");
+        var visit = document.createElement("a");
+        visit.href = visitHref;
+        if (/^https?:/i.test(visitHref)) {
+          visit.target = "_blank";
+          visit.rel = "noopener";
+        }
+        visit.className = "pill-btn lg primary framework-visit-btn";
+        visit.style.cssText = "font-weight:600";
+        visit.textContent =
+          "Visit " + (text(heading) || slugToTitle(slug)) + " \u2197";
+        actionsEl.insertBefore(visit, actionsEl.firstChild);
+      }
+    }
+
     var main = document.querySelector(".tool-page-main");
     if (main && !main.querySelector(".framework-trust-note")) {
       var about = main.querySelector("p");
@@ -358,10 +466,38 @@
         var note = document.createElement("div");
         note.className = "framework-trust-note";
         note.innerHTML =
-          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the tool’s official website before purchasing.";
+          "<strong>Editorial note:</strong> Features and pricing can change. Confirm important details on the tool\u2019s official website before purchasing.";
         about.insertAdjacentElement("afterend", note);
       }
     }
+  }
+
+  // Fallback for the dead "Create a framework" CTA (friend-test fix #1):
+  // if something that *says* it opens the framework builder is clicked but
+  // isn't a real link, send the user there anyway.
+  function fixDeadFrameworkCta() {
+    if (
+      document.documentElement.getAttribute("data-framework-cta-fix") === "true"
+    )
+      return;
+    document.documentElement.setAttribute("data-framework-cta-fix", "true");
+
+    document.addEventListener("click", function (event) {
+      var target = event.target;
+      if (!target || !target.closest) return;
+      if (target.closest("a[href]")) return; // real links work fine
+
+      var candidate = target.closest(
+        "button, [role='button'], .clarity-link, .pill-btn, span, div",
+      );
+      if (!candidate) return;
+
+      var label = text(candidate);
+      if (!label || label.length > 40) return;
+      if (/^(create|build)( a| my| your)? (ai )?framework/i.test(label)) {
+        window.location.href = "/build-my-framework/";
+      }
+    });
   }
 
   function trackUsefulActions() {
@@ -382,12 +518,31 @@
           tool_slug: slug,
           source_path: window.location.pathname,
         });
+      } else if (
+        link.classList.contains("framework-visit-btn") &&
+        /^https?:/i.test(href)
+      ) {
+        var toolMatch = window.location.pathname.match(/^\/tool\/([^/]+)/);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "outbound_tool_click",
+          tool_slug: toolMatch ? toolMatch[1] : "unknown",
+          source_path: window.location.pathname,
+        });
       }
 
       if (href.indexOf("/build-my-framework") === 0) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           event: "framework_builder_opened",
+          source_path: window.location.pathname,
+        });
+      }
+
+      if (href === PROMPT_LAB_URL) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: "promptlab_opened",
           source_path: window.location.pathname,
         });
       }
@@ -411,11 +566,40 @@
 
   function applyEnhancements() {
     addNavigationLinks();
+    simplifyNav();
     improveHomepage();
+    simplifyCategoryBrowse();
+    addSearchHint();
     removeEmptySocialProof();
     enhanceToolPage();
     improveRouteMetadata();
+    fixDeadFrameworkCta();
     trackUsefulActions();
+  }
+
+  // Re-apply on client-side navigation — the site is a single-page app,
+  // so route changes re-render the page without reloading this script.
+  function hookSpaNavigation() {
+    if (window.__fwNavHooked) return;
+    window.__fwNavHooked = true;
+
+    function onNavigate() {
+      applyEnhancements();
+      [150, 450, 1000, 2000].forEach(function (ms) {
+        window.setTimeout(applyEnhancements, ms);
+      });
+    }
+
+    ["pushState", "replaceState"].forEach(function (methodName) {
+      var original = history[methodName];
+      if (typeof original !== "function") return;
+      history[methodName] = function () {
+        var result = original.apply(this, arguments);
+        onNavigate();
+        return result;
+      };
+    });
+    window.addEventListener("popstate", onNavigate);
   }
 
   if (document.readyState === "loading") {
@@ -423,6 +607,7 @@
   } else {
     applyEnhancements();
   }
+  hookSpaNavigation();
 
   var attempts = 0;
   var timer = window.setInterval(function () {
@@ -455,3 +640,4 @@
     observer.disconnect();
   }, 12000);
 })();
+
