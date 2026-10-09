@@ -25,9 +25,6 @@
 /news                  /news.html                            200
 /sports-matchup        /sports-matchup.html                  200
 /calculator            /calculator/index.html                200
-/sports-research       /frontend/index.html                  200
-/sports-research/      /frontend/index.html                  200
-
 # Static client-side route aliases rewrite to app.html, the SPA shell,
 # because index.html is a static homepage and carries neither #root nor the
 # bundle, so the router cannot start there.

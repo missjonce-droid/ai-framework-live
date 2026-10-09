@@ -60,7 +60,7 @@ const oddsFunction = fs.readFileSync(
   "utf8",
 );
 const sportsResearch = fs.readFileSync(
-  path.join(root, "frontend", "index.html"),
+  path.join(root, "sports-research", "index.html"),
   "utf8",
 );
 const sportsWorker = fs.readFileSync(

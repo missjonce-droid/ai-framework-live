@@ -304,7 +304,7 @@ await assert.rejects(
   /The Odds API returned HTTP 401/,
 );
 
-const frontend = fs.readFileSync(new URL("../frontend/index.html", import.meta.url), "utf8");
+const frontend = fs.readFileSync(new URL("../sports-research/index.html", import.meta.url), "utf8");
 const frontendScript = frontend.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(frontendScript);
 assert.doesNotThrow(() => new Function(frontendScript[1]));
