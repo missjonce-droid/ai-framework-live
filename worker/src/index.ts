@@ -63,7 +63,7 @@ interface Env {
   SPORTS_INGEST_TOKEN: string;
 }
 
-const MODEL = "@cf/meta/llama-3.1-8b-instruct";
+const MODEL = "@cf/meta/llama-3.1-8b-instruct-fp8";
 const FEED_KEY = "college-football:latest";
 const SPORT_KEY = "americanfootball_ncaaf";
 const MAX_INGEST_BYTES = 850_000;

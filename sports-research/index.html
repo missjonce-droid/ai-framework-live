@@ -79,7 +79,7 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
     <input id="search" type="search" maxlength="80" placeholder="Search college teams" autocomplete="off">
     <button id="refresh" type="button">Refresh markets</button>
   </div>
-  <p id="status" class="status" role="status" aria-live="polite">Loading current bookmaker markets…</p>
+  <p id="status" class="status" role="status" aria-live="polite">Connecting to the live market feed…</p>
   <div id="events" aria-live="polite"></div>
 </main>
 <footer>
@@ -108,30 +108,30 @@ footer{padding:24px 0 40px;border-top:1px solid var(--border);color:var(--muted)
   function percent(value){
     return typeof value==="number"?value.toFixed(1)+"%":"Unavailable";
   }
+  function renderBookmakerPrices(event){
+    var details=node("details","event-foot");
+    details.appendChild(node("summary","","View listed bookmaker prices"));
+    event.bookmakers.forEach(function(book){
+      details.appendChild(node("h3","",book.title+" · updated "+new Date(book.lastUpdate).toLocaleString()));
+      ["h2h","spreads","totals"].forEach(function(key){
+        var market=book.markets&&book.markets[key];
+        if(!market)return;
+        var prices=market.outcomes.map(function(outcome){
+          var line=typeof outcome.point==="number"?" ("+(outcome.point>0?"+":"")+outcome.point+")":"";
+          var odds=outcome.price>0?"+"+outcome.price:String(outcome.price);
+          return outcome.name+line+" "+odds;
+        }).join(" · ");
+        details.appendChild(node("p","",key+": "+prices));
+      });
+    });
+    return details;
+  }
   function renderMarket(title,data,formatPoint){
     var section=node("section","market");
     section.appendChild(node("h3","",title));
     if(!data||!data.outcomes||!data.outcomes.length){
       section.appendChild(node("p","muted","No current market data."));
       return section;
-    }
-    function renderBookmakerPrices(event){
-      var details=node("details","event-foot");
-      details.appendChild(node("summary","","View listed bookmaker prices"));
-      event.bookmakers.forEach(function(book){
-        details.appendChild(node("h3","",book.title+" · updated "+new Date(book.lastUpdate).toLocaleString()));
-        ["h2h","spreads","totals"].forEach(function(key){
-          var market=book.markets&&book.markets[key];
-          if(!market)return;
-          var prices=market.outcomes.map(function(outcome){
-            var line=typeof outcome.point==="number"?" ("+(outcome.point>0?"+":"")+outcome.point+")":"";
-            var odds=outcome.price>0?"+"+outcome.price:String(outcome.price);
-            return outcome.name+line+" "+odds;
-          }).join(" · ");
-          details.appendChild(node("p","",key+": "+prices));
-        });
-      });
-      return details;
     }
     var list=node("ul");
     data.outcomes.forEach(function(outcome){

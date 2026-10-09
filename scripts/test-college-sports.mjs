@@ -97,7 +97,7 @@ const env = {
   AI: {
     async run(model, input) {
       aiCalls += 1;
-      assert.equal(model, "@cf/meta/llama-3.1-8b-instruct");
+      assert.equal(model, "@cf/meta/llama-3.1-8b-instruct-fp8");
       assert.equal(input.max_tokens, 180);
       const aiInput = input.messages.map((message) => message.content).join("\n");
       assert.ok(aiInput.includes("Do not name teams or bookmakers"));
@@ -221,7 +221,7 @@ const summaryResponse = await request(summaryUrl, {
 });
 assert.equal(summaryResponse.status, 200);
 const summary = await summaryResponse.json();
-assert.equal(summary.model, "@cf/meta/llama-3.1-8b-instruct");
+assert.equal(summary.model, "@cf/meta/llama-3.1-8b-instruct-fp8");
 assert.ok(summary.notice.includes("not a statistically validated forecast"));
 assert.ok(summary.summary.includes("prices differ"));
 assert.equal(aiCalls, 1);
@@ -304,7 +304,7 @@ await assert.rejects(
   /The Odds API returned HTTP 401/,
 );
 
-const frontend = fs.readFileSync(new URL("../frontend/index.html", import.meta.url), "utf8");
+const frontend = fs.readFileSync(new URL("../sports-research/index.html", import.meta.url), "utf8");
 const frontendScript = frontend.match(/<script>([\s\S]*?)<\/script>/);
 assert.ok(frontendScript);
 assert.doesNotThrow(() => new Function(frontendScript[1]));
