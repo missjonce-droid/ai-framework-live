@@ -96,8 +96,17 @@ function normaliseDestination(value) {
   }
 }
 
+const affiliateConfig = JSON.parse(fs.readFileSync(path.join(root, 'data/affiliate-links.json'), 'utf8'));
+const affiliateLinks = affiliateConfig.links || {};
+for (const [slug, entry] of Object.entries(affiliateLinks)) {
+  if (!/^[a-z0-9-]+$/.test(slug) || !entry || entry.approved !== true) throw new Error('Affiliate entry must be approved: ' + slug);
+  const url = new URL(entry.url);
+  if (url.protocol !== 'https:' || url.username || url.password || ['ai-framework.io', 'www.ai-framework.io'].includes(url.hostname) || url.hostname.endsWith('.pages.dev')) throw new Error('Affiliate destination must be an external HTTPS URL: ' + slug);
+}
+
 function destinationFor(resource) {
   return normaliseDestination(
+    affiliateLinks[resource.slug]?.url ||
     destinationOverrides[resource.slug] ||
       resource.affiliate_url ||
       resource.website_url,
@@ -114,6 +123,10 @@ const bundle = fs.readFileSync(
 const resources = extractArray(bundle).filter(
   (resource) => resource && resource.slug && resource.status === "active",
 );
+
+for (const slug of Object.keys(affiliateLinks)) {
+  if (!resources.some(resource => resource.slug === slug)) throw new Error('Unknown affiliate tool: ' + slug);
+}
 
 const outboundRules = [];
 const unresolved = [];

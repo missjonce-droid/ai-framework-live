@@ -578,9 +578,32 @@
     });
   }
 
+  var approvedAffiliateLinks = {};
+  function labelConfiguredAffiliateLinks() {
+    Array.prototype.forEach.call(document.querySelectorAll('a[href^="/go/"]'), function (link) {
+      var slug = (link.getAttribute('href').split('/go/')[1] || '').split('?')[0];
+      if (!approvedAffiliateLinks[slug] || approvedAffiliateLinks[slug].approved !== true || link.getAttribute('data-affiliate-labeled') === 'true') return;
+      link.setAttribute('data-affiliate-labeled', 'true');
+      link.setAttribute('rel', 'sponsored nofollow noopener');
+      var note = document.createElement('span');
+      note.className = 'framework-affiliate-note';
+      note.textContent = 'Affiliate link · We may earn a commission.';
+      link.insertAdjacentElement('afterend', note);
+    });
+  }
+  fetch('/data/affiliate-links.json').then(function (response) {
+    if (!response.ok) return null;
+    return response.json();
+  }).then(function (config) {
+    if (!config || !config.links) return;
+    approvedAffiliateLinks = config.links;
+    labelConfiguredAffiliateLinks();
+  }).catch(function () { /* The directory remains usable if the optional config is unavailable. */ });
+
   function applyEnhancements() {
     addNavigationLinks();
     addSecondaryResources();
+    labelConfiguredAffiliateLinks();
     simplifyNav();
     improveHomepage();
     simplifyCategoryBrowse();
