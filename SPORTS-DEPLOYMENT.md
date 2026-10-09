@@ -54,7 +54,11 @@ will own the Worker:
    The Wrangler configuration is at the repository root, matching the
    Cloudflare Workers Builds commands (`npx wrangler deploy` and
    `npx wrangler preview`) so both production and pull-request previews load
-   the same bindings and preview settings.
+   this configuration. The `previews` block is intentionally empty: previews
+   do not inherit production bindings, and Cloudflare preview URLs are disabled
+   for this Worker. The pull-request check validates the build, but it does not
+   provide a live API preview. To enable one, configure separate preview KV and
+   rate-limit resources, the AI binding, and a preview ingest secret first.
 4. Create a long, random `SPORTS_INGEST_TOKEN` locally with a password
    manager or secure random generator. Do not commit it, paste it into source,
    or send it in chat. Set it as a Worker secret:
