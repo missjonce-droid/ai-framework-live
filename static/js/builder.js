@@ -301,12 +301,17 @@
     });
     h += "</div></div>";
 
-    // 6. Next actions
-    h += '<div class="result-block"><h2>Next actions</h2><p class="r-sub">Do these in order. Check them off as you go.</p><ul class="next-list" id="nextList">';
-    next.forEach(function (n) {
-      h += '<li><span class="n-box">✓</span><span>' + esc(n) + "</span></li>";
+    // 6. Next actions — runnable workflow with persisted progress
+    var wkey = workflowKey(state);
+    var wdone = (getWF()[wkey] || {}).done || [];
+    var wdoneCount = wdone.filter(Boolean).length;
+    h += '<div class="result-block"><h2>Next actions</h2><p class="r-sub">Do these in order. Check them off as you go — progress is saved in this browser.</p>';
+    h += '<div class="wf-head"><div class="wf-progress"><div class="wf-bar"><i id="wfBar" style="width:' + Math.round(100 * wdoneCount / next.length) + '%"></i></div><span class="wf-count" id="wfCount">' + wdoneCount + " of " + next.length + ' done</span></div><button class="btn btn-secondary btn-sm" id="wfReset" type="button">Reset</button></div>';
+    h += '<ul class="next-list" id="nextList">';
+    next.forEach(function (n, i) {
+      h += '<li data-wi="' + i + '"' + (wdone[i] ? ' class="done"' : "") + '><span class="n-box">✓</span><span>' + esc(n) + "</span></li>";
     });
-    h += '</ul></div>';
+    h += "</ul></div>";
 
     return { html: h, picks: picks };
   }
@@ -333,6 +338,29 @@
   }
   function deleteRecord(list, id) {
     return list.filter(function (x) { return String(x.id) !== String(id); });
+  }
+
+  /* ---------------- Workflow runner (Phase 6) ---------------- */
+  var WF_KEY = "af_workflow_v1";
+
+  function workflowKey(state) {
+    var s = [state.goal, state.role, state.budget, state.experience, (state.reqs || []).slice().sort().join(",")].join("|");
+    var h = 0;
+    for (var i = 0; i < s.length; i++) { h = ((h << 5) - h + s.charCodeAt(i)) | 0; }
+    return "wf_" + (h >>> 0).toString(36);
+  }
+  function getWF() {
+    try { return JSON.parse(localStorage.getItem(WF_KEY) || "{}"); }
+    catch (e) { return {}; }
+  }
+  function setWF(map) {
+    try { localStorage.setItem(WF_KEY, JSON.stringify(map)); } catch (e) {}
+  }
+  function wfProgress(key, total) {
+    var done = (getWF()[key] || {}).done || [];
+    var n = 0;
+    for (var i = 0; i < total; i++) if (done[i]) n++;
+    return { done: n, total: total };
   }
 
   /* ---------------- Markdown export ---------------- */
@@ -559,12 +587,40 @@
         });
       });
 
-      // Next-action checklist
-      var nl = document.getElementById("nextList");
-      if (nl) nl.addEventListener("click", function (e) {
-        var li = e.target.closest("li");
-        if (li) li.classList.toggle("done");
-      });
+      // Next-action checklist — persisted per framework
+      (function () {
+        var key = workflowKey(state);
+        var total = next.length;
+        function paint() {
+          var p = wfProgress(key, total);
+          var bar = document.getElementById("wfBar");
+          var count = document.getElementById("wfCount");
+          if (bar) bar.style.width = Math.round(100 * p.done / p.total) + "%";
+          if (count) count.textContent = p.done + " of " + p.total + " done";
+        }
+        var nl = document.getElementById("nextList");
+        if (nl) nl.addEventListener("click", function (e) {
+          var li = e.target.closest("li");
+          if (!li || li.getAttribute("data-wi") === null) return;
+          var i = Number(li.getAttribute("data-wi"));
+          li.classList.toggle("done");
+          var map = getWF();
+          var rec = map[key] || { done: [] };
+          rec.done[i] = li.classList.contains("done");
+          map[key] = rec;
+          setWF(map);
+          paint();
+        });
+        var rs = document.getElementById("wfReset");
+        if (rs) rs.addEventListener("click", function () {
+          var map = getWF();
+          delete map[key];
+          setWF(map);
+          if (nl) nl.querySelectorAll("li.done").forEach(function (li) { li.classList.remove("done"); });
+          paint();
+        });
+        paint();
+      })();
 
       // Save / export / edit / saved list
       function paintSaved() {
@@ -681,5 +737,5 @@
   }
 
   // Test hook (also handy for debugging)
-  window.AFBuilder = { matchTools: matchTools, estimateCost: estimateCost, detectIntent: detectIntent, buildPlan: buildPlan, buildPrompts: buildPrompts, buildWorkflow: buildWorkflow, buildNextActions: buildNextActions, renderResults: renderResults, toMarkdown: toMarkdown, applyTemplate: applyTemplate, getStore: getStore, setStore: setStore, makeRecord: makeRecord, deleteRecord: deleteRecord, BTOOLS: BTOOLS, ROLES: ROLES, TEMPLATES: TEMPLATES, REQUIREMENTS: REQUIREMENTS, BUDGETS: BUDGETS };
+  window.AFBuilder = { matchTools: matchTools, estimateCost: estimateCost, detectIntent: detectIntent, buildPlan: buildPlan, buildPrompts: buildPrompts, buildWorkflow: buildWorkflow, buildNextActions: buildNextActions, renderResults: renderResults, toMarkdown: toMarkdown, applyTemplate: applyTemplate, getStore: getStore, setStore: setStore, makeRecord: makeRecord, deleteRecord: deleteRecord, workflowKey: workflowKey, getWF: getWF, setWF: setWF, wfProgress: wfProgress, BTOOLS: BTOOLS, ROLES: ROLES, TEMPLATES: TEMPLATES, REQUIREMENTS: REQUIREMENTS, BUDGETS: BUDGETS };
 })();
