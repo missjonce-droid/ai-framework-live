@@ -17,5 +17,6 @@ export async function onRequestGet({ request, env }) {
     })),
     plan: primary ? primary.plan : 'free',
     entitlements: entitlements(primary ? primary.plan : 'free'),
+    billing_ready: Boolean(env.STRIPE_SECRET_KEY && env.STRIPE_PRICE_PRO),
   });
 }
