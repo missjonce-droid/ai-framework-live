@@ -534,6 +534,7 @@
       box.innerHTML = res.html
         + '<div class="result-block"><div class="save-bar"><div class="s-info"><strong>Keep this framework</strong><span>Saved in this browser — no account needed yet.</span></div>'
         + '<div class="save-actions"><button class="btn btn-primary btn-sm" id="saveFw">Save</button>'
+        + '<button class="btn btn-secondary btn-sm" id="saveCloud" style="display:none">Save to workspace</button>'
         + '<button class="btn btn-secondary btn-sm" id="exportMd">Export .md</button>'
         + '<button class="btn btn-secondary btn-sm" id="copyAll">Copy all</button>'
         + '<button class="btn btn-secondary btn-sm" id="editInputs">Edit inputs</button>'
@@ -595,6 +596,40 @@
         var self = this;
         setTimeout(function () { self.textContent = "Save"; }, 1600);
       });
+      // Cloud save (Phase 5): only visible when signed in; the API enforces plan limits.
+      (function () {
+        var sc = document.getElementById("saveCloud");
+        if (!sc || !window.AFAuth) return;
+        window.AFAuth.me().then(function (auth) {
+          if (!auth || !auth.user) return;
+          sc.style.display = "";
+          sc.addEventListener("click", function () {
+            var btn = this;
+            btn.disabled = true;
+            btn.textContent = "Saving…";
+            var rec = makeRecord(state);
+            fetch("/api/v1/frameworks", {
+              method: "POST",
+              credentials: "same-origin",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                title: rec.title || ("Framework — " + String(state.goal || "").slice(0, 60)),
+                input: { goal: state.goal, role: state.role, budget: state.budget, experience: state.experience, reqs: state.reqs },
+                output: rec,
+              }),
+            })
+              .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+              .then(function (res) {
+                btn.textContent = res.ok ? "Saved to workspace ✓" : "Error: " + (res.j.error || "try again");
+                setTimeout(function () { btn.disabled = false; btn.textContent = "Save to workspace"; }, 2200);
+              })
+              .catch(function () {
+                btn.disabled = false;
+                btn.textContent = "Save to workspace";
+              });
+          });
+        });
+      })();
       function downloadMarkdown() {
         var md = toMarkdown(state);
         var blob = new Blob([md], { type: "text/markdown" });
