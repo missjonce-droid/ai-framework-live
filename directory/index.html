@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Tools Directory — 1,500+ AI Tools &amp; Resources | AI Framework</title>
+  <meta name="description" content="Search 1,500+ AI tools by task, category, or pricing. Every listing links to the official site — we never invent pricing or capabilities.">
+  <meta property="og:title" content="AI Tools Directory — AI Framework">
+  <meta property="og:description" content="Find the right AI tool for your work. Search by task, category, or pricing.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ai-framework.io/directory/">
+  <link rel="icon" href="https://ai-framework.io/static/images/framework-entity-v1.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/main.css">
+  <link rel="stylesheet" href="../static/css/directory.css">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebPage","name":"AI Tools Directory — AI Framework","url":"https://ai-framework.io/directory/","description":"Searchable directory of 1,500+ AI tools and resources.","isPartOf":{"@type":"WebSite","name":"AI Framework","url":"https://ai-framework.io/"}}
+  </script>
+</head>
+<body>
+
+  <nav class="nav" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a class="brand" href="https://ai-framework.io/" aria-label="AI Framework home">
+        <span class="brand-mark" aria-hidden="true">◧</span>
+        AI Framework
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="https://ai-framework.io/directory/" aria-current="page">AI Tools</a>
+        <a href="https://ai-framework.io/build-my-framework/">Builder</a>
+        <a href="https://ai-framework.io/playbooks/">Playbooks</a>
+        <a href="https://ai-framework.io/promptlab">Prompt Lab</a>
+        <a href="https://ai-framework.io/#pricing">Pricing</a>
+      </div>
+      <div class="nav-cta">
+        <a class="btn btn-primary btn-sm" href="https://ai-framework.io/build-my-framework/">Build My AI Framework</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="dir-page">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">AI Tools Directory</span>
+        <h2>Find the right tool for the job</h2>
+        <p>Search the full index by task, category, or pricing. Listings link to official sites — we never invent pricing, ratings, or capabilities.</p>
+      </div>
+
+      <div class="dir-controls reveal">
+        <div class="dir-search-row">
+          <input type="search" id="dirQ" placeholder="Try &quot;follow up with leads&quot;, &quot;video editing&quot;, &quot;research papers&quot;…" aria-label="Search AI tools" autocomplete="off">
+          <button class="btn btn-primary" id="dirGo" type="button">Search</button>
+        </div>
+        <div class="dir-filters">
+          <div class="f-chip-row" id="planChips" role="group" aria-label="Pricing filter" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button type="button" class="f-chip active" data-plan="all">All pricing</button>
+            <button type="button" class="f-chip" data-plan="free">Free</button>
+            <button type="button" class="f-chip" data-plan="paid">Paid</button>
+          </div>
+          <select id="dirCat" aria-label="Filter by category">
+            <option value="all">All categories</option>
+          </select>
+          <select id="dirSort" aria-label="Sort results">
+            <option value="relevance">Sort: Relevance</option>
+            <option value="az">Sort: A–Z</option>
+          </select>
+          <button type="button" class="f-chip" id="favChip" aria-pressed="false">★ Favorites</button>
+        </div>
+      </div>
+
+      <div class="dir-meta" id="dirMeta" aria-live="polite"><span>Loading the directory…</span></div>
+      <div class="dir-grid" id="dirGrid">
+        <div class="dir-loading">Loading 1,500+ tools…</div>
+      </div>
+      <div class="dir-more" id="dirMore" style="display:none;">
+        <button class="btn btn-secondary" id="dirMoreBtn" type="button">Show more</button>
+      </div>
+      <p class="dir-note">Pricing bands come from our directory listings. Confirm current pricing and limits with the provider before signing up. Some links may earn us a commission — <a href="https://ai-framework.io/disclosure">read our disclosure</a>.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="https://ai-framework.io/" aria-label="AI Framework home">
+            <span class="brand-mark" aria-hidden="true">◧</span>
+            AI Framework
+          </a>
+          <p style="margin-top: 16px;">Your AI Operating System. Discover the right tools, build practical workflows, and make AI work for you.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="https://ai-framework.io/build-my-framework/">AI Framework Builder</a>
+          <a href="https://ai-framework.io/directory/">AI Tools Directory</a>
+          <a href="https://ai-framework.io/playbooks/">AI Playbooks</a>
+          <a href="https://ai-framework.io/promptlab">Prompt Lab</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="https://ai-framework.io/disclosure">Editorial &amp; Affiliate Disclosure</a>
+          <a href="https://ai-framework.io/#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:hello@ai-framework.io">hello@ai-framework.io</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> AI Framework LLC. All rights reserved.</span>
+        <span>Some links may earn us a commission. <a href="https://ai-framework.io/disclosure">Read our disclosure →</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../static/js/main.js" defer></script>
+  <script src="/static/js/directory-search.js" defer></script>
+  <script src="../static/js/directory.js" defer></script>
+</body>
+</html>
