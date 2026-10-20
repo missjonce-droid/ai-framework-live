@@ -1,1 +1,43 @@
-Ly8gUE9TVCAvYXBpL3YxL3N1YnNjcmliZSDigJQgZW1haWwgY2FwdHVyZSBmb3IgbGVhZCBtYWduZXRzIC8gbmV3c2xldHRlci4KLy8gQm9keTogeyBlbWFpbCwgc291cmNlPywgd2Vic2l0ZT8gfSAgKHdlYnNpdGUgPSBob25leXBvdCwgbXVzdCBiZSBlbXB0eSkKLy8gSWRlbXBvdGVudDogcmUtc3Vic2NyaWJpbmcgdGhlIHNhbWUgZW1haWwgcmV0dXJucyBvazp0cnVlLgovLyBOZXZlciBsZWFrcyB3aGV0aGVyIGFuIGFkZHJlc3Mgd2FzIGFscmVhZHkgc3Vic2NyaWJlZC4KCmV4cG9ydCBhc3luYyBmdW5jdGlvbiBvblJlcXVlc3RQb3N0KHsgcmVxdWVzdCwgZW52IH0pIHsKICBjb25zdCB7IGpzb24sIHJlcXVpcmVEQiwgdmFsaWRFbWFpbCB9ID0gYXdhaXQgaW1wb3J0KCcuLi9fbGliLmpzJyk7CgogIGxldCBib2R5ID0gbnVsbDsKICB0cnkgewogICAgYm9keSA9IGF3YWl0IHJlcXVlc3QuanNvbigpOwogIH0gY2F0Y2ggKGUpIHsKICAgIHJldHVybiBqc29uKHsgZXJyb3I6ICdJbnZhbGlkIHJlcXVlc3QuJyB9LCA0MDApOwogIH0KCiAgLy8gSG9uZXlwb3Q6IGJvdHMgZmlsbCBpdCwgaHVtYW5zIGRvbid0LiBQcmV0ZW5kIHN1Y2Nlc3MgZWl0aGVyIHdheS4KICBpZiAoYm9keS53ZWJzaXRlKSByZXR1cm4ganNvbih7IG9rOiB0cnVlIH0pOwoKICBjb25zdCBlbWFpbCA9IFN0cmluZyhib2R5LmVtYWlsIHx8ICcnKS50cmltKCkudG9Mb3dlckNhc2UoKTsKICBjb25zdCBzb3VyY2UgPSBTdHJpbmcoYm9keS5zb3VyY2UgfHwgJ3Vua25vd24nKS5zbGljZSgwLCA2MCk7CiAgaWYgKCF2YWxpZEVtYWlsKGVtYWlsKSkgewogICAgcmV0dXJuIGpzb24oeyBlcnJvcjogJ1BsZWFzZSBlbnRlciBhIHZhbGlkIGVtYWlsIGFkZHJlc3MuJyB9LCA0MDApOwogIH0KCiAgY29uc3QgZGIgPSByZXF1aXJlREIoZW52KTsKICBpZiAoIWRiKSByZXR1cm4ganNvbih7IGVycm9yOiAnU2VydmljZSB0ZW1wb3JhcmlseSB1bmF2YWlsYWJsZS4nIH0sIDUwMyk7CgogIHRyeSB7CiAgICBhd2FpdCBkYgogICAgICAucHJlcGFyZSgnSU5TRVJUIElOVE8gZW1haWxfc3Vic2NyaWJlcnMgKGlkLCBlbWFpbCwgc291cmNlKSBWQUxVRVMgKD8sID8sID8pJykKICAgICAgLmJpbmQoY3J5cHRvLnJhbmRvbVVVSUQoKSwgZW1haWwsIHNvdXJjZSkKICAgICAgLnJ1bigpOwogIH0gY2F0Y2ggKGUpIHsKICAgIC8vIExpa2VseSBhIGR1cGxpY2F0ZSBlbWFpbCDigJQgdmVyaWZ5IGl0IGV4aXN0cywgdGhlbiB0cmVhdCBhcyBzdWNjZXNzLgogICAgY29uc3QgZXhpc3RpbmcgPSBhd2FpdCBkYgogICAgICAucHJlcGFyZSgnU0VMRUNUIGlkIEZST00gZW1haWxfc3Vic2NyaWJlcnMgV0hFUkUgZW1haWwgPSA/JykKICAgICAgLmJpbmQoZW1haWwpCiAgICAgIC5maXJzdCgpOwogICAgaWYgKCFleGlzdGluZykgcmV0dXJuIGpzb24oeyBlcnJvcjogJ0NvdWxkIG5vdCBzYXZlLiBQbGVhc2UgdHJ5IGFnYWluLicgfSwgNTAwKTsKICB9CgogIHJldHVybiBqc29uKHsgb2s6IHRydWUgfSk7Cn0K
+// POST /api/v1/subscribe — email capture for lead magnets / newsletter.
+// Body: { email, source?, website? }  (website = honeypot, must be empty)
+// Idempotent: re-subscribing the same email returns ok:true.
+// Never leaks whether an address was already subscribed.
+
+export async function onRequestPost({ request, env }) {
+  const { json, requireDB, validEmail } = await import('../_lib.js');
+
+  let body = null;
+  try {
+    body = await request.json();
+  } catch (e) {
+    return json({ error: 'Invalid request.' }, 400);
+  }
+
+  // Honeypot: bots fill it, humans don't. Pretend success either way.
+  if (body.website) return json({ ok: true });
+
+  const email = String(body.email || '').trim().toLowerCase();
+  const source = String(body.source || 'unknown').slice(0, 60);
+  if (!validEmail(email)) {
+    return json({ error: 'Please enter a valid email address.' }, 400);
+  }
+
+  const db = requireDB(env);
+  if (!db) return json({ error: 'Service temporarily unavailable.' }, 503);
+
+  try {
+    await db
+      .prepare('INSERT INTO email_subscribers (id, email, source) VALUES (?, ?, ?)')
+      .bind(crypto.randomUUID(), email, source)
+      .run();
+  } catch (e) {
+    // Likely a duplicate email — verify it exists, then treat as success.
+    const existing = await db
+      .prepare('SELECT id FROM email_subscribers WHERE email = ?')
+      .bind(email)
+      .first();
+    if (!existing) return json({ error: 'Could not save. Please try again.' }, 500);
+  }
+
+  return json({ ok: true });
+}
