@@ -193,6 +193,13 @@ section { padding: 96px 0; }
 .hero h1 { font-size: clamp(38px, 5.4vw, 62px); margin-bottom: 20px; }
 .hero h1 .hl { color: var(--accent); }
 .hero .lede { font-size: 18px; max-width: 520px; margin-bottom: 32px; }
+
+/* Builder-first hero (homepage): the real wizard lives in the hero */
+.hero-builder-head { position: relative; text-align: center; max-width: 800px; margin: 0 auto 48px; }
+.hero-builder-head .lede { max-width: 660px; margin: 0 auto; }
+#builderForm { position: relative; max-width: 780px; margin: 0 auto; }
+#builderResults { position: relative; max-width: 920px; margin-left: auto; margin-right: auto; }
+.hero-note-center { text-align: center; margin-top: 28px; }
 .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
 .hero-note { font-size: 13.5px; color: var(--faint); }
 

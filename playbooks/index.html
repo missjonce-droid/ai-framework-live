@@ -127,6 +127,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .btn-solid:hover{background:#fff}
   .btn-brass{background:transparent;color:var(--brass);border:1px solid var(--brass-dim)}
   .btn-brass:hover{border-color:var(--brass);background:var(--brass-glow)}
+  /* ---------- Free PDF email gate ---------- */
+  .pdf-gate{max-width:560px;margin-bottom:20px;padding:22px;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+  .pdf-gate h3{font-family:var(--display);font-size:22px;letter-spacing:.02em;margin-bottom:6px}
+  .pdf-gate .gate-sub{color:var(--dim);font-size:13.5px;margin-bottom:16px}
+  .pdf-gate form{display:flex;gap:10px;flex-wrap:wrap}
+  .pdf-gate input[type=email]{flex:1;min-width:220px;background:var(--void);border:1px solid var(--line-bright);color:var(--ivory);border-radius:3px;padding:13px 16px;font-size:15px;font-family:var(--body)}
+  .pdf-gate input[type=email]:focus{outline:none;border-color:var(--brass)}
+  .pdf-gate .gate-err{color:#e08a8a;font-size:13px;margin-top:10px}
+  .pdf-gate .gate-note{color:var(--faint);font-size:12px;margin-top:12px}
+  .pdf-gate .gate-done{font-size:15px;margin-bottom:14px}
 
   /* ---------- Index grid (signature) ---------- */
   .index-block{justify-self:end;width:100%;max-width:420px}
@@ -426,7 +436,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="section" data-cat-section="content">
     <div class="wrap">
       <div class="section-head">
-        <div style="margin-bottom:20px;"><a class="btn btn-solid" href="/downloads/ai-framework-playbooks-1-50.pdf" download>Download Free PDF &#8595;</a></div>
+        <div class="pdf-gate" id="pdfGate">
+          <h3>Get the free PDF + the weekly briefing</h3>
+          <p class="gate-sub">50 playbooks, free forever. Plus one sharp email a week — new workflows, hidden gems, no hype.</p>
+          <form id="pdfGateForm" novalidate>
+            <input type="email" id="pdfGateEmail" placeholder="you@example.com" autocomplete="email" aria-label="Email address">
+            <input type="text" id="pdfGateHp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;">
+            <button class="btn btn-solid" type="submit" id="pdfGateBtn">Send me the free PDF &#8595;</button>
+          </form>
+          <p class="gate-err" id="pdfGateErr" hidden></p>
+          <p class="gate-note">Unsubscribe anytime. We never sell your email.</p>
+        </div>
         <p class="section-label">Playbooks 1&ndash;15 &middot; Free</p>
         <h2>Content &amp; Audience Arbitrage</h2>
         <p class="section-intro">Tactics for building an audience with tools that exist today — what to publish, how often, and in what order.</p>
@@ -722,6 +742,82 @@ renderVault();
 renderIndexGrid();
 applyFilters();
 initReveal();
+
+// ------------------------------------------------------------------
+// FREE PDF EMAIL GATE
+// ------------------------------------------------------------------
+(function(){
+  var KEY = 'af_subscribed_v1';
+  var PDF = '/downloads/ai-framework-playbooks-1-50.pdf';
+  var gate = document.getElementById('pdfGate');
+  if(!gate) return;
+
+  function startDownload(){
+    var a = document.createElement('a');
+    a.href = PDF;
+    a.setAttribute('download', 'ai-framework-playbooks-1-50.pdf');
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){ a.remove(); }, 400);
+  }
+  function showDone(msg){
+    gate.innerHTML = '<p class="gate-done">&#10003; ' + msg + '</p>' +
+      '<button class="btn btn-solid" id="pdfAgain" type="button">Download again &#8595;</button>';
+    document.getElementById('pdfAgain').addEventListener('click', startDownload);
+  }
+  function validEmail(v){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+  }
+
+  // Returning subscriber: skip the gate
+  try{
+    if(window.localStorage && localStorage.getItem(KEY)){
+      showDone("You're on the list — grab the PDF anytime.");
+      return;
+    }
+  }catch(e){}
+
+  document.getElementById('pdfGateForm').addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var emailEl = document.getElementById('pdfGateEmail');
+    var err = document.getElementById('pdfGateErr');
+    var btn = document.getElementById('pdfGateBtn');
+    var email = emailEl.value.trim();
+    if(!validEmail(email)){
+      err.textContent = 'Please enter a valid email address.';
+      err.hidden = false;
+      emailEl.focus();
+      return;
+    }
+    err.hidden = true;
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    fetch('/api/v1/subscribe', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        email: email,
+        source: 'playbooks-free-pdf',
+        website: document.getElementById('pdfGateHp').value
+      })
+    }).then(function(r){
+      return r.json().catch(function(){ return {ok:false}; });
+    }).then(function(d){
+      if(d && d.ok){
+        try{ localStorage.setItem(KEY, '1'); }catch(e){}
+        showDone("You're in! Your download is starting.");
+      }else{
+        // Backend hiccup: fail open — never block the free value.
+        showDone('Your download is starting.');
+      }
+      startDownload();
+    }).catch(function(){
+      // Network/backend down: fail open.
+      showDone('Your download is starting.');
+      startDownload();
+    });
+  });
+})();
 </script>
 <script src="/static/js/monetization-tracking.js"></script>
 </body>

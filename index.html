@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Framework — Your AI Operating System</title>
-  <meta name="description" content="Discover the right AI tools, create personalized workflows, and turn artificial intelligence into practical results for your work and business.">
+  <meta name="description" content="Tell us what you want to accomplish. Get a personalized AI tool stack with costs, setup steps, reusable prompts, and a 3-week plan — free.">
   <meta property="og:title" content="AI Framework — Your AI Operating System">
-  <meta property="og:description" content="Build Your AI Framework. Make AI Work for You.">
+  <meta property="og:description" content="Stop browsing AI tools. Start with your goal — we'll build your stack.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ai-framework.io/">
   <link rel="icon" href="https://ai-framework.io/static/images/framework-entity-v1.webp">
@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/main.css">
+  <link rel="stylesheet" href="static/css/builder.css">
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebSite","name":"AI Framework","url":"https://ai-framework.io/","description":"Your AI Operating System — discover the right AI tools, create personalized workflows, and turn artificial intelligence into practical results.","publisher":{"@type":"Organization","name":"AI Framework LLC"}}
@@ -36,49 +37,118 @@
         <a href="#pricing">Pricing</a>
       </div>
       <div class="nav-cta">
+        <span data-af-auth></span>
         <a class="btn btn-primary btn-sm" href="https://ai-framework.io/build-my-framework/">Build My AI Framework</a>
         <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
       </div>
     </div>
   </nav>
 
-  <!-- ================= HERO ================= -->
+  <!-- ================= HERO: BUILDER FIRST ================= -->
   <header class="hero">
-    <div class="container hero-grid">
-      <div>
+    <div class="container">
+      <div class="hero-builder-head reveal">
         <span class="eyebrow">Your AI Operating System</span>
-        <h1>Build Your AI Framework. <span class="hl">Make AI Work for You.</span></h1>
-        <p class="lede">Discover the right AI tools, create personalized workflows, and turn artificial intelligence into practical results for your work and business.</p>
-        <div class="hero-ctas">
-          <a class="btn btn-primary" href="https://ai-framework.io/build-my-framework/">Build My AI Framework</a>
-          <a class="btn btn-secondary" href="https://ai-framework.io/directory/">Explore AI Tools</a>
-        </div>
-        <p class="hero-note">Free to start · No signup needed to explore · Built for real work, not hype</p>
+        <h1>Stop browsing AI tools. <span class="hl">Start with your goal.</span></h1>
+        <p class="lede">Tell us what you want to accomplish. We'll help you choose the right AI tools and build a practical system to get it done — stack, costs, setup steps, and reusable prompts.</p>
       </div>
 
-      <!-- Interactive builder preview -->
-      <div class="builder-card" id="builderPreview" aria-label="Framework builder preview">
-        <span class="bc-tag"><span class="dot" aria-hidden="true"></span> Live preview</span>
-        <h3>Try the builder in 30 seconds</h3>
-        <p class="bc-sub">Describe your goal. We'll sketch the stack.</p>
-        <div class="bc-field">
-          <label for="bpGoal">What do you want to accomplish?</label>
-          <input type="text" id="bpGoal" placeholder="e.g. follow up with leads without dropping anyone" autocomplete="off">
+      <div id="builderForm">
+        <div class="steps-bar" aria-hidden="true">
+          <div class="step-pill" data-step="1">1 · Your goal</div>
+          <div class="step-pill" data-step="2">2 · Budget &amp; experience</div>
+          <div class="step-pill" data-step="3">3 · Requirements</div>
         </div>
-        <div class="bc-field">
-          <label>Or pick a starting point</label>
-          <div class="bc-chips" id="bpChips" role="group" aria-label="Use case">
-            <button type="button" class="bc-chip" data-role="business">For my business</button>
-            <button type="button" class="bc-chip" data-role="creator">As a creator</button>
-            <button type="button" class="bc-chip" data-role="developer">As a developer</button>
-            <button type="button" class="bc-chip" data-role="agency">For my agency</button>
+
+        <!-- STEP 1 -->
+        <div class="bpanel" id="bpanel1">
+          <div class="bpanel-card">
+            <h2>What are you trying to accomplish?</h2>
+            <p class="p-sub">Start with the outcome. The tools come second.</p>
+            <div class="bfield">
+              <label for="bGoal">Your goal</label>
+              <p class="hint">One or two sentences. Be specific — "get more clients" beats "grow business".</p>
+              <textarea class="binput" id="bGoal" placeholder="e.g. I run a small marketing agency and want to follow up with every lead without dropping anyone"></textarea>
+            </div>
+            <div class="bfield">
+              <span class="bfield-label" id="roleLabel">Which best describes you?</span>
+              <div class="chip-grid" id="roleChips" role="group" aria-labelledby="roleLabel">
+                <button type="button" class="pick-chip" data-role="business">Business owner</button>
+                <button type="button" class="pick-chip" data-role="creator">Creator</button>
+                <button type="button" class="pick-chip" data-role="developer">Developer</button>
+                <button type="button" class="pick-chip" data-role="agency">Agency / freelancer</button>
+                <button type="button" class="pick-chip" data-role="personal">Personal productivity</button>
+              </div>
+            </div>
+            <p class="b-err" id="bErr"></p>
+            <div class="bfield" style="margin-top: 28px;">
+              <span class="bfield-label">Or start from a template</span>
+              <p class="hint">One click fills in a proven starting point — edit everything, keep what works.</p>
+              <div class="template-grid" id="templateGrid"></div>
+            </div>
+            <div class="bnav">
+              <span></span>
+              <button type="button" class="btn btn-primary" id="toStep2">Continue →</button>
+            </div>
           </div>
         </div>
-        <button type="button" class="btn btn-primary btn-block" id="bpGo">Generate my preview</button>
-        <p class="bc-error" id="bpError">Tell us a little about your goal first — one sentence is enough.</p>
-        <div class="bc-result" id="bpResult" aria-live="polite"></div>
-        <p class="bc-foot">Preview only — the <a href="https://ai-framework.io/build-my-framework/">full builder</a> goes deeper.</p>
+
+        <!-- STEP 2 -->
+        <div class="bpanel" id="bpanel2">
+          <div class="bpanel-card">
+            <h2>Budget &amp; experience</h2>
+            <p class="p-sub">So we recommend tools you'll actually adopt.</p>
+            <div class="bfield">
+              <span class="bfield-label" id="budgetLabel">Monthly budget for AI tools</span>
+              <div class="chip-grid" id="budgetChips" role="group" aria-labelledby="budgetLabel">
+                <button type="button" class="pick-chip" data-val="free">Free only<span class="sub">$0 — free tiers only</span></button>
+                <button type="button" class="pick-chip" data-val="starter">Starter<span class="sub">Up to $50/mo</span></button>
+                <button type="button" class="pick-chip" data-val="growth">Growth<span class="sub">$50–200/mo</span></button>
+                <button type="button" class="pick-chip" data-val="scale">Scale<span class="sub">$200+/mo — best tools</span></button>
+              </div>
+            </div>
+            <div class="bfield">
+              <span class="bfield-label" id="expLabel">Your experience with AI tools</span>
+              <div class="chip-grid" id="expChips" role="group" aria-labelledby="expLabel">
+                <button type="button" class="pick-chip" data-val="beginner">Just getting started</button>
+                <button type="button" class="pick-chip" data-val="intermediate">Comfortable</button>
+                <button type="button" class="pick-chip" data-val="advanced">Power user</button>
+              </div>
+            </div>
+            <div class="bnav">
+              <button type="button" class="btn btn-secondary" id="backTo1">← Back</button>
+              <button type="button" class="btn btn-primary" id="toStep3">Continue →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="bpanel" id="bpanel3">
+          <div class="bpanel-card">
+            <h2>What should your stack handle?</h2>
+            <p class="p-sub">Pick any that apply. Skip what doesn't.</p>
+            <div class="bfield">
+              <div class="check-grid" id="reqGrid">
+                <div class="check-card" data-req="automation" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Automate repetitive work</span><br><span class="d">Hands-off workflows between apps</span></span></div>
+                <div class="check-card" data-req="team" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Collaborate with a team</span><br><span class="d">Shared docs, chat, projects</span></span></div>
+                <div class="check-card" data-req="content" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Create content</span><br><span class="d">Writing, social, video, visuals</span></span></div>
+                <div class="check-card" data-req="research" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Research &amp; learn faster</span><br><span class="d">Sourced answers, summaries</span></span></div>
+                <div class="check-card" data-req="code" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Build / code</span><br><span class="d">Ship software faster</span></span></div>
+                <div class="check-card" data-req="design" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Design visuals</span><br><span class="d">Graphics, brand, prototypes</span></span></div>
+                <div class="check-card" data-req="data" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Organize data &amp; customers</span><br><span class="d">CRMs, trackers, pipelines</span></span></div>
+                <div class="check-card" data-req="voice" role="checkbox" aria-checked="false" tabindex="0"><span class="box">✓</span><span><span class="t">Audio &amp; voice</span><br><span class="d">Podcasts, voiceovers, video</span></span></div>
+              </div>
+            </div>
+            <div class="bnav">
+              <button type="button" class="btn btn-secondary" id="backTo2">← Back</button>
+              <button type="button" class="btn btn-primary" id="generate">Generate my framework →</button>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div id="builderResults" aria-live="polite" style="margin-top: 48px;"></div>
+      <p class="hero-note hero-note-center">Free to use · No signup needed · Your frameworks save to your browser</p>
     </div>
   </header>
 
@@ -289,7 +359,7 @@
             <li>Expanded generation limits</li>
             <li>Priority updates</li>
           </ul>
-          <a class="btn btn-secondary btn-block" href="mailto:hello@ai-framework.io?subject=Notify%20me%20about%20AI%20Framework%20Pro">Notify me</a>
+          <a class="btn btn-secondary btn-block" data-plan-checkout="pro" href="mailto:hello@ai-framework.io?subject=Notify%20me%20about%20AI%20Framework%20Pro">Notify me</a>
         </div>
         <div class="card price-card reveal">
           <span class="pill planned">Planned</span>
@@ -302,7 +372,7 @@
             <li>Integrations as they ship</li>
             <li>Team sharing</li>
           </ul>
-          <a class="btn btn-secondary btn-block" href="mailto:hello@ai-framework.io?subject=Notify%20me%20about%20AI%20Framework%20Business">Notify me</a>
+          <a class="btn btn-secondary btn-block" data-plan-checkout="business" href="mailto:hello@ai-framework.io?subject=Notify%20me%20about%20AI%20Framework%20Business">Notify me</a>
         </div>
         <div class="card price-card reveal">
           <span class="pill planned">Planned</span>
@@ -315,7 +385,7 @@
             <li>Reusable client templates</li>
             <li>White-label reports</li>
           </ul>
-          <a class="btn btn-secondary btn-block" href="mailto:hello@ai-framework.io?subject=Notify%20me%20about%20AI%20Framework%20Agency">Notify me</a>
+          <a class="btn btn-secondary btn-block" data-plan-checkout="agency" href="mailto:hello@ai-framework.io?subject=Notify%20me%20about%20AI%20Framework%20Agency">Notify me</a>
         </div>
       </div>
       <p class="pricing-note">Plan details and prices are proposals under validation and may change before launch. "Notify me" opens an email — no payment is collected.</p>
@@ -330,7 +400,7 @@
         <h2>Start with your goal. We'll handle the stack.</h2>
         <p>Tell us what you want to accomplish. We'll help you choose the right AI tools and build a practical system to get it done.</p>
         <div class="hero-ctas">
-          <a class="btn btn-primary" href="https://ai-framework.io/build-my-framework/">Build My AI Framework</a>
+          <a class="btn btn-primary" href="#builderForm">Build My AI Framework</a>
           <a class="btn btn-secondary" href="https://ai-framework.io/directory/">Explore AI Tools</a>
         </div>
       </div>
@@ -375,6 +445,8 @@
   </footer>
 
   <script src="static/js/main.js" defer></script>
-  <script src="static/js/builder-preview.js" defer></script>
+  <script src="static/js/af-auth.js" defer></script>
+  <script src="static/js/af-billing.js" defer></script>
+  <script src="static/js/builder.js" defer></script>
 </body>
 </html>
