@@ -32,17 +32,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
   :root{
-    --void:#101317;
-    --panel:#161b21;
-    --panel-2:#1c232b;
-    --line:#28303a;
-    --line-bright:#3d4854;
-    --ivory:#ece7da;
-    --dim:#96a0ac;
-    --faint:#5b6570;
-    --brass:#d0aa6d;
-    --brass-dim:#8a6f3e;
-    --brass-glow:rgba(208,170,109,.13);
+    --void:#0D0A07;
+    --panel:#1A130C;
+    --panel-2:#241A10;
+    --line:#3A2A1A;
+    --line-bright:#5C4527;
+    --ivory:#EDE6D8;
+    --dim:#AB9C88;
+    --faint:#776A58;
+    --brass:#C9A25E;
+    --brass-dim:#7D6434;
+    --brass-glow:rgba(201,162,94,.12);
+    --copper:#C97E4A;
+    --copper-bright:#E09554;
+    --chrome:#C9CCD4;
+    --chrome-dim:#82868F;
     --display:"Big Shoulders Display",Impact,sans-serif;
     --body:"Archivo",system-ui,sans-serif;
     --mono:"Spline Sans Mono",ui-monospace,monospace;
@@ -55,23 +59,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   body{
     background:var(--void);
+    background-image:radial-gradient(ellipse 90% 480px at 50% -60px,rgba(201,126,74,.08),transparent 70%);
     color:var(--ivory);
     font-family:var(--body);
     font-size:15px;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
   }
-  ::selection{background:var(--brass);color:#14110a}
+  ::selection{background:var(--copper);color:#180F06}
   a{color:inherit}
   button{font-family:inherit;cursor:pointer}
-  :focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:2px}
+  :focus-visible{outline:2px solid var(--copper);outline-offset:3px;border-radius:2px}
 
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
   /* ---------- Nav ---------- */
   .nav{
     position:sticky;top:0;z-index:50;
-    background:rgba(16,19,23,.88);
+    background:rgba(13,10,7,.88);
     backdrop-filter:blur(12px);
     border-bottom:1px solid var(--line);
   }
@@ -123,8 +128,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding:13px 24px;border-radius:3px;
     transition:background .15s,border-color .15s,color .15s;
   }
-  .btn-solid{background:var(--ivory);color:#14171b;border:1px solid var(--ivory)}
-  .btn-solid:hover{background:#fff}
+  .btn-solid{background:linear-gradient(180deg,#DE9257,#B26A33);color:#180F06;border:1px solid #8A5227}
+  .btn-solid:hover{background:linear-gradient(180deg,#E89E60,#BE743C)}
   .btn-brass{background:transparent;color:var(--brass);border:1px solid var(--brass-dim)}
   .btn-brass:hover{border-color:var(--brass);background:var(--brass-glow)}
   /* ---------- Free PDF email gate ---------- */
@@ -133,7 +138,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .pdf-gate .gate-sub{color:var(--dim);font-size:13.5px;margin-bottom:16px}
   .pdf-gate form{display:flex;gap:10px;flex-wrap:wrap}
   .pdf-gate input[type=email]{flex:1;min-width:220px;background:var(--void);border:1px solid var(--line-bright);color:var(--ivory);border-radius:3px;padding:13px 16px;font-size:15px;font-family:var(--body)}
-  .pdf-gate input[type=email]:focus{outline:none;border-color:var(--brass)}
+  .pdf-gate input[type=email]:focus{outline:none;border-color:var(--copper)}
   .pdf-gate .gate-err{color:#e08a8a;font-size:13px;margin-top:10px}
   .pdf-gate .gate-note{color:var(--faint);font-size:12px;margin-top:12px}
   .pdf-gate .gate-done{font-size:15px;margin-bottom:14px}
@@ -155,7 +160,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   @media (prefers-reduced-motion:reduce){.cell{opacity:1}}
   .cell:hover{border-color:var(--line-bright);color:var(--ivory)}
   .cell.locked{
-    background:#171612;border-color:#33301f;color:var(--brass-dim);
+    background:#171208;border-color:#3A2C14;color:var(--brass-dim);
   }
   .cell.locked:hover{border-color:var(--brass-dim);color:var(--brass)}
   .cell.locked::after{content:""}
@@ -169,12 +174,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     margin-right:7px;vertical-align:-1px;
   }
   .index-legend .k-free i{background:var(--panel);border:1px solid var(--line-bright)}
-  .index-legend .k-locked i{background:#171612;border:1px solid var(--brass-dim)}
+  .index-legend .k-locked i{background:#171208;border:1px solid var(--brass-dim)}
 
   /* ---------- Controls ---------- */
   .controls{
     position:sticky;top:58px;z-index:40;
-    background:rgba(16,19,23,.92);backdrop-filter:blur(12px);
+    background:rgba(13,10,7,.93);backdrop-filter:blur(12px);
     border-bottom:1px solid var(--line);
     padding:16px 0;
   }
@@ -195,7 +200,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding:9px 14px;transition:all .15s;
   }
   .chip:hover{border-color:var(--line-bright);color:var(--ivory)}
-  .chip.active{background:var(--ivory);color:#14171b;border-color:var(--ivory)}
+  .chip.active{background:linear-gradient(180deg,#E9EBF0,#B7BBC4);color:#171310;border-color:#9BA0AA}
   .result-count{
     font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
     text-transform:uppercase;color:var(--faint);margin-left:auto;
@@ -219,7 +224,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
   }
   .card{
-    background:var(--panel);border:1px solid var(--line);border-radius:4px;
+    background:var(--panel);border:1px solid var(--line);border-radius:4px;box-shadow:inset 0 1px 0 rgba(233,235,240,.05);
     padding:22px 22px 20px;display:flex;flex-direction:column;gap:11px;
     transition:border-color .15s,background .15s;
     scroll-margin-top:140px;
@@ -229,10 +234,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .card-top{display:flex;align-items:baseline;gap:14px}
   .card-num{
     font-family:var(--display);font-weight:600;font-size:30px;
-    color:var(--faint);line-height:1;min-width:44px;
+    color:var(--chrome-dim);text-shadow:0 1px 0 rgba(0,0,0,.65);line-height:1;min-width:44px;
     transition:color .15s;
   }
-  .card:hover .card-num{color:var(--ivory)}
+  .card:hover .card-num{color:var(--chrome)}
   .card h3{
     font-size:16.5px;font-weight:600;line-height:1.3;letter-spacing:-.005em;
   }
@@ -250,7 +255,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-top:1px solid var(--brass-dim);
     background:
       radial-gradient(ellipse 70% 420px at 50% 0%,var(--brass-glow),transparent 70%),
-      linear-gradient(#131210,#101317 60%);
+      linear-gradient(#14100A,#0D0A07 60%);
     padding:80px 0 72px;
   }
   .vault-head{max-width:74ch;margin-bottom:48px}
@@ -269,7 +274,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .vault-section{margin-bottom:44px}
   .vault-section-head{
     display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
-    margin-bottom:18px;border-bottom:1px solid #2b2415;padding-bottom:12px;
+    margin-bottom:18px;border-bottom:1px solid #3A2C14;padding-bottom:12px;
   }
   .vault-section-head h3{
     font-family:var(--display);font-weight:700;font-size:24px;
@@ -280,7 +285,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .vault-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
   .vault-card{
-    position:relative;background:#16150f;border:1px solid #2e2919;border-radius:4px;
+    position:relative;background:#171208;border:1px solid #3A2C14;border-radius:4px;
     padding:22px;display:flex;flex-direction:column;gap:11px;overflow:hidden;
     transition:border-color .15s;
   }
@@ -300,14 +305,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .classified{
     display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-    background:#14130e;border:1px dashed #2e2919;border-radius:4px;
+    background:#130E07;border:1px dashed #3A2C14;border-radius:4px;
     padding:16px 20px;
   }
   .classified-cells{display:flex;gap:4px;flex-wrap:wrap}
   .c-cell{
     width:26px;height:26px;display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:9px;color:var(--brass-dim);
-    background:#171612;border:1px solid #2b2718;border-radius:2px;
+    background:#171208;border:1px solid #38290F;border-radius:2px;
   }
   .classified p{
     font-family:var(--mono);font-size:11px;letter-spacing:.04em;
@@ -318,7 +323,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   /* ---------- CTA ---------- */
   .cta-block{
     margin-top:64px;border:1px solid var(--brass-dim);border-radius:5px;
-    background:linear-gradient(120deg,#1a1810,#14130e);
+    background:linear-gradient(120deg,#1C1409,#120D06);
     padding:52px 48px;
     display:grid;grid-template-columns:1.2fr auto;gap:36px;align-items:center;
   }
@@ -334,10 +339,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .cta-block p{color:var(--dim);font-size:15px;max-width:56ch}
   .cta-side{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
   .btn-unlock{
-    background:var(--brass);color:#14110a;border:1px solid var(--brass);
+    background:linear-gradient(180deg,#D9B36C,#B28C42);color:#171106;border:1px solid #8A6C2E;
     font-weight:500;padding:16px 30px;font-size:12.5px;
   }
-  .btn-unlock:hover{background:#e0bd82;border-color:#e0bd82}
+  .btn-unlock:hover{background:linear-gradient(180deg,#E4C37E,#BE9A4C)}
   .cta-note{
     font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--faint);
   }
@@ -371,6 +376,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .nav-links{gap:16px}
     .nav-links a[href="/tutorials/"],.nav-links a[href="#free"]{display:none}
   }
+
+  /* ---------- Full playbook reader (upgrade) ---------- */
+  .card.open{grid-column:1/-1}
+  .pb-toggle{
+    margin-top:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--copper);background:transparent;
+    border:1px solid #4A3220;border-radius:3px;
+    padding:9px 13px;text-align:left;transition:border-color .15s,color .15s,background .15s;
+  }
+  .pb-toggle:hover{border-color:var(--copper);color:var(--copper-bright);background:rgba(201,126,74,.06)}
+  .pb-detail{border-top:1px solid rgba(201,204,212,.14);margin-top:14px;padding-top:18px}
+  .pb-detail[hidden]{display:none}
+  .pb-sec{margin-bottom:16px}
+  .pb-sec-label{
+    font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--copper);margin-bottom:5px;
+  }
+  .pb-sec p{color:var(--dim);font-size:14px;line-height:1.65;white-space:pre-line}
+  .pb-sec p strong{color:var(--ivory)}
+  .pb-sec.reality{border-left:2px solid var(--brass);padding-left:14px}
+  .pb-sec.reality .pb-sec-label{color:var(--brass)}
+  .pb-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+  .tool-chip{
+    font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-decoration:none;
+    color:var(--chrome);border:1px solid #4d4a42;border-radius:2px;padding:4px 9px;
+    box-shadow:inset 0 1px 0 rgba(233,235,240,.08);transition:border-color .15s,color .15s;
+  }
+  a.tool-chip:hover{border-color:var(--copper);color:var(--copper-bright)}
+  span.tool-chip{color:var(--faint)}
+  .pb-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .pb-actions a{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    text-decoration:none;color:var(--brass);border:1px solid var(--brass-dim);
+    border-radius:3px;padding:9px 14px;transition:all .15s;
+  }
+  .pb-actions a:hover{border-color:var(--brass);background:var(--brass-glow)}
 </style>
 </head>
 <body>
@@ -820,5 +861,73 @@ initReveal();
 })();
 </script>
 <script src="/static/js/monetization-tracking.js"></script>
+
+<script>
+/* Full-playbook reader: injects the complete playbook (from the PDF) into each
+   free card as an expandable reader. Data: window.__PB_FULL. */
+window.__PB_FULL = {"1": {"play": "Turn discussion-driven stories into narrated short-form videos using original summaries, commentary, licensed or self-created background footage, and repeatable editing templates.", "why": "Story-led short videos have strong hooks and retention when the source material is transformed into an original narrative rather than simply reposted.", "stack": "LLM for summarization and scripting; ElevenLabs or another licensed AI voice tool; CapCut/OpusClip or similar editor; TikTok, YouTube Shorts, Instagram Reels.", "build": "Choose a story niche and define a repeatable format. Source material you are permitted to use. Rewrite and transform it with original narration, commentary, and structure. Add licensed or self-created visuals. Edit into short vertical videos, publish consistently, and track retention and completion rate.", "traps": "Copyright and platform originality rules matter. Do not assume a public post is free to republish verbatim. Avoid low-effort recycled content and protect private or identifying information.", "reality": "Easy to test with a small batch of videos, but durable monetization depends on originality, audience retention, and platform eligibility—not mass reposting."}, "2": {"play": "Build a focused niche newsletter that uses AI-assisted research and synthesis to turn current industry developments into a useful recurring digest.", "why": "Readers pay attention to curated information when it saves them time and adds context they cannot get from a raw link feed.", "stack": "Beehiiv or another newsletter platform; RSS/API feeds and permitted web sources; an LLM for summarization; Make or n8n for workflow automation.", "build": "Pick a narrow audience with recurring information needs. Build a source list. Collect new items on a schedule, summarize and fact-check them, add your own analysis, and assemble a consistent issue format. Grow through partnerships, social posts, SEO, and referrals; monetize with sponsorships, premium tiers, or relevant affiliates.", "traps": "Do not copy articles or automate unverified summaries. Source quality and editorial judgment are the product. Sponsorship and affiliate disclosures may be required.", "reality": "Low-cost to launch and easy to validate. The moat is trust, niche expertise, and consistent distribution—not the AI summarizer."}, "3": {"play": "Create original songs or licensed music, pair them with AI-assisted visual concepts and lyric-video editing, and publish a catalog of distinctive music content.", "why": "Music paired with memorable visuals can earn repeat discovery across video platforms and build an audience around a recognizable style.", "stack": "Suno/Udio or licensed music sources; Runway/Luma or other video tools; a video editor; YouTube and short-form platforms.", "build": "Choose a musical niche and visual identity. Create music you have the rights to monetize. Build a lyric/visual storyboard, generate or license visual assets, edit a full video and short clips, then publish with accurate metadata and test thumbnails and hooks.", "traps": "AI music licensing and platform monetization policies vary. Do not assume every generated track is commercially usable; verify the plan and rights. Avoid imitating living artists too closely.", "reality": "Best treated as a catalog and audience business. A few uploads rarely create meaningful revenue; consistency and rights clarity matter."}, "4": {"play": "Create high-quality, original Pinterest content around a specific shopping or inspiration niche and route qualified traffic to compliant affiliate content or your own landing pages.", "why": "Pinterest has long-tail discovery behavior, and useful visual content can continue sending traffic after publication.", "stack": "Canva/Midjourney or licensed imagery; Pinterest; an approved affiliate program; Make or a scheduler where permitted; analytics.", "build": "Choose one commercial niche. Research search intent and seasonal topics. Create original pin designs in multiple formats, write useful keyword-aware titles and descriptions, and link through destinations permitted by Pinterest and your affiliate program. Publish steadily and measure outbound clicks and conversions.", "traps": "Avoid spam-scale duplicate pins. Follow Pinterest automation rules and each affiliate network's linking and disclosure requirements. AI images should not misrepresent products.", "reality": "A strong traffic experiment, but 500 low-quality pins are not better than a smaller set of useful, differentiated creative."}, "5": {"play": "Produce a research-driven true-crime or mystery podcast using AI to assist with research organization, scripting, editing, and narration while maintaining rigorous sourcing and sensitivity.", "why": "Deep narrative formats can build loyal audiences, and AI can reduce production time without replacing editorial judgment.", "stack": "Research sources; an LLM for outlining; licensed narration or a synthetic voice you have rights to use; audio editor; podcast host/distribution.", "build": "Choose cases with sufficient reliable public sourcing. Build a source dossier, separate confirmed facts from allegations, write an original script, fact-check every material claim, record or generate authorized narration, edit, and publish with source notes.", "traps": "Defamation, privacy, victim sensitivity, and factual accuracy are serious risks. Do not clone real people's voices to dramatize statements they never made. Avoid presenting speculation as fact.", "reality": "Potentially compelling, but this is not a safe 'mass-production' niche. Research quality and responsible storytelling should slow the workflow down."}, "6": {"play": "Monitor fast-moving public trends and create original, brand-safe reaction content quickly enough to participate while the conversation is active.", "why": "Timely content can receive disproportionate distribution when it adds a fresh joke, visual, or perspective to an existing conversation.", "stack": "Trend discovery tools and platform feeds; image/video generation; Canva or an editor; scheduling and analytics.", "build": "Define a clear page voice. Monitor permitted trend sources, shortlist topics relevant to your audience, generate several original concepts, publish quickly, and measure shares and follows. Turn winning formats into recurring series.", "traps": "Automated scraping may violate platform terms. Avoid misinformation, harassment, copyrighted characters/assets used beyond applicable rights, and tragedy-based trend exploitation.", "reality": "Speed matters, but recognizable taste matters more. The strongest pages become destinations rather than disposable trend aggregators."}, "7": {"play": "Turn a creator's own expertise, notes, calls, and voice memos into a consistent LinkedIn content pipeline with AI-assisted drafting and scheduling.", "why": "Experts often have valuable ideas but inconsistent publishing habits. A structured capture-and-edit workflow converts existing knowledge into regular content.", "stack": "Voice transcription; an LLM with a documented style guide; Taplio or another compliant scheduler; LinkedIn analytics.", "build": "Capture the creator's raw ideas weekly. Transcribe and tag themes, draft posts in their authentic voice, require human review, schedule a sustainable cadence, and use performance data to refine hooks and topics.", "traps": "Do not fabricate expertise or automate engagement spam. Three posts a day may be excessive for many audiences; quality and authenticity should determine cadence.", "reality": "Highly practical as a service. The value is extracting real expertise and editing it well, not generating generic AI opinions."}, "8": {"play": "Develop original children's books with AI-assisted writing and illustration workflows, then publish digital or print editions through appropriate marketplaces.", "why": "Niche educational and entertainment themes can support small catalogs when characters, art direction, and positioning are distinctive.", "stack": "LLM for ideation/editing; illustration tools with commercial rights; Canva/Affinity/InDesign; Amazon KDP or other publishing channels.", "build": "Choose a specific age range and reader need. Outline an original story, edit for age appropriateness, create a consistent visual character bible, generate or commission illustrations, proof the layout, order a physical proof, and publish with accurate metadata.", "traps": "Children's content requires careful quality control. Verify commercial image rights and current marketplace AI-content disclosure rules. Do not imitate protected characters or living illustrators.", "reality": "Accessible to build, difficult to differentiate. Test one polished book and its market response before producing a large series."}, "9": {"play": "Create focused, useful travel itineraries and downloadable guides for specific destinations or traveler types, using AI for research organization and drafting.", "why": "Travelers pay for convenience when a guide reduces planning time and offers a clear point of view.", "stack": "Current travel sources; maps and official tourism information; LLM for synthesis; Canva/Notion for layout; Gumroad or another storefront; social channels.", "build": "Start with destinations you can research deeply. Define a traveler persona, verify attractions, logistics, opening details and seasonal caveats, create a polished itinerary, and market it with destination-specific short-form content.", "traps": "Travel information changes. Avoid presenting unverified AI-generated details as current facts. Review trademark, image, map, and affiliate usage rights.", "reality": "A good digital-product test if the guides are genuinely curated. Generic AI itineraries are easy to reproduce and hard to sell."}, "10": {"play": "Build long-form ambient focus or relaxation videos using music and visuals you own or license, packaged around a distinctive atmosphere.", "why": "Long-session content can generate repeat listening and substantial watch time when it serves a real focus, sleep, or ambience use case.", "stack": "Licensed/original music; AI or licensed visuals; video editor; YouTube; optional streaming infrastructure.", "build": "Choose a specific ambience identity. Produce original or commercially licensed audio, create seamless visual loops, render long-form videos, publish with strong thumbnails and search-aware metadata, and test shorter/longer formats before attempting continuous streams.", "traps": "Do not rely on repetitive, minimally transformed content that may fail monetization standards. Verify music rights and avoid misleading 'live' streams.", "reality": "Catalog economics can work, but originality and rights are the foundation. Start with uploaded videos before paying for 24/7 streaming."}, "11": {"play": "Create short cooking content from tested or responsibly adapted recipes, using original scripts, visuals, demonstrations, and voiceover.", "why": "Food is highly visual and evergreen, and concise recipe formats work well on short-form platforms.", "stack": "Recipe research; LLM for scripting; original food footage or appropriately licensed/generative visuals; AI voice or narration; video editor.", "build": "Choose a narrow angle, such as 15-minute meals. Develop and verify recipes, write a tight script, create accurate step visuals, add narration and captions, and publish consistently. Track saves and repeat viewers.", "traps": "Recipes themselves may have limited copyright protection, but copied creative expression, photography, videos, and article text can be protected. AI food visuals can also misrepresent results.", "reality": "Best when you add testing, personality, or a useful niche. Purely synthetic recipe channels face trust and originality challenges."}, "12": {"play": "Translate complex subjects into accessible educational content with AI assistance, rigorous source checking, and simple visual storytelling.", "why": "People share explanations that reduce cognitive load without sacrificing the core truth.", "stack": "Primary/authoritative sources; LLM for simplification; licensed stock or original graphics; editor; social/video platforms.", "build": "Choose a subject area you can verify. Research authoritative sources, draft a plain-language explanation, fact-check it, add analogies and visuals, publish, and link viewers to deeper resources.", "traps": "Medical, legal, financial, and scientific simplification can become misleading if nuance disappears. Avoid scraping and rewriting copyrighted papers as substitute content.", "reality": "Strong audience format when accuracy is part of the brand. Human review is essential in high-stakes topics."}, "13": {"play": "Build a themed visual-content brand using original short-form messages, design templates, and scheduled publishing.", "why": "Consistent visual identity and emotionally resonant micro-content can grow theme pages and support downstream products or sponsorships.", "stack": "Canva Bulk Create; original writing or properly attributed public-domain/licensed quotes; video backgrounds; social schedulers.", "build": "Choose a distinct audience and tone. Build a bank of original lines, create several reusable templates, bulk-produce variations, schedule a consistent mix, and measure saves/shares rather than raw impressions alone.", "traps": "Do not misattribute quotes or flood platforms with near-duplicate content. Generic AI motivation is highly commoditized.", "reality": "Easy to test and automate; hard to defend. Use it as audience acquisition for a more valuable product or community."}, "14": {"play": "Create recurring astrology-themed entertainment content and optional personalized readings with transparent positioning and automated publishing.", "why": "Daily ritual content encourages repeat visits and can support memberships, readings, or digital products.", "stack": "LLM with editorial templates; astrology data/calculation source where needed; automation; social/email channels; checkout/booking.", "build": "Define whether the content is entertainment, reflective guidance, or astrology-based interpretation. Build templates by sign, review outputs, automate distribution, and offer premium personalized products with clear scope.", "traps": "Avoid presenting generated readings as guaranteed predictions or professional medical/financial/legal advice. Protect customer birth data and other personal information.", "reality": "Recurring format is naturally sticky, but trust depends on consistency, transparency, and a distinctive voice."}, "15": {"play": "Launch a focused niche directory, seed it with legitimately sourced listings, and monetize premium placement, sponsorships, lead generation, or paid submissions.", "why": "Directories become useful when they organize fragmented information around a clear buying or discovery need.", "stack": "Framer/Webflow/Next.js; database; official APIs, licensed datasets, submissions, or compliant collection; analytics and payment tools.", "build": "Choose a niche with fragmented discovery. Define listing criteria, seed high-quality entries, create search/filter pages, invite owners to claim or update listings, grow organic traffic, and introduce paid visibility only after usefulness is proven.", "traps": "Do not assume public web data can be scraped and republished without restrictions. Clearly distinguish sponsored placement and maintain listing accuracy.", "reality": "One of the better asset-building plays in the free set, but distribution and data maintenance are the real work. Section B — Digital Products & E-Commerce PLAYBOOKS 16–30 Reusable digital assets and lightweight product systems. Focus on narrow buyer problems, quality assurance, commercial rights, and low-cost validation before scaling."}, "16": {"play": "Create specialized Notion systems for recurring workflow problems and sell polished templates with instructions and examples.", "why": "Templates compress setup time for users who value a ready-made workflow more than building from scratch.", "stack": "Notion; LLM for research and copy; Gumroad or another storefront; screen recording for demos.", "build": "Choose one painful workflow and audience. Interview or research users, build the template, test it end-to-end, add onboarding instructions, record a demo, and launch with problem-focused content.", "traps": "Avoid generic template bundles with no differentiated workflow. Verify any third-party content or brand assets included.", "reality": "Fast and inexpensive to validate. A narrow, excellent template usually beats a giant unfocused bundle."}, "17": {"play": "Create original icon, pattern, layout, or design-asset bundles and sell them as downloadable creative resources.", "why": "Designers and small businesses buy cohesive asset packs that save production time.", "stack": "Vector-generation/design tools; Canva or Illustrator/Affinity; Etsy or another marketplace; mockup tools.", "build": "Research a specific buyer need, build a coherent original collection, clean and test the files, create clear license terms and strong previews, then list and iterate based on search and conversion data.", "traps": "Verify commercial rights for AI-generated assets and marketplace AI policies. Avoid trademarks and lookalike copies of existing designers.", "reality": "Good low-cost digital product, but quality control and a recognizable style determine whether it escapes commodity pricing."}, "18": {"play": "Create original wall-art collections and sell them as prints or digital downloads through print-on-demand and marketplace channels.", "why": "Customers shop by aesthetic and room context, making cohesive collections easier to merchandise than isolated images.", "stack": "Image-generation/design tools; upscaler; Printify or another POD provider; Etsy/Shopify; mockup generator.", "build": "Choose an underserved aesthetic, create a coordinated collection, inspect artifacts at print resolution, order samples, build realistic mockups, and test a small number of listings before scaling.", "traps": "Avoid copyrighted characters, trademarks, and close imitation of living artists. POD margins, returns, and print quality vary.", "reality": "Easy to launch but crowded. Strong art direction and merchandising matter more than generating large volumes."}, "19": {"play": "Create original study aids aligned to legitimate learning objectives, public exam outlines, or content you own or are licensed to use.", "why": "Students pay for structured practice that reduces study time and highlights likely knowledge gaps.", "stack": "Authorized source materials; LLM for draft questions; spreadsheet/flashcard platform; PDF or digital delivery.", "build": "Choose a certification or course objective set you may legally use. Build a topic map, draft original questions and explanations, have a knowledgeable reviewer check accuracy, package the materials, and update when standards change.", "traps": "Do not ingest and redistribute copyrighted textbooks or proprietary exam questions without permission. Avoid implying official endorsement.", "reality": "High utility when accuracy is excellent. Poorly reviewed AI questions can damage trust quickly."}, "20": {"play": "Produce original sticker and clip-art collections for planners, messaging, crafts, or digital design and sell them as downloadable bundles.", "why": "Buyers value cohesive packs that fit a specific aesthetic or use case.", "stack": "Image-generation/design tools; background removal/vector cleanup; Goodnotes-compatible formats where relevant; Etsy/Gumroad.", "build": "Pick a buyer niche, design a consistent set, clean edges and transparency, export in useful sizes/formats, create previews, define usage rights, and launch a small themed collection.", "traps": "Avoid protected characters, logos, and confusingly similar commercial designs. Test files on actual target apps/devices.", "reality": "Straightforward product loop. Differentiation comes from style, usability, and bundling—not raw image count."}, "21": {"play": "Offer e-commerce merchants a structured product-copy optimization service using AI for first drafts and human review for accuracy and brand fit.", "why": "Large catalogs often contain weak or duplicate copy, and batch workflows can improve consistency efficiently.", "stack": "Shopify exports/API; LLM templates; spreadsheet/database; QA workflow.", "build": "Audit a sample catalog, define brand voice and required product facts, generate revised drafts in batches, validate every factual claim, obtain approval, and import changes. Offer ongoing optimization and testing.", "traps": "Do not invent product benefits, certifications, ingredients, dimensions, or performance claims. Regulated products require extra review.", "reality": "Good service business because the workflow is repeatable, but quality assurance is the product."}, "22": {"play": "Create downloadable preset, texture, overlay, and visual-style packs for creators and small brands.", "why": "Creators pay for fast consistency when assets reliably reproduce a desirable look.", "stack": "Lightroom or other editing tools; original photography for testing; Canva; storefront; Reels/short-form demos.", "build": "Develop a distinct visual style, test presets across varied lighting and skin tones, package installation instructions, create before/after demos, and market through transformation content.", "traps": "Do not promise identical results across every image. Use only photos you have rights to in demonstrations.", "reality": "A practical niche product if the look is distinctive. Demonstration content is often the primary sales engine."}, "23": {"play": "Build polished spreadsheets that solve specific tracking, analysis, or operational problems and sell them as reusable tools.", "why": "Well-designed spreadsheets are lightweight software: familiar, portable, and valuable when they save setup and calculation time.", "stack": "Excel/Google Sheets; AI coding assistant; sample datasets; Gumroad/Etsy or direct sales.", "build": "Pick a narrow workflow, map inputs and outputs, build formulas and validation, test edge cases, add instructions and sample data, protect only what needs protection, and sell with a clear demo.", "traps": "AI-generated formulas can be wrong. Financial, investment, tax, and business models need explicit assumptions and careful testing.", "reality": "One of the strongest accessible digital-product plays because buyers understand the format and development costs are low."}, "24": {"play": "Create original themed coloring books as digital downloads or print products using clean line art and consistent formatting.", "why": "Niche themes can appeal to specific age groups, hobbies, and gift markets.", "stack": "Illustration/image tools; vector cleanup; Canva/Affinity/InDesign; KDP or digital storefront.", "build": "Choose an audience and theme, generate or draw original line art, manually inspect every page, standardize line weight and margins, test-print pages, then package and publish.", "traps": "Avoid copyrighted characters and trademarked brands. Ensure age-appropriate content and verify marketplace AI-content requirements.", "reality": "Simple to produce but crowded. A coherent concept and clean printable artwork matter more than page count."}, "25": {"play": "Create tested workflow prompt packs for specific professional tasks, bundled with instructions, examples, and quality-control steps.", "why": "Professionals pay for repeatable workflows that reduce trial and error, especially when prompts are grounded in real job tasks.", "stack": "LLMs; documentation tool; test cases; landing page/storefront.", "build": "Choose one profession and recurring task set. Interview users or map workflows, design multi-step prompts, test across realistic inputs, document limitations, add examples, and update as models change.", "traps": "Do not market prompts as substitutes for licensed professional judgment. Protect confidential client data and avoid promising deterministic outputs.", "reality": "Better as a workflow system than a list of clever prompts. Testing and domain specificity create the value."}, "26": {"play": "Create scenario-based language practice packs combining original dialogues, translations, vocabulary, and licensed or generated audio.", "why": "Learners benefit from practical, contextual repetition rather than isolated vocabulary lists.", "stack": "LLM; translation/review workflow; TTS with commercial rights; PDF/audio packaging; storefront.", "build": "Pick a language level and use case, draft realistic dialogues, have fluent speakers or qualified reviewers verify them, generate audio, add vocabulary and exercises, and package by scenario.", "traps": "AI translation can produce subtle errors. Human language review is strongly recommended, especially for formal, regional, or sensitive contexts.", "reality": "Good bundle product if quality is high and the scenarios are specific. Generic phrase lists are widely available for free."}, "27": {"play": "Design interactive PDF planners tailored to specific professions, routines, or planning styles.", "why": "Niche planners can command more value when the structure reflects a real workflow rather than generic calendar pages.", "stack": "Canva/Affinity/InDesign; PDF hyperlinking tools; tablet-note apps for testing; storefront.", "build": "Choose a specific user, map their planning cycle, design reusable pages and navigation, create hyperlinks, test on common devices/apps, and sell with a video walkthrough.", "traps": "Test links, page sizes, and import behavior before sale. Avoid using employer/professional trademarks without permission.", "reality": "Low-cost and evergreen, but niche workflow insight is the differentiator."}, "28": {"play": "Create and license small, tightly themed sound-effect packs for game developers, video editors, podcasters, or app designers.", "why": "Creators often need specific sounds quickly and prefer clean, searchable packs with clear licensing.", "stack": "AI audio or original recording tools with commercial rights; audio editor; metadata/tagging; storefront.", "build": "Choose a narrow use case, create original sounds, edit and normalize them, remove artifacts, tag consistently, define a clear license, and publish demo reels.", "traps": "Confirm that the generation tool permits commercial licensing and that outputs do not reproduce protected recordings.", "reality": "Viable as a catalog business. Searchability, audio quality, and licensing clarity are more important than sheer volume."}, "29": {"play": "Sell job-search kits combining ATS-friendly resume structures, tailoring prompts, achievement frameworks, and cover-letter workflows.", "why": "Job seekers value systems that help them present real experience clearly and tailor applications efficiently.", "stack": "Document templates; LLM prompts; ATS-friendly formatting; storefront; optional tutorial videos.", "build": "Choose a role family, create clean templates, build prompts that extract truthful accomplishments, show tailoring examples, add an application tracker, and test document parsing.", "traps": "Avoid claims such as 'ATS-bypassing' or guaranteed interviews. Never encourage fabricated credentials or keyword stuffing.", "reality": "Strong practical product when targeted to a profession. Sell clarity and tailoring—not hacks."}, "30": {"play": "Research underserved commercial image needs and create original, marketplace-compliant stock assets for approved distribution channels.", "why": "Stock buyers continually need specific business, lifestyle, and conceptual imagery, but marketplaces are selective and increasingly crowded.", "stack": "Stock-marketplace research; image-generation/design tools; upscaling and QA; approved stock platforms.", "build": "Research demand and submission rules, create commercially useful concepts, inspect anatomy/text/artifacts, add accurate metadata and AI labels where required, and upload only to platforms that accept the content under current rules.", "traps": "Marketplace AI policies change and differ. Avoid trademarks, recognizable people without appropriate rights, and misleading editorial-style content.", "reality": "Possible catalog play, but acceptance and revenue are not guaranteed. Quality and commercially useful specificity beat mass uploads. Section C — Local Business & Agency Services PLAYBOOKS 31–50 Practical AI-enabled services for real businesses. Focus on clear outcomes, repeatable delivery, client-approved data, compliance, and recurring value."}, "31": {"play": "Deploy and maintain a business-specific AI support assistant trained on approved company information, then charge setup and recurring management fees.", "why": "Small businesses often have repetitive questions but lack staff for constant website support.", "stack": "Chatbase or similar platform; approved website/docs knowledge base; website embed; analytics; escalation workflow.", "build": "Pick businesses with repetitive inquiries. Audit their source content, configure the bot, test common and adversarial questions, add human escalation, install it, and review unanswered questions monthly.", "traps": "Do not let the bot invent policies, pricing, medical/legal advice, or commitments. Handle personal data and chat logs appropriately.", "reality": "Clear recurring-service model. The best clients have enough inbound questions to make the savings visible."}, "32": {"play": "Help local businesses improve review-response operations with customized response templates, alerts, and a repeatable process for responding to genuine customer feedback.", "why": "Thoughtful responses improve customer experience and demonstrate active reputation management, even though no single tactic guarantees local-search ranking gains.", "stack": "Google Business Profile; permitted business discovery sources/APIs; LLM for draft responses; spreadsheet/CRM.", "build": "Identify businesses with weak response practices through compliant research. Audit existing reviews, create brand-specific response frameworks, set up alerts, and provide or manage human-reviewed responses.", "traps": "Do not fabricate reviews, incentivize prohibited reviews, or promise ranking improvements. Avoid prohibited bulk scraping of Google Maps content.", "reality": "Easy local service to demonstrate with before/after response quality. Sell reputation operations, not a ranking guarantee."}, "33": {"play": "Audit a business's existing outbound email and landing-page funnel, then use AI-assisted analysis to improve positioning, clarity, personalization, and conversion flow.", "why": "Many campaigns fail because of weak targeting and messaging rather than a lack of sending volume.", "stack": "Client-provided campaigns/data; LLM for analysis and variants; landing-page tools; analytics.", "build": "Review the target audience, offer, emails, landing page, and conversion data. Identify bottlenecks, rewrite several variants, recommend tests, and deliver an implementation plan or execute it.", "traps": "Do not scrape private campaign data. Commercial email laws and platform policies apply; recommendations should include compliant opt-out and sender practices.", "reality": "Good flat-fee diagnostic service that can lead to ongoing optimization work."}, "34": {"play": "Create a monthly social-content planning service for local businesses using AI to accelerate research, ideation, caption drafting, and repurposing.", "why": "Local owners often know they should post but lack time and structure.", "stack": "LLM; Canva; scheduling platform; client brand assets; analytics.", "build": "Choose a niche, build a reusable intake form, create monthly content pillars, draft a 30-day calendar, produce selected assets, obtain approval, schedule, and report on results.", "traps": "Avoid generic calendars that ignore real promotions, inventory, events, and local context. Verify claims and obtain permission for customer imagery.", "reality": "Simple productized service. Efficiency improves dramatically when you specialize in one business category."}, "35": {"play": "Help real estate professionals improve listing copy and create clearly disclosed, policy-compliant virtual staging or image enhancements.", "why": "Presentation affects buyer attention, and agents value fast turnaround on polished marketing assets.", "stack": "LLM for copy; approved image-enhancement/virtual-staging tools; MLS/platform requirements; delivery workflow.", "build": "Collect verified property facts and original photos. Rewrite descriptions without inventing features, create permitted visual enhancements, label virtual staging where required, and deliver platform-ready assets.", "traps": "Fair-housing rules, MLS policies, advertising rules, and image-disclosure requirements matter. Never digitally conceal material property defects or fabricate permanent features.", "reality": "High-value service when compliance and realism are handled well. Agents pay for speed and polish."}, "36": {"play": "Build reactivation campaigns for businesses with legitimate existing customer relationships, using segmented email or SMS offers and AI-assisted copy.", "why": "Re-engaging known customers can be cheaper than acquiring new ones when consent, relevance, and economics are sound.", "stack": "Client CRM; email/SMS platform; LLM for segmentation/copy; coupon or booking system; analytics.", "build": "Clean and segment the client's eligible customer list, define an offer, draft sequences, configure suppression/opt-outs, launch a small test, and measure incremental revenue before scaling.", "traps": "Email and SMS have different consent and compliance rules. Do not assume an old customer list can be contacted indefinitely through every channel. Define revenue attribution before agreeing to rev share.", "reality": "Strong service when the client has a real database and repeat-purchase behavior."}, "37": {"play": "Create and maintain mobile-friendly digital menus accessed by QR code, with a simple update process for restaurant staff.", "why": "Restaurants benefit when menus can be updated quickly without reprinting and customers can read them easily on phones.", "stack": "Website/no-code page builder; QR generator; client domain; analytics; optional ordering integration.", "build": "Rebuild the menu in an accessible mobile format, connect a stable QR code to a controlled URL, test across devices, print table assets, and offer ongoing updates.", "traps": "Avoid QR codes that depend on fragile third-party links. Keep prices, allergens, availability, and accessibility considerations current.", "reality": "Straightforward local setup service with recurring maintenance potential."}, "38": {"play": "Provide an AI-assisted handbook drafting and organization service that helps small businesses turn their approved policies into a consistent document for professional review.", "why": "Small businesses often have scattered policies and benefit from structured documentation, but employment law is jurisdiction-specific.", "stack": "Client policy intake; LLM for drafting; document template; version control; qualified HR/legal review where appropriate.", "build": "Collect existing policies and jurisdiction details, identify missing decisions, draft clearly labeled sections, route the document to the client's HR/legal reviewer, incorporate approved changes, and establish an update process.", "traps": "Do not market an AI-generated handbook as legally compliant without qualified review. Employment laws vary by location, workforce, industry, and company size.", "reality": "Useful documentation service if positioned as drafting and organization—not substitute legal counsel."}, "39": {"play": "Build a regional events directory using authorized submissions, official feeds, APIs, and permitted public sources, then monetize local visibility.", "why": "People want one reliable place to discover what's happening nearby, while organizers want targeted local exposure.", "stack": "Directory site; event APIs/RSS/official calendars; submission form; newsletter; ad/sponsorship tools.", "build": "Choose a geographic niche, establish source and submission workflows, verify event details, publish searchable listings, build an email digest, and sell clearly labeled sponsorships once audience exists.", "traps": "Events change and cancellations happen. Avoid unauthorized scraping and copying protected descriptions/images. Maintain correction and removal processes.", "reality": "Can become a defensible local media asset, but freshness and distribution require ongoing work."}, "40": {"play": "Turn podcast episodes into accurate transcripts, chapters, show notes, summaries, and derivative blog/social assets.", "why": "Podcasters often underuse each episode because post-production writing takes time.", "stack": "Transcription service; LLM; editor; client CMS or document delivery.", "build": "Transcribe the episode, correct names and technical terms, identify chapter timestamps, draft concise notes and a blog version, extract approved clips/quotes, and deliver in the client's format.", "traps": "AI transcripts require review. Do not fabricate timestamps or quotes, and clarify ownership/permission for repurposed guest content.", "reality": "Excellent productized service because input and output are standardized and turnaround can be fast."}, "41": {"play": "Create a package of locally relevant, expert-reviewed articles that answer real customer questions and support a business's broader local-search strategy.", "why": "Useful local content can attract qualified searchers and strengthen topical coverage when it is genuinely helpful and connected to the business.", "stack": "Keyword/search research; client expertise; LLM for drafts; CMS; analytics/Search Console.", "build": "Research real local queries, interview the client for expertise, build a 10-article plan, draft and fact-check each piece, add unique local information and internal links, publish, and monitor performance.", "traps": "Do not mass-produce thin city-swapped pages or promise rankings. Regulated topics need qualified review.", "reality": "Good recurring content service when tied to real expertise and search demand rather than generic AI volume."}, "42": {"play": "Transform verified agent experience and personality into polished bios and profile copy for brokerage sites, portals, and social profiles.", "why": "Many professionals have strong experience but weak positioning, and a good intake process can produce meaningful upgrades quickly.", "stack": "Structured intake form; LLM; editing checklist; delivery templates.", "build": "Collect verified credentials, specialties, service areas, accomplishments, and personal differentiators. Draft multiple lengths, fact-check, obtain approval, and adapt to each platform.", "traps": "Do not invent sales volume, awards, designations, or client claims. Follow brokerage and advertising rules.", "reality": "Fast, low-risk service that can bundle naturally with headshots, listing copy, and neighborhood guides."}, "43": {"play": "Repurpose client-owned long-form video into captioned short-form clips optimized for clear hooks and mobile viewing.", "why": "Many businesses already have valuable footage but lack editing capacity to distribute it effectively.", "stack": "Transcription/captioning tools; OpusClip/CapCut or similar; cloud storage; approval workflow.", "build": "Collect source videos, identify strong moments, create clips with accurate captions and brand styling, review for context, deliver platform-specific exports, and track which formats perform.", "traps": "Automated clipping can remove important context. Verify captions, names, and claims, and ensure the client owns or can repurpose the footage.", "reality": "One of the easiest services to productize. Differentiation comes from editorial judgment and reliable turnaround."}, "44": {"play": "Broker sponsorships between niche newsletters and relevant advertisers, earning a commission for sourcing and closing suitable placements.", "why": "Small publishers often lack dedicated sales capacity while advertisers want concentrated niche audiences.", "stack": "Publisher outreach; advertiser CRM; media-kit templates; email; contracts/invoicing.", "build": "Recruit publishers with verified audience metrics, build standardized inventory and pricing information, prospect relevant advertisers, negotiate placements, document terms, and track delivery/results.", "traps": "Do not scrape or invent private open-rate data. Metrics should come from publishers and be represented accurately. Clearly define commissions and payment responsibility.", "reality": "Relationship-driven rather than AI-driven, but AI can accelerate research and outreach. Trust and verified audience quality are the moat."}, "45": {"play": "Turn approved support history and internal knowledge into a concise public FAQ that reduces repetitive questions and improves self-service.", "why": "Support logs reveal recurring friction that businesses often fail to document publicly.", "stack": "Client-provided support logs; LLM for clustering/drafting; CMS; analytics/search data.", "build": "Obtain authorized logs, remove unnecessary personal data, cluster recurring questions, draft answers from approved sources, have the client verify them, publish with clear navigation, and update from new support trends.", "traps": "Support logs can contain sensitive personal information. Minimize data, restrict access, and never publish internal/private details.", "reality": "High-value, low-complexity service when the business has meaningful support volume."}, "46": {"play": "Analyze restaurant menu structure, pricing presentation, item performance, and contribution margins to recommend testable merchandising changes.", "why": "Menu design can influence attention and purchasing, but real decisions should combine behavioral principles with the restaurant's own sales and margin data.", "stack": "POS/exported sales data; cost/margin data; spreadsheet/BI tool; LLM for analysis and draft recommendations; design tool.", "build": "Collect item sales and margin data, classify stars/plowhorses/puzzles/dogs where appropriate, review menu layout, identify hypotheses, propose small tests, and measure results.", "traps": "Do not treat generic 'menu psychology' as universal truth. Recommendations should be grounded in actual economics and customer behavior.", "reality": "More valuable when sold as analytics plus testing, not an AI opinion on menu text alone."}, "47": {"play": "Help businesses adapt websites, manuals, and sales materials for new languages and markets using AI-assisted translation plus human review.", "why": "Modern models accelerate first-pass translation, while localization adds value by adapting tone, terminology, units, and cultural context.", "stack": "LLM/translation platform; terminology glossary; translation memory where appropriate; qualified human reviewer; document/web workflow.", "build": "Define target market and terminology, prepare source content, generate a first-pass translation, review with a fluent/qualified human, adapt cultural references and formatting, QA in context, and deliver version-controlled files.", "traps": "High-stakes legal, medical, safety, and technical material may require certified or specialist translation. Protect confidential source documents.", "reality": "Strong service when you sell localization quality and workflow efficiency rather than 'one-click translation.'"}, "48": {"play": "Set up a streamlined mobile quoting and invoicing workflow for local trades using an appropriate field-service or invoicing platform.", "why": "Contractors lose time when estimates, change orders, invoices, and payment follow-up are inconsistent.", "stack": "Joist or another suitable platform; branded templates; payment integrations; automation where supported.", "build": "Map the contractor's quote-to-payment workflow, configure services and templates, add branding and payment terms, test on mobile, train the owner/team, and provide a short operating guide.", "traps": "Do not imply that a third-party platform can support a feature without verifying the current plan. Tax, lien, contract, and licensing requirements vary by jurisdiction.", "reality": "A practical setup service with obvious time savings. Specializing by trade makes templates reusable."}, "49": {"play": "Create polished neighborhood guides for agents using verified local information, original writing, and reusable branded templates.", "why": "Agents need useful local content for buyers, open houses, relocation leads, and follow-up marketing.", "stack": "Official/local data sources; maps where licensed; LLM for drafting; Canva; brokerage branding.", "build": "Define the target neighborhood and buyer questions, collect current verified information, write an original guide, add maps/photos you have rights to use, obtain agent review, and deliver print and digital versions.", "traps": "Fair-housing rules are critical: avoid steering language or subjective descriptions of protected-class composition. Verify school, crime, commute, and demographic claims before inclusion.", "reality": "Good repeatable real-estate service when positioned around factual local utility and compliant marketing."}, "50": {"play": "Create multilingual subtitle and localization packages for course creators and businesses that own or control the source video rights.", "why": "Translating existing content can expand addressable audiences without recreating the underlying production.", "stack": "Transcription; translation/LLM tools; subtitle editor; human language review; SRT/VTT delivery; optional dubbing tools.", "build": "Confirm source rights, transcribe accurately, translate for meaning and timing, review with a fluent speaker, synchronize subtitles, QA names and technical terms, and deliver platform-ready files.", "traps": "Do not translate or redistribute third-party courses without authorization. High-stakes content needs specialist review, and dubbing/voice cloning requires appropriate voice rights.", "reality": "Clear B2B service with repeatable workflows. Accuracy and synchronization are what clients pay for. Official Tool Links Convenience links to commonly referenced tools. Always verify current pricing, features, usage rights, and terms directly with the provider. Tool Official destination Amazon KDP kdp.amazon.com Beehiiv www.beehiiv.com Canva www.canva.com CapCut www.capcut.com Chatbase www.chatbase.co ElevenLabs elevenlabs.io Etsy www.etsy.com Framer www.framer.com Goodnotes www.goodnotes.com Google Business Profile www.google.com/business Gumroad gumroad.com Joist www.joist.com Lightroom www.adobe.com/products/photoshop-lightroom.html LinkedIn www.linkedin.com Luma lumalabs.ai Make www.make.com Midjourney www.midjourney.com Next.js nextjs.org Notion www.notion.so OpusClip www.opus.pro Pinterest www.pinterest.com Printify printify.com Runway runwayml.com Shopify www.shopify.com Suno suno.com Taplio taplio.com TikTok www.tiktok.com Udio www.udio.com Tool Official destination Webflow webflow.com YouTube www.youtube.com n8n n8n.io Related AI-Framework.io Resources Live Playbook Index — Playbooks 1–100 AI-Framework.io Separate document: The Premium Vault covers Playbooks 51–100 and is not included in this edition."}};
+window.__PB_TAGLINKS = {"Beehiiv": "beehiiv", "Chatbase": "chatbase", "ElevenLabs": "elevenlabs", "GoodNotes": "goodnotes", "LinkedIn": "linkedin", "Make.com": "make-com", "Midjourney": "midjourney", "Notion": "notion", "Opus Clip": "opus-clip", "Runway/Luma": "runway", "Spotify": "spotify", "Udio/Suno": "udio"};
+(function(){
+  var FULL = window.__PB_FULL, LINKS = window.__PB_TAGLINKS;
+  var SECTIONS = [
+    ["play", "The Play"], ["why", "Why It Works"], ["stack", "The Stack"],
+    ["build", "The Build"], ["traps", "The Traps"], ["reality", "Reality Check"]
+  ];
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  (window.FREE || []).forEach(function(p){
+    var card = document.getElementById("pb-" + p.n);
+    var data = FULL[p.n];
+    if (!card || !data) return;
+    card.dataset.search = (card.dataset.search + " " +
+      SECTIONS.map(function(s){ return data[s[0]]; }).join(" ")).toLowerCase();
+    var detail = el("div", "pb-detail");
+    detail.hidden = true;
+    SECTIONS.forEach(function(s){
+      var sec = el("div", "pb-sec" + (s[0] === "reality" ? " reality" : ""));
+      sec.appendChild(el("div", "pb-sec-label", s[1]));
+      sec.appendChild(el("p", null, data[s[0]]));
+      if (s[0] === "stack" && p.tags && p.tags.length){
+        var row = el("div", "pb-tools");
+        p.tags.forEach(function(t){
+          var slug = LINKS[t];
+          if (slug){
+            var a = el("a", "tool-chip", t + " \u2192");
+            a.href = "/tool/" + slug;
+            row.appendChild(a);
+          } else {
+            row.appendChild(el("span", "tool-chip", t));
+          }
+        });
+        sec.appendChild(row);
+      }
+      detail.appendChild(sec);
+    });
+    var actions = el("div", "pb-actions");
+    var b1 = el("a", null, "Build this in the Framework Builder \u2192");
+    b1.href = "/build-my-framework/";
+    var b2 = el("a", null, "Browse the tool directory \u2192");
+    b2.href = "/directory/";
+    actions.appendChild(b1); actions.appendChild(b2);
+    detail.appendChild(actions);
+    var toggle = el("button", "pb-toggle", "Read the full playbook \u25B8");
+    toggle.type = "button";
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.addEventListener("click", function(){
+      var open = detail.hidden;
+      detail.hidden = !open;
+      card.classList.toggle("open", open);
+      toggle.textContent = open ? "Close \u25B4" : "Read the full playbook \u25B8";
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+    card.appendChild(toggle);
+    card.appendChild(detail);
+  });
+})();
+</script>
 </body>
 </html>
