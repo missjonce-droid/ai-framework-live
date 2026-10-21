@@ -107,7 +107,8 @@ http://ai-framework.io/*         https://ai-framework.io/:splat        301!
 
 # Dynamic routes handled by the app shell
 /alternatives/*        /app.html                             200
-/tool/*                /app.html                             200
+# /tool/<slug> is served by functions/tool/[slug].js (static shells pass through,
+# imported tools fall back to the SPA shell at the original URL).
 `;
 
 function main() {
