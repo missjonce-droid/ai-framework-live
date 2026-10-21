@@ -12,9 +12,45 @@
   <link rel="icon" href="https://ai-framework.io/static/images/framework-entity-v1.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/main.css">
   <link rel="stylesheet" href="static/css/builder.css">
+  <style>
+    /* Brand standard (matches /playbooks/): warm black, copper, slick chrome — no purple */
+    :root{
+      --bg:#0D0A07; --bg-2:#130E08; --surface:#1A130C; --surface-2:#241A10;
+      --border:rgba(201,162,94,.18); --border-soft:rgba(201,162,94,.10);
+      --text:#F1EAD9; --muted:#B3A58C; --faint:#7D6F5A;
+      --accent:#C97E4A; --accent-hover:#DE9257; --accent-ink:#180F06;
+      --accent-glow:rgba(201,126,74,.14);
+      --font-display:"Big Shoulders Display","Archivo",-apple-system,sans-serif;
+      --font-body:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    .eyebrow{font-family:"Spline Sans Mono",monospace;letter-spacing:.22em;color:var(--accent)}
+    .trust .n{font-family:"Spline Sans Mono",monospace}
+    .btn-primary{box-shadow:0 8px 28px -8px rgba(201,126,74,.5)}
+    .bpanel-card{box-shadow:0 30px 80px -30px rgba(0,0,0,.7),0 0 0 1px rgba(201,126,74,.07)}
+    .card:hover{border-color:rgba(201,126,74,.38)}
+    .price-card.featured{border-color:rgba(201,126,74,.55);box-shadow:0 0 0 1px rgba(201,126,74,.25),0 24px 60px -24px rgba(201,126,74,.32)}
+    .step-pill.active{border-color:rgba(201,126,74,.5)}
+    .template-card:hover{border-color:rgba(201,126,74,.5)}
+    .s-cost.freemium{background:rgba(201,126,74,.12);border-color:rgba(201,126,74,.35)}
+    /* What is a framework? */
+    .fw-def{max-width:740px;margin:28px auto 0;text-align:left;border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--surface);border-radius:10px;padding:18px 22px}
+    .fw-def-label{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:7px}
+    .fw-def p{color:var(--muted);font-size:16px;line-height:1.6;margin:0}
+    .fw-def strong{color:var(--text)}
+    /* Top 10 strip */
+    .t10-list{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;max-width:1020px;margin:0 auto}
+    .t10-row{display:flex;align-items:baseline;gap:14px;padding:13px 4px;border-bottom:1px solid var(--border-soft);text-decoration:none}
+    .t10-num{font-family:"Spline Sans Mono",monospace;font-size:12px;color:var(--accent);min-width:26px}
+    .t10-name{color:var(--text);font-size:16px;font-weight:500}
+    .t10-row:hover .t10-name{color:var(--accent-hover)}
+    .t10-arrow{margin-left:auto;color:var(--faint)}
+    .t10-more{text-align:center;margin-top:24px}
+    .t10-more a{color:var(--accent);font-weight:600;text-decoration:none}
+    @media (max-width:760px){.t10-list{grid-template-columns:1fr}}
+  </style>
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"WebSite","name":"AI Framework","url":"https://ai-framework.io/","description":"Your AI Operating System — discover the right AI tools, create personalized workflows, and turn artificial intelligence into practical results.","publisher":{"@type":"Organization","name":"AI Framework LLC"}}
@@ -51,6 +87,10 @@
         <span class="eyebrow">Your AI Operating System</span>
         <h1>Stop browsing AI tools. <span class="hl">Start with your goal.</span></h1>
         <p class="lede">Tell us what you want to accomplish. We'll help you choose the right AI tools and build a practical system to get it done — stack, costs, setup steps, and reusable prompts.</p>
+        <div class="fw-def reveal">
+          <span class="fw-def-label">What&#8217;s a framework?</span>
+          <p><strong>Your goal, turned into a working AI system</strong> — the right tools, in the right order, with the exact steps to run them. Not another app to figure out. A system that does the job.</p>
+        </div>
       </div>
 
       <div id="builderForm">
@@ -162,6 +202,30 @@
       </div>
     </div>
   </div>
+
+  <!-- ================= TOP 10 ================= -->
+  <section id="top10">
+    <div class="container">
+      <div class="section-head center reveal">
+        <span class="eyebrow">Start here</span>
+        <h2>10 ways people are putting AI to work</h2>
+        <p>Free playbooks with the full steps. Pick one and let AI do the heavy lifting.</p>
+      </div>
+      <div class="t10-list">
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-8"><span class="t10-num">01</span><span class="t10-name">The AI Children&#8217;s Book Print-on-Demand Loop</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-11"><span class="t10-num">02</span><span class="t10-name">The AI Faceless Cooking Channel</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-5"><span class="t10-num">03</span><span class="t10-name">The AI True Crime Podcast Machine</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-2"><span class="t10-num">04</span><span class="t10-name">The AI Newsletter Cloner</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-16"><span class="t10-num">05</span><span class="t10-name">The Notion Template Factory</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-24"><span class="t10-num">06</span><span class="t10-name">The Custom Coloring Book Engine</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-29"><span class="t10-num">07</span><span class="t10-name">The AI Resume Makeover Kits</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-32"><span class="t10-num">08</span><span class="t10-name">The Local GMB Review Booster</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-35"><span class="t10-num">09</span><span class="t10-name">The Real Estate AI Listing Overhaul</span><span class="t10-arrow">&#8594;</span></a>
+        <a class="t10-row" href="https://ai-framework.io/playbooks/#pb-43"><span class="t10-num">10</span><span class="t10-name">The Simple Video Captions Agency</span><span class="t10-arrow">&#8594;</span></a>
+      </div>
+      <p class="t10-more"><a href="https://ai-framework.io/playbooks/">See all 100 playbooks &#8594;</a></p>
+    </div>
+  </section>
 
   <!-- ================= HOW IT WORKS ================= -->
   <section id="how">
