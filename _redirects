@@ -34,4 +34,3 @@
 
 # Dynamic routes must follow static routes in Cloudflare Pages.
 /alternatives/*        /app.html                             200
-/tool/*                /app.html                             200
