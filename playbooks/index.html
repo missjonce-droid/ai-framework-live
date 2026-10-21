@@ -412,6 +412,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-radius:3px;padding:9px 14px;transition:all .15s;
   }
   .pb-actions a:hover{border-color:var(--brass);background:var(--brass-glow)}
+
+  /* ---------- Top 10 strip (daughter rework) ---------- */
+  .top10{border-bottom:1px solid var(--line);padding:46px 0 42px}
+  .top10-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .top10-head h2{font-family:var(--display);font-size:31px;font-weight:700;color:var(--ivory);line-height:1.1}
+  .t10-kicker{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper)}
+  .top10-sub{color:var(--dim);font-size:15px;margin-bottom:18px}
+  .t10-list{display:grid;grid-template-columns:1fr 1fr;gap:0 36px}
+  .t10-row{display:flex;align-items:baseline;gap:14px;padding:11px 2px;border-bottom:1px solid var(--line);text-decoration:none}
+  .t10-row:hover{background:rgba(201,126,74,.05)}
+  .t10-num{font-family:var(--mono);font-size:12px;color:var(--copper);min-width:26px}
+  .t10-name{color:var(--ivory);font-size:15.5px;font-weight:500}
+  .t10-row:hover .t10-name{color:var(--copper-bright)}
+  .t10-arrow{margin-left:auto;color:var(--faint);font-size:13px}
+  @media (max-width:760px){.t10-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -444,7 +459,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div>
       <p class="eyebrow">The Playbook Index</p>
       <h1><span class="count-brass">100</span> AI<br>Playbooks.</h1>
-      <p class="hero-sub"><strong>Fifty complete systems you can deploy this week</strong> — content engines, digital products, local-agency services — built on tools you already have access to. Fifty more sit in the Vault, for operators building real infrastructure.</p>
+      <p class="hero-sub"><strong>AI, working for you.</strong> Fifty step-by-step systems — content channels, digital products, and services local businesses pay for — each with the tools, the steps, and the traps spelled out. Free. Pick one and start.</p>
       <div class="hero-ctas">
         <a class="btn btn-solid" href="#free">Browse the free 50</a>
         <a class="btn btn-brass" href="https://buy.stripe.com/00wfZhfeneape16bch0Jq00">Open the Vault — $39 &#8594;</a>
@@ -459,6 +474,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 </header>
+
+
+<section class="top10">
+  <div class="wrap">
+    <div class="top10-head"><span class="t10-kicker">Start here</span><h2>10 ways people are putting AI to work</h2></div>
+    <p class="top10-sub">The most-started playbooks on this page. Tap one — the full steps open right there.</p>
+    <div class="t10-list">
+      <a class="t10-row" href="#pb-8" data-open="8"><span class="t10-num">01</span><span class="t10-name">The AI Children&#8217;s Book Print-on-Demand Loop</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-11" data-open="11"><span class="t10-num">02</span><span class="t10-name">The AI Faceless Cooking Channel</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-5" data-open="5"><span class="t10-num">03</span><span class="t10-name">The AI True Crime Podcast Machine</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-2" data-open="2"><span class="t10-num">04</span><span class="t10-name">The AI Newsletter Cloner</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-16" data-open="16"><span class="t10-num">05</span><span class="t10-name">The Notion Template Factory</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-24" data-open="24"><span class="t10-num">06</span><span class="t10-name">The Custom Coloring Book Engine</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-29" data-open="29"><span class="t10-num">07</span><span class="t10-name">The AI Resume Makeover Kits</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-32" data-open="32"><span class="t10-num">08</span><span class="t10-name">The Local GMB Review Booster</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-35" data-open="35"><span class="t10-num">09</span><span class="t10-name">The Real Estate AI Listing Overhaul</span><span class="t10-arrow">&#8594;</span></a>
+      <a class="t10-row" href="#pb-43" data-open="43"><span class="t10-num">10</span><span class="t10-name">The Simple Video Captions Agency</span><span class="t10-arrow">&#8594;</span></a>
+    </div>
+  </div>
+</section>
 
 <div class="controls" id="free">
   <div class="wrap controls-inner">
@@ -927,6 +962,25 @@ window.__PB_TAGLINKS = {"Beehiiv": "beehiiv", "Chatbase": "chatbase", "ElevenLab
     card.appendChild(toggle);
     card.appendChild(detail);
   });
+  /* Top 10 strip + deep links: open the reader for a playbook number. */
+  function openCard(n){
+    var card = document.getElementById("pb-" + n);
+    if (!card) return;
+    var detail = card.querySelector(".pb-detail");
+    var toggle = card.querySelector(".pb-toggle");
+    if (detail && detail.hidden && toggle) toggle.click();
+    card.scrollIntoView({behavior: "smooth", block: "start"});
+  }
+  document.querySelectorAll("[data-open]").forEach(function(a){
+    a.addEventListener("click", function(e){
+      e.preventDefault();
+      var n = a.getAttribute("data-open");
+      openCard(n);
+      history.replaceState(null, "", "#pb-" + n);
+    });
+  });
+  var hm = (location.hash || "").match(/^#pb-(\d+)$/);
+  if (hm) setTimeout(function(){ openCard(hm[1]); }, 400);
 })();
 </script>
 </body>
