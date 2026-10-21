@@ -229,19 +229,6 @@
     }
   }
 
-  function addSecondaryResources() {
-    var footer = document.querySelector('footer');
-    if (!footer || footer.querySelector('.framework-secondary-resources')) return;
-    var resources = document.createElement('nav');
-    resources.className = 'framework-secondary-resources';
-    resources.setAttribute('aria-label', 'More resources');
-    var label = document.createElement('span');
-    label.textContent = 'More resources';
-    var link = document.createElement('a');
-    link.href = '/sports-research/'; link.textContent = 'Justin’s Advantage';
-    resources.appendChild(label); resources.appendChild(link); footer.appendChild(resources);
-  }
-
   function improveHomepage() {
     if (window.location.pathname !== "/" && window.location.pathname !== "/tree")
       return;
@@ -602,7 +589,6 @@
 
   function applyEnhancements() {
     addNavigationLinks();
-    addSecondaryResources();
     labelConfiguredAffiliateLinks();
     simplifyNav();
     improveHomepage();
