@@ -1,5 +1,6 @@
 // /api/v1/frameworks/:id — read / update / delete one saved framework.
 import { json, requireDB, getSessionUser } from '../../_lib.js';
+import { isNotReady } from '../../_profiles.js';
 
 async function owned(db, userId, id) {
   return db.prepare(
@@ -27,6 +28,8 @@ export async function onRequestGet({ request, env, params }) {
     id: f.id, title: f.title,
     input: JSON.parse(f.input_json || '{}'),
     output: JSON.parse(f.output_json || '{}'),
+    is_public: Boolean(f.is_public),
+    outcome_note: f.outcome_note || '',
     created_at: f.created_at, updated_at: f.updated_at,
   });
 }
@@ -41,6 +44,20 @@ export async function onRequestPut({ request, env, params }) {
   const title = String(body.title || f.title).slice(0, 120);
   await a.db.prepare("UPDATE frameworks SET title = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id = ?")
     .bind(title, params.id).run();
+  // AI Pages publish state (migration 0003) — optional fields, fail soft.
+  if (body.is_public !== undefined || body.outcome_note !== undefined) {
+    try {
+      const isPublic = body.is_public === undefined ? (f.is_public ? 1 : 0) : (body.is_public ? 1 : 0);
+      const note = body.outcome_note === undefined
+        ? (f.outcome_note || null)
+        : (String(body.outcome_note).trim().slice(0, 280) || null);
+      await a.db.prepare('UPDATE frameworks SET is_public = ?, outcome_note = ? WHERE id = ?')
+        .bind(isPublic, note, params.id).run();
+    } catch (e) {
+      if (isNotReady(e)) return json({ error: 'AI Pages are not switched on yet.', code: 'not_ready' }, 503);
+      throw e;
+    }
+  }
   return json({ ok: true });
 }
 

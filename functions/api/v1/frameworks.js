@@ -12,15 +12,23 @@ async function authed(request, env) {
 export async function onRequestGet({ request, env }) {
   const a = await authed(request, env);
   if (a.err) return a.err;
-  const { results } = await a.db.prepare(
-    `SELECT f.id, f.title, f.created_at, f.updated_at, f.workspace_id
-     FROM frameworks f
+  const base = `FROM frameworks f
      JOIN workspaces w ON w.id = f.workspace_id
      LEFT JOIN workspace_members m ON m.workspace_id = w.id AND m.user_id = ?
      WHERE w.owner_id = ? OR m.user_id = ?
-     ORDER BY f.updated_at DESC LIMIT 200`
-  ).bind(a.user.id, a.user.id, a.user.id).all();
-  return json({ frameworks: results || [] });
+     ORDER BY f.updated_at DESC LIMIT 200`;
+  try {
+    // Includes AI Pages publish state once migration 0003 is applied.
+    const { results } = await a.db.prepare(
+      `SELECT f.id, f.title, f.created_at, f.updated_at, f.workspace_id, f.is_public, f.outcome_note ${base}`
+    ).bind(a.user.id, a.user.id, a.user.id).all();
+    return json({ frameworks: (results || []).map((f) => Object.assign(f, { is_public: Boolean(f.is_public) })) });
+  } catch (e) {
+    const { results } = await a.db.prepare(
+      `SELECT f.id, f.title, f.created_at, f.updated_at, f.workspace_id ${base}`
+    ).bind(a.user.id, a.user.id, a.user.id).all();
+    return json({ frameworks: results || [] });
+  }
 }
 
 export async function onRequestPost({ request, env }) {
