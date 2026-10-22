@@ -11,15 +11,15 @@ function esc(s) {
 
 const CSS = `
   :root{--bg:#0D0A07;--panel:#1A130C;--panel2:#241A10;--line:#3A2A1A;--ivory:#EDE6D8;
-  --dim:#AB9C88;--faint:#776A58;--copper:#C97E4A;--copper2:#E09554;--brass:#C9A25E;--chrome:#C9CCD4}
+  --dim:#AB9C88;--faint:#776A58;--copper:#2FA598;--copper2:#63C7B2;--brass:#C9A25E;--chrome:#C9CCD4;--lapis:#2E6BC2;--terra:#B5442C}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ivory);font-family:Archivo,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
   .wrap{max-width:880px;margin:0 auto;padding:0 20px}
   header{padding:56px 0 34px;border-bottom:1px solid var(--line);
-    background-image:radial-gradient(ellipse 90% 420px at 50% -80px,rgba(201,126,74,.10),transparent 70%)}
-  .avatar{width:74px;height:74px;border-radius:14px;background:linear-gradient(160deg,#DE9257,#8A5227);
+    background-image:radial-gradient(ellipse 90% 420px at 50% -80px,rgba(47,165,152,.13),transparent 70%)}
+  .avatar{width:74px;height:74px;border-radius:14px;background:linear-gradient(150deg,#2E6BC2,#2FA598);
     display:flex;align-items:center;justify-content:center;font-family:"Big Shoulders Display",sans-serif;
-    font-size:36px;font-weight:800;color:#180F06;border:1px solid #8A5227}
+    font-size:36px;font-weight:800;color:#180F06;border:1px solid #8A6A24}
   .handle{font-family:"Spline Sans Mono",monospace;color:var(--copper);font-size:13px;letter-spacing:.14em;margin-top:16px}
   h1{font-family:"Big Shoulders Display",sans-serif;font-size:46px;font-weight:800;line-height:1.02;margin:4px 0 8px}
   .bio{color:var(--dim);font-size:17px;max-width:60ch}
@@ -40,7 +40,7 @@ const CSS = `
   .card-foot{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
   .forks{font-family:"Spline Sans Mono",monospace;font-size:11.5px;color:var(--faint);letter-spacing:.08em}
   .fork-btn{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    background:linear-gradient(180deg,#DE9257,#B26A33);color:#180F06;border:1px solid #8A5227;border-radius:4px;
+    background:linear-gradient(180deg,#E7BC55,#C2913B);color:#180F06;border:1px solid #8A6A24;border-radius:4px;
     padding:10px 16px;cursor:pointer;font-weight:600}
   .fork-btn[disabled]{opacity:.55;cursor:default}
   .fork-msg{font-size:13.5px;color:var(--copper2)}
@@ -49,8 +49,8 @@ const CSS = `
   .cta{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:24px;text-align:center}
   .cta h2{font-family:"Big Shoulders Display",sans-serif;font-size:28px;margin-bottom:6px}
   .cta p{color:var(--dim);margin-bottom:16px}
-  .cta a{display:inline-block;background:linear-gradient(180deg,#DE9257,#B26A33);color:#180F06;font-weight:700;
-    text-decoration:none;padding:12px 22px;border-radius:5px;border:1px solid #8A5227}
+  .cta a{display:inline-block;background:linear-gradient(180deg,#E7BC55,#C2913B);color:#180F06;font-weight:700;
+    text-decoration:none;padding:12px 22px;border-radius:5px;border:1px solid #8A6A24}
   .brand{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--faint);
     text-transform:uppercase;text-align:center;margin-top:22px}
   .brand a{color:var(--dim);text-decoration:none}
