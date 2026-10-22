@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discover AI Pages — AI Framework</title>
+<meta name="description" content="See what people's AI is doing: published frameworks you can fork, stacks you can copy, results you can learn from.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0D0A07;--panel:#1A130C;--line:#3A2A1A;--ivory:#EDE6D8;--dim:#AB9C88;--faint:#776A58;
+  --copper:#C97E4A;--copper2:#E09554;--brass:#C9A25E;--chrome:#C9CCD4}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ivory);font-family:Archivo,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 20px}
+  header{padding:54px 0 30px;border-bottom:1px solid var(--line);
+    background-image:radial-gradient(ellipse 90% 420px at 50% -80px,rgba(201,126,74,.10),transparent 70%)}
+  .kicker{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper)}
+  h1{font-family:"Big Shoulders Display",sans-serif;font-size:44px;font-weight:800;line-height:1.03;margin:8px 0 10px}
+  .sub{color:var(--dim);font-size:16.5px;max-width:62ch}
+  main{padding:32px 0 60px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px;
+    box-shadow:inset 0 1px 0 rgba(233,235,240,.05);display:flex;flex-direction:column}
+  .owner{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.1em;color:var(--copper);text-decoration:none}
+  .card h3{font-family:"Big Shoulders Display",sans-serif;font-size:23px;font-weight:700;margin:6px 0}
+  .card h3 a{color:var(--ivory);text-decoration:none}
+  .card h3 a:hover{color:var(--copper2)}
+  .goal{color:var(--dim);font-size:14.5px;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+  .chip{font-family:"Spline Sans Mono",monospace;font-size:10.5px;color:var(--chrome);border:1px solid #4d4438;border-radius:3px;padding:3px 8px}
+  .foot{margin-top:auto;padding-top:12px;display:flex;gap:14px;align-items:center}
+  .forks{font-family:"Spline Sans Mono",monospace;font-size:11px;color:var(--faint)}
+  .visit{margin-left:auto;color:var(--brass);text-decoration:none;font-weight:600;font-size:14px}
+  .state{border:1px dashed var(--line);border-radius:8px;padding:28px;text-align:center;color:var(--dim)}
+  .state h2{font-family:"Big Shoulders Display",sans-serif;color:var(--ivory);font-size:26px;margin-bottom:6px}
+  .state a{color:var(--copper2);font-weight:600}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <p class="kicker">AI Pages · Discover</p>
+  <h1>See what people&rsquo;s AI is doing.</h1>
+  <p class="sub">Published frameworks from real AI Pages — open one, fork it into your own workspace, make it yours.</p>
+</div></header>
+<main><div class="wrap">
+  <div id="host"><div class="state"><h2>Loading&hellip;</h2><p>Finding the newest published frameworks.</p></div></div>
+</div></main>
+<script>
+(function(){
+  var host = document.getElementById('host');
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function state(h, t){ host.innerHTML = '<div class="state"><h2>' + h + '</h2><p>' + t + '</p></div>'; }
+  fetch('/api/v1/discover').then(function(r){
+    return r.json().then(function(j){ return { ok: r.ok, j: j }; });
+  }).then(function(res){
+    if (!res.ok) {
+      if (res.j && res.j.code === 'not_ready') {
+        state('AI Pages are almost here', 'Publishing opens soon. <a href="/my-page/">Claim your page</a> so you are first out of the gate.');
+      } else { state('Something went wrong', 'Discover could not load. Try again in a moment.'); }
+      return;
+    }
+    var list = (res.j && res.j.frameworks) || [];
+    if (!list.length) {
+      state('Nobody has published yet', 'Be the first: <a href="/my-page/">put your framework on display</a>.');
+      return;
+    }
+    host.innerHTML = '<div class="grid">' + list.map(function(f){
+      return '<article class="card">' +
+        '<a class="owner" href="/u/' + esc(f.owner_handle) + '">@' + esc(f.owner_handle) + '</a>' +
+        '<h3><a href="/u/' + esc(f.owner_handle) + '">' + esc(f.title) + '</a></h3>' +
+        (f.goal ? '<p class="goal">' + esc(f.goal) + '</p>' : '') +
+        (f.tools && f.tools.length ? '<div class="chips">' + f.tools.map(function(t){ return '<span class="chip">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
+        '<div class="foot"><span class="forks">' + (f.forks || 0) + ' forks</span>' +
+        '<a class="visit" href="/u/' + esc(f.owner_handle) + '">Visit the page &rarr;</a></div>' +
+      '</article>';
+    }).join('') + '</div>';
+  }).catch(function(){ state('Something went wrong', 'Discover could not load. Try again in a moment.'); });
+})();
+</script>
+</body>
+</html>
