@@ -15,7 +15,7 @@ export async function onRequestGet({ request, env }) {
     .bind(tokenHash).first();
   if (!row) return fail();
   await db.prepare('DELETE FROM magic_links WHERE token_hash = ?').bind(tokenHash).run();
-  if (row.expires_at <= new Date().toISOString()) return fail();
+  if (!(Date.parse(String(row.expires_at).replace(' ', 'T')) > Date.now())) return fail();
 
   let user = await db.prepare('SELECT id, email FROM users WHERE email = ?').bind(row.email).first();
   if (!user) {
