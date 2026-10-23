@@ -9,10 +9,10 @@
   <meta property="og:description" content="Stop browsing AI tools. Start with your goal — we'll build your stack.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ai-framework.io/">
-  <link rel="icon" href="https://ai-framework.io/static/images/framework-entity-v1.webp">
+  <link rel="icon" href="https://ai-framework.io/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Anton&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/main.css">
   <link rel="stylesheet" href="static/css/builder.css">
   <style>
@@ -23,7 +23,7 @@
       --text:#F4F1EA; --muted:#A8A294; --faint:#8A8474;
       --accent:#C9A25E; --accent-hover:#F0CE7E; --accent-ink:#180F06;
       --accent-glow:rgba(201,126,74,.14);
-      --font-display:"Big Shoulders Display","Archivo",-apple-system,sans-serif;
+      --font-display:"Anton","Archivo",-apple-system,sans-serif;
       --font-body:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     }
     .eyebrow{font-family:"Spline Sans Mono",monospace;letter-spacing:.22em;color:var(--accent)}
@@ -50,6 +50,10 @@
     .t10-more{text-align:center;margin-top:24px}
     .t10-more a{color:var(--accent);font-weight:600;text-decoration:none}
     @media (max-width:760px){.t10-list{grid-template-columns:1fr}}
+      /* Disc logo + Anton display (2026-10-22) */
+    .brand{font-family:var(--font-display);letter-spacing:.05em;text-transform:uppercase}
+    .brand-mark{width:32px;height:32px;vertical-align:-8px;margin-right:9px}
+    h1,h2{font-family:var(--font-display);font-weight:400;letter-spacing:.006em}
   </style>
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
   <script type="application/ld+json">
@@ -62,7 +66,9 @@
   <nav class="nav" aria-label="Main navigation">
     <div class="container nav-inner">
       <a class="brand" href="https://ai-framework.io/" aria-label="AI Framework home">
-        <span class="brand-mark" aria-hidden="true">◧</span>
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="discgold-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6D47C"/><stop offset=".55" stop-color="#C9A25E"/><stop offset="1" stop-color="#9A741F"/></linearGradient></defs><circle cx="32" cy="32" r="12" fill="url(#discgold-h)"/>
+<path d="M17 22 H5 M15 32 H2 M17 42 H5" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/>
+<path d="M47 22 H59 M49 32 H62 M47 42 H59" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
         AI Framework
       </a>
       <div class="nav-links" id="navLinks">
@@ -477,7 +483,9 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a class="brand" href="https://ai-framework.io/" aria-label="AI Framework home">
-            <span class="brand-mark" aria-hidden="true">◧</span>
+            <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="discgold-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6D47C"/><stop offset=".55" stop-color="#C9A25E"/><stop offset="1" stop-color="#9A741F"/></linearGradient></defs><circle cx="32" cy="32" r="12" fill="url(#discgold-f)"/>
+<path d="M17 22 H5 M15 32 H2 M17 42 H5" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/>
+<path d="M47 22 H59 M49 32 H62 M47 42 H59" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
             AI Framework
           </a>
           <p style="margin-top: 16px;">Your AI Operating System. Discover the right tools, build practical workflows, and make AI work for you.</p>
