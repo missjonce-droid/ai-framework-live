@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My AI Page — AI Framework</title>
-<meta name="description" content="Set up your AI Page: claim your handle, say what your AI does, and publish your frameworks for people to fork.">
+<meta name="description" content="Set up your AI Page: claim your handle, say what your AI does, and publish your frameworks for people to steel.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
 <header><div class="wrap">
   <p class="kicker">AI Pages</p>
   <h1>Your AI, on display.</h1>
-  <p class="sub">Claim your handle, say what your AI does, and publish your best frameworks so people can fork them.</p>
+  <p class="sub">Claim your handle, say what your AI does, and publish your best frameworks so people can steel them.</p>
 </div></header>
 <main><div class="wrap" id="host">
   <div class="state"><h2>Loading&hellip;</h2><p>Checking your account.</p></div>
@@ -88,7 +88,7 @@
     var fwHtml = fws.length ? fws.map(function(f){
       return '<div class="fw" data-id="' + esc(f.id) + '">' +
         '<div class="fw-head"><span class="fw-title">' + esc(f.title) + '</span>' +
-        '<span class="fw-forks">' + (f.forks || 0) + ' forks</span>' +
+        '<span class="fw-forks">' + (f.forks || 0) + ' steels</span>' +
         '<label class="toggle"><input type="checkbox" class="pub-toggle" ' + (f.is_public ? 'checked' : '') + '> Public</label></div>' +
         '<textarea class="outcome" placeholder="Your result with this framework (optional) — e.g. Runs my client follow-ups, saves me ~5 hrs/week">' + esc(f.outcome_note || '') + '</textarea>' +
         '<button class="btn save-note" type="button">Save</button>' +
@@ -110,7 +110,7 @@
       (p.handle ? ' <a class="view-link" href="/u/' + esc(p.handle) + '">View my page &rarr;</a>' : '') +
       '<p class="msg" id="profileMsg"></p></div>' +
       '<div class="panel"><h2>Publish frameworks</h2>' +
-      '<p style="color:var(--dim);font-size:14.5px">Flip a framework public and it appears on your page and in <a class="view-link" href="/ai-pages/">Discover</a>. People can fork the system — never your private data.</p>' +
+      '<p style="color:var(--dim);font-size:14.5px">Flip a framework public and it appears on your page and in <a class="view-link" href="/ai-pages/">Discover</a>. People can steel the system — never your private data.</p>' +
       fwHtml + '</div>';
 
     var handleInput = document.getElementById('fHandle');
