@@ -32,18 +32,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Big+Shoulders+Display:wght@500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
   :root{
-    --void:#0D0A07;
-    --panel:#1A130C;
-    --panel-2:#241A10;
-    --line:#3A2A1A;
-    --line-bright:#5C4527;
-    --ivory:#EDE6D8;
+    --void:#0B0B0B;
+    --panel:#141311;
+    --panel-2:#1E1B16;
+    --line:#2B2718;
+    --line-bright:#8A6A24;
+    --ivory:#F4F1EA;
     --dim:#AB9C88;
     --faint:#776A58;
     --brass:#C9A25E;
     --brass-dim:#7D6434;
     --brass-glow:rgba(201,162,94,.12);
-    --copper:#C97E4A;
+    --copper:#C9A25E;
     --copper-bright:#E09554;
     --chrome:#C9CCD4;
     --chrome-dim:#82868F;
@@ -128,7 +128,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     padding:13px 24px;border-radius:3px;
     transition:background .15s,border-color .15s,color .15s;
   }
-  .btn-solid{background:linear-gradient(180deg,#DE9257,#B26A33);color:#180F06;border:1px solid #8A5227}
+  .btn-solid{background:linear-gradient(180deg,#F0CE7E,#B26A33);color:#180F06;border:1px solid #8A5227}
   .btn-solid:hover{background:linear-gradient(180deg,#E89E60,#BE743C)}
   .btn-brass{background:transparent;color:var(--brass);border:1px solid var(--brass-dim)}
   .btn-brass:hover{border-color:var(--brass);background:var(--brass-glow)}
@@ -160,7 +160,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   @media (prefers-reduced-motion:reduce){.cell{opacity:1}}
   .cell:hover{border-color:var(--line-bright);color:var(--ivory)}
   .cell.locked{
-    background:#171208;border-color:#3A2C14;color:var(--brass-dim);
+    background:#141311;border-color:#2B2718;color:var(--brass-dim);
   }
   .cell.locked:hover{border-color:var(--brass-dim);color:var(--brass)}
   .cell.locked::after{content:""}
@@ -174,7 +174,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     margin-right:7px;vertical-align:-1px;
   }
   .index-legend .k-free i{background:var(--panel);border:1px solid var(--line-bright)}
-  .index-legend .k-locked i{background:#171208;border:1px solid var(--brass-dim)}
+  .index-legend .k-locked i{background:#141311;border:1px solid var(--brass-dim)}
 
   /* ---------- Controls ---------- */
   .controls{
@@ -255,7 +255,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     border-top:1px solid var(--brass-dim);
     background:
       radial-gradient(ellipse 70% 420px at 50% 0%,var(--brass-glow),transparent 70%),
-      linear-gradient(#14100A,#0D0A07 60%);
+      linear-gradient(#14100A,#0B0B0B 60%);
     padding:80px 0 72px;
   }
   .vault-head{max-width:74ch;margin-bottom:48px}
@@ -274,7 +274,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .vault-section{margin-bottom:44px}
   .vault-section-head{
     display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;
-    margin-bottom:18px;border-bottom:1px solid #3A2C14;padding-bottom:12px;
+    margin-bottom:18px;border-bottom:1px solid #2B2718;padding-bottom:12px;
   }
   .vault-section-head h3{
     font-family:var(--display);font-weight:700;font-size:24px;
@@ -285,7 +285,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .vault-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
   .vault-card{
-    position:relative;background:#171208;border:1px solid #3A2C14;border-radius:4px;
+    position:relative;background:#141311;border:1px solid #2B2718;border-radius:4px;
     padding:22px;display:flex;flex-direction:column;gap:11px;overflow:hidden;
     transition:border-color .15s;
   }
@@ -305,14 +305,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
   .classified{
     display:flex;align-items:center;gap:18px;flex-wrap:wrap;
-    background:#130E07;border:1px dashed #3A2C14;border-radius:4px;
+    background:#130E07;border:1px dashed #2B2718;border-radius:4px;
     padding:16px 20px;
   }
   .classified-cells{display:flex;gap:4px;flex-wrap:wrap}
   .c-cell{
     width:26px;height:26px;display:flex;align-items:center;justify-content:center;
     font-family:var(--mono);font-size:9px;color:var(--brass-dim);
-    background:#171208;border:1px solid #38290F;border-radius:2px;
+    background:#141311;border:1px solid #38290F;border-radius:2px;
   }
   .classified p{
     font-family:var(--mono);font-size:11px;letter-spacing:.04em;
@@ -448,10 +448,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </nav>
 
 <aside aria-label="Featured partner" style="max-width:500px;margin:28px auto 0;padding:24px;background-color:#0f172a;border:1px solid #334155;border-radius:16px;font-family:Archivo,system-ui,sans-serif;box-shadow:0 10px 15px -3px rgba(0,0,0,.5),0 4px 6px -2px rgba(0,0,0,.3);text-align:center;">
-  <span style="display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#f59e0b;background-color:rgba(245,158,11,.1);padding:4px 12px;border-radius:20px;margin-bottom:16px;">Featured Partner</span>
+  <span style="display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#D9A441;background-color:rgba(245,158,11,.1);padding:4px 12px;border-radius:20px;margin-bottom:16px;">Featured Partner</span>
   <h3 style="color:#f1f5f9;font-size:20px;font-weight:700;margin:0 0 8px;">ElevenLabs Voice AI</h3>
   <p style="color:#94a3b8;font-size:15px;line-height:24px;margin:0 0 20px;">Hyper-realistic, emotionally expressive AI voice cloning and text-to-speech technology.</p>
-  <a href="https://try.elevenlabs.io/7dqyxtbjnapb" target="_blank" rel="sponsored nofollow noopener" style="display:inline-block;background:linear-gradient(135deg,#f59e0b 0%,#b45309 100%);color:#111827;font-size:16px;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:8px;transition:opacity .2s ease;">Try ElevenLabs &#8594;</a>
+  <a href="https://try.elevenlabs.io/7dqyxtbjnapb" target="_blank" rel="sponsored nofollow noopener" style="display:inline-block;background:linear-gradient(135deg,#D9A441 0%,#b45309 100%);color:#111827;font-size:16px;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:8px;transition:opacity .2s ease;">Try ElevenLabs &#8594;</a>
 </aside>
 
 <header class="hero" id="top">
