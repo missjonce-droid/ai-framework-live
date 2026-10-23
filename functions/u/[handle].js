@@ -121,8 +121,8 @@ export async function onRequestGet({ env, params }) {
       ${f.tools.length ? `<div class="chips">${f.tools.map((t) => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : ''}
       ${f.outcome_note ? `<div class="outcome"><small>Owner's result — self-reported</small>${esc(f.outcome_note)}</div>` : ''}
       <div class="card-foot">
-        <button class="fork-btn" data-fork="${esc(f.id)}" type="button">Fork this framework</button>
-        <span class="forks">${f.forks} fork${f.forks === 1 ? '' : 's'}</span>
+        <button class="fork-btn" data-fork="${esc(f.id)}" type="button">Steel this system</button>
+        <span class="forks">${f.forks} steel${f.forks === 1 ? '' : 's'}</span>
         <span class="fork-msg" data-msg="${esc(f.id)}"></span>
       </div>
     </article>`).join('')
@@ -150,7 +150,7 @@ export async function onRequestGet({ env, params }) {
   </div></section>
   <footer><div class="wrap"><div class="cta">
     <h2>Get your own AI Page</h2>
-    <p>Build a framework, put it on display, and let people fork it.</p>
+    <p>Build a framework, put it on display, and let people steel it.</p>
     <a href="/my-page/">Claim your page</a>
   </div>
   <p class="brand"><a href="/">AI Framework — Your AI Operating System</a></p>
@@ -160,18 +160,18 @@ export async function onRequestGet({ env, params }) {
     btn.addEventListener('click', function(){
       var id = btn.getAttribute('data-fork');
       var msg = document.querySelector('[data-msg="' + id + '"]');
-      btn.disabled = true; msg.textContent = 'Forking...';
+      btn.disabled = true; msg.textContent = 'Steeling...';
       fetch('/api/v1/frameworks/' + id + '/fork', { method: 'POST' })
         .then(function(r){ return r.json().then(function(j){ return { ok: r.ok, j: j }; }); })
         .then(function(res){
-          if (res.ok) { msg.innerHTML = 'Forked to your workspace. <a href="/my-page/" style="color:inherit">Open it</a>'; return; }
+          if (res.ok) { msg.innerHTML = 'Steeled to your workspace. <a href="/my-page/" style="color:inherit">Open it</a>'; return; }
           btn.disabled = false;
-          msg.textContent = res.j.error || 'Could not fork.';
+          msg.textContent = res.j.error || 'Could not steel it.';
           if (res.j.error && res.j.error.indexOf('Sign in') === 0) {
-            msg.innerHTML = 'Sign in to fork. <a href="/build-my-framework/" style="color:inherit">Sign in</a>';
+            msg.innerHTML = 'Sign in to steel. <a href="/build-my-framework/" style="color:inherit">Sign in</a>';
           }
         })
-        .catch(function(){ btn.disabled = false; msg.textContent = 'Could not fork.'; });
+        .catch(function(){ btn.disabled = false; msg.textContent = 'Could not steel it.'; });
     });
   });
   </script>`;
