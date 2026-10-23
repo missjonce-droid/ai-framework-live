@@ -10,16 +10,16 @@ function esc(s) {
 }
 
 const CSS = `
-  :root{--bg:#0A0A0C;--panel:#16181F;--panel2:#1B1E26;--line:#2A2E38;--ivory:#EDEAE4;
-  --dim:#A7AEBB;--faint:#8E97A5;--copper:#C1121F;--copper2:#E5383B;--brass:#C9CCD4;--chrome:#C9CCD4;--lapis:#46536A;--terra:#8F0D16}
+  :root{--bg:#0B0B0B;--panel:#141311;--panel2:#1E1B16;--line:#2B2718;--ivory:#F4F1EA;
+  --dim:#A8A294;--faint:#8A8474;--copper:#C9A25E;--copper2:#F0CE7E;--brass:#C9CCD4;--chrome:#C9CCD4;--lapis:#2E6BC2;--terra:#C2913B}
   *{box-sizing:border-box;margin:0;padding:0}
   body{background:var(--bg);color:var(--ivory);font-family:Archivo,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
   .wrap{max-width:880px;margin:0 auto;padding:0 20px}
   header{padding:56px 0 34px;border-bottom:1px solid var(--line);
-    background-image:radial-gradient(ellipse 90% 420px at 50% -80px,rgba(193,18,31,.13),transparent 70%)}
-  .avatar{width:74px;height:74px;border-radius:14px;background:linear-gradient(150deg,#46536A,#C1121F);
+    background-image:radial-gradient(ellipse 90% 420px at 50% -80px,rgba(201,162,94,.13),transparent 70%)}
+  .avatar{width:74px;height:74px;border-radius:14px;background:linear-gradient(150deg,#2E6BC2,#C9A25E);
     display:flex;align-items:center;justify-content:center;font-family:"Big Shoulders Display",sans-serif;
-    font-size:36px;font-weight:800;color:#FFF4F0;border:1px solid #5E0A10}
+    font-size:36px;font-weight:800;color:#1A1206;border:1px solid #8A6A24}
   .handle{font-family:"Spline Sans Mono",monospace;color:var(--copper);font-size:13px;letter-spacing:.14em;margin-top:16px}
   h1{font-family:"Big Shoulders Display",sans-serif;font-size:46px;font-weight:800;line-height:1.02;margin:4px 0 8px}
   .bio{color:var(--dim);font-size:17px;max-width:60ch}
@@ -28,7 +28,7 @@ const CSS = `
   .kicker{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--copper);margin-bottom:12px}
   .ai-about{font-size:19px;line-height:1.6;color:var(--ivory);max-width:64ch}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{font-family:"Spline Sans Mono",monospace;font-size:11.5px;color:var(--chrome);border:1px solid #39404D;
+  .chip{font-family:"Spline Sans Mono",monospace;font-size:11.5px;color:var(--chrome);border:1px solid #3A3524;
     border-radius:3px;padding:6px 11px;box-shadow:inset 0 1px 0 rgba(233,235,240,.07)}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;margin-bottom:14px;
     box-shadow:inset 0 1px 0 rgba(233,235,240,.05)}
@@ -40,7 +40,7 @@ const CSS = `
   .card-foot{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
   .forks{font-family:"Spline Sans Mono",monospace;font-size:11.5px;color:var(--faint);letter-spacing:.08em}
   .fork-btn{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-    background:linear-gradient(180deg,#E5383B,#8F0D16);color:#FFF4F0;border:1px solid #5E0A10;border-radius:4px;
+    background:linear-gradient(180deg,#F0CE7E,#C2913B);color:#1A1206;border:1px solid #8A6A24;border-radius:4px;
     padding:10px 16px;cursor:pointer;font-weight:600}
   .fork-btn[disabled]{opacity:.55;cursor:default}
   .fork-msg{font-size:13.5px;color:var(--copper2)}
@@ -49,8 +49,8 @@ const CSS = `
   .cta{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:24px;text-align:center}
   .cta h2{font-family:"Big Shoulders Display",sans-serif;font-size:28px;margin-bottom:6px}
   .cta p{color:var(--dim);margin-bottom:16px}
-  .cta a{display:inline-block;background:linear-gradient(180deg,#E5383B,#8F0D16);color:#FFF4F0;font-weight:700;
-    text-decoration:none;padding:12px 22px;border-radius:5px;border:1px solid #5E0A10}
+  .cta a{display:inline-block;background:linear-gradient(180deg,#F0CE7E,#C2913B);color:#1A1206;font-weight:700;
+    text-decoration:none;padding:12px 22px;border-radius:5px;border:1px solid #8A6A24}
   .brand{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--faint);
     text-transform:uppercase;text-align:center;margin-top:22px}
   .brand a{color:var(--dim);text-decoration:none}

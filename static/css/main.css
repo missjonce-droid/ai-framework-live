@@ -5,21 +5,21 @@
    ============================================================ */
 
 :root {
-  --bg: #0a0c11;
-  --bg-2: #0d1017;
-  --surface: #121724;
-  --surface-2: #171d2c;
+  --bg: #0B0B0B;
+  --bg-2: #141311;
+  --surface: #141311;
+  --surface-2: #141311;
   --border: rgba(255, 255, 255, 0.09);
   --border-soft: rgba(255, 255, 255, 0.055);
-  --text: #f1f3f8;
-  --muted: #a4adc2;
-  --faint: #6d7590;
-  --accent: #7c7cf4;
-  --accent-hover: #8f8ff7;
+  --text: #F4F1EA;
+  --muted: #A8A294;
+  --faint: #8A8474;
+  --accent: #C9A25E;
+  --accent-hover: #F0CE7E;
   --accent-ink: #12132e;
   --accent-glow: rgba(124, 124, 244, 0.16);
   --green: #3ddc97;
-  --amber: #f2b544;
+  --amber: #D9A441;
   --radius: 16px;
   --radius-sm: 10px;
   --font-display: "Space Grotesk", "Inter", -apple-system, "Segoe UI", sans-serif;
@@ -117,7 +117,7 @@ section { padding: 96px 0; }
 .brand:hover { color: var(--text); }
 .brand-mark {
   width: 30px; height: 30px; border-radius: 8px; flex: none;
-  background: linear-gradient(135deg, var(--accent), #4a4ad8);
+  background: linear-gradient(135deg, var(--accent), #8A6A24);
   display: grid; place-items: center;
   font-size: 15px; color: #fff; font-weight: 700;
 }
@@ -282,12 +282,12 @@ section { padding: 96px 0; }
 .bc-steps li strong { color: var(--text); display: block; font-size: 14px; }
 
 .bc-prompt {
-  background: #0b0e15;
+  background: #0B0B0B;
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 12.5px; color: #c9d2e8;
+  font-size: 12.5px; color: #F4F1EA;
   margin-bottom: 14px;
   white-space: pre-wrap;
 }

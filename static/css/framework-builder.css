@@ -1,12 +1,12 @@
 :root {
-  --fb-bg: #0f1216;
-  --fb-surface: #171b22;
-  --fb-surface-2: #1d222b;
-  --fb-border: #2c333e;
-  --fb-text: #ece7da;
-  --fb-muted: #9ba3af;
+  --fb-bg: #0B0B0B;
+  --fb-surface: #141311;
+  --fb-surface-2: #1E1B16;
+  --fb-border: #2B2718;
+  --fb-text: #F4F1EA;
+  --fb-muted: #A8A294;
   --fb-brass: #d0aa6d;
-  --fb-purple: #aa7bd8;
+  --fb-purple: #C9A25E;
   --fb-green: #76cfa4;
 }
 
@@ -198,7 +198,7 @@ a {
 }
 
 .fb-choice:hover {
-  border-color: #596270;
+  border-color: #8A8474;
   transform: translateY(-1px);
 }
 
@@ -285,7 +285,7 @@ a {
 }
 
 .fb-button-primary {
-  background: linear-gradient(135deg, #ece7da, var(--fb-brass));
+  background: linear-gradient(135deg, #F4F1EA, var(--fb-brass));
   border-color: var(--fb-brass);
   color: #17120b;
 }
