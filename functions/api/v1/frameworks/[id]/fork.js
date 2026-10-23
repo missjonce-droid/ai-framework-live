@@ -8,7 +8,7 @@ export async function onRequestPost({ request, env, params }) {
   const db = requireDB(env);
   if (!db) return json({ error: 'Accounts are not set up yet.' }, 503);
   const user = await getSessionUser(request, env);
-  if (!user) return json({ error: 'Sign in to fork this framework.' }, 401);
+  if (!user) return json({ error: 'Sign in to steel this system.' }, 401);
 
   try {
     const src = await db.prepare(
@@ -22,7 +22,7 @@ export async function onRequestPost({ request, env, params }) {
     const already = await db.prepare(
       'SELECT framework_id FROM framework_forks WHERE framework_id = ? AND forker_user_id = ?'
     ).bind(params.id, user.id).first();
-    if (already) return json({ error: 'You already forked this framework.' }, 409);
+    if (already) return json({ error: 'You already steeled this system.' }, 409);
 
     const ws = await getPrimaryWorkspace(env, user.id);
     const limits = entitlements(ws.plan);
