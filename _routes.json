@@ -1,1 +1,10 @@
-{"exclude":[],"include":["/api/*","/u/*"],"version":1}
+{
+  "version": 1,
+  "include": [
+    "/api/*",
+    "/u/*",
+    "/go/*",
+    "/tool/*"
+  ],
+  "exclude": []
+}
