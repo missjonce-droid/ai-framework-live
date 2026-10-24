@@ -45,6 +45,7 @@
     s.textContent =
       ".af-auth-slot{display:inline-flex;align-items:center;gap:8px}" +
       ".af-auth-email{font-size:13px;color:var(--muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}" +
+      "@media (max-width:560px){.af-auth-email{max-width:110px}}" +
       ".af-login-form{display:flex;gap:8px;align-items:center}" +
       ".af-login-form input{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;padding:8px 12px;font-family:var(--font-body);width:200px}" +
       ".af-login-form input:focus{outline:none;border-color:var(--accent)}" +
