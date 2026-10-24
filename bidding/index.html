@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Tools for Bidding | AI Framework</title>
+  <meta name="description" content="AI tools for businesses that win work by bidding: find open bids, answer RFPs, write winning proposals, and read the contract before you sign.">
+  <meta property="og:title" content="AI Tools for Bidding | AI Framework">
+  <meta property="og:description" content="The tools that find open bids, read the fine print, and write proposals that win.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ai-framework.io/bidding/">
+  <link rel="icon" href="https://ai-framework.io/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/main.css">
+  <style>
+    :root{
+      --bg:#0B0B0B; --surface:#141311; --surface-2:#1E1B16;
+      --border:rgba(201,162,94,.18); --border-soft:rgba(201,162,94,.10);
+      --text:#F4F1EA; --muted:#A8A294; --faint:#8A8474;
+      --accent:#C9A25E; --accent-hover:#F0CE7E; --accent-ink:#180F06;
+      --font-display:"Space Grotesk","Archivo",-apple-system,sans-serif;
+      --font-body:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body)}
+    .brand{font-family:var(--font-display);letter-spacing:.05em;text-transform:uppercase}
+    .brand-mark{width:32px;height:32px;vertical-align:-8px;margin-right:9px}
+    h1,h2{font-family:var(--font-display);font-weight:700;letter-spacing:.006em}
+    .eyebrow{font-family:"Spline Sans Mono",monospace;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;font-size:12px}
+    .hub-hero{max-width:1020px;margin:0 auto;padding:56px 20px 24px}
+    .hub-hero h1{font-size:clamp(40px,7vw,68px);line-height:1.02;margin:14px 0 16px}
+    .hub-hero h1 .gold{background:linear-gradient(180deg,#F0CE7E,#C2913B);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hub-hero p{color:var(--muted);font-size:18px;line-height:1.6;max-width:680px;margin:0}
+    .hub-stats{display:flex;gap:28px;margin-top:26px;flex-wrap:wrap}
+    .hub-stats div{border-left:2px solid var(--accent);padding-left:12px}
+    .hub-stats .n{font-family:"Spline Sans Mono",monospace;font-size:22px;color:var(--accent-hover)}
+    .hub-stats .l{color:var(--faint);font-size:13px}
+    .hub-section{max-width:1020px;margin:0 auto;padding:36px 20px 8px}
+    .hub-section h2{font-size:28px;margin:0 0 6px}
+    .hub-section .sec-desc{color:var(--muted);font-size:16px;line-height:1.6;margin:0 0 20px;max-width:680px}
+    .hub-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+    .hub-card{border:1px solid var(--border);border-radius:12px;background:var(--surface);padding:20px;text-decoration:none;display:block}
+    .hub-card:hover{border-color:rgba(201,162,94,.5)}
+    .hub-card h3{color:var(--text);font-size:18px;margin:0 0 6px;font-family:var(--font-display)}
+    .hub-card p{color:var(--muted);font-size:14px;line-height:1.55;margin:0 0 14px}
+    .hub-card .meta{display:flex;justify-content:space-between;align-items:center}
+    .hub-card .price{font-size:12px;font-weight:600;color:var(--accent);border:1px solid var(--border);border-radius:999px;padding:3px 10px}
+    .hub-card .go{font-size:14px;font-weight:600;color:var(--accent-hover)}
+    .hub-more{margin-top:18px}
+    .hub-more a{color:var(--accent);font-weight:600;text-decoration:none}
+    .hub-cta{max-width:1020px;margin:48px auto;padding:36px 20px}
+    .hub-cta-inner{border:1px solid var(--border);border-left:3px solid var(--accent);background:var(--surface);border-radius:12px;padding:28px 32px}
+    .hub-cta-inner h2{font-size:26px;margin:0 0 10px}
+    .hub-cta-inner p{color:var(--muted);font-size:16px;line-height:1.6;margin:0 0 20px;max-width:640px}
+    @media (max-width:760px){.hub-grid{grid-template-columns:1fr}.hub-hero{padding-top:36px}}
+  </style>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
+</head>
+<body>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a class="brand" href="https://ai-framework.io/" aria-label="AI Framework home">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="discgold-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6D47C"/><stop offset=".55" stop-color="#C9A25E"/><stop offset="1" stop-color="#9A741F"/></linearGradient></defs><circle cx="32" cy="32" r="12" fill="url(#discgold-h)"/>
+<path d="M17 22 H5 M15 32 H2 M17 42 H5" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/>
+<path d="M47 22 H59 M49 32 H62 M47 42 H59" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+        AI Framework
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="https://ai-framework.io/directory/">AI Tools</a>
+        <a href="https://ai-framework.io/build-my-framework/">Builder</a>
+        <a href="https://ai-framework.io/playbooks/">Playbooks</a>
+        <a href="https://ai-framework.io/promptlab">Prompt Lab</a>
+        <a href="https://ai-framework.io/#pricing">Pricing</a>
+      </div>
+      <div class="nav-cta">
+        <span data-af-auth></span>
+        <a class="btn btn-primary btn-sm" href="https://ai-framework.io/build-my-framework/">Build My AI Framework</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hub-hero">
+      <span class="eyebrow">Sections</span>
+      <h1>Win more <span class="gold">bids.</span></h1>
+      <p>The tools that find open bids, read what each one actually asks for, and write proposals that win — plus the builder template that turns them into one system. This is the toolkit for bidding, not a list of live bid postings.</p>
+      <div class="hub-stats">
+        <div><div class="n">17</div><div class="l">bidding tools picked here</div></div>
+        <div><div class="n">4</div><div class="l">jobs covered below</div></div>
+        <div><div class="n">1</div><div class="l">builder template for bids</div></div>
+      </div>
+    </section>
+
+    <section class="hub-section">
+      <h2>Find open bids</h2>
+      <p class="sec-desc">Stop hearing about the job after someone else won it. Tools that surface open bids — including government contracts — so you see them while there's still time to compete.</p>
+      <div class="hub-grid">
+        <a class="hub-card" href="https://ai-framework.io/tool/downtobid/"><h3>Downtobid</h3><p>Downtobid helps construction companies create accurate and competitive bids faster by automating cost estimation.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/samsearch/"><h3>SamSearch</h3><p>Streamline government contracting using SamSearch's AI contract search and proposal generator.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+      </div>
+    </section>
+
+    <section class="hub-section">
+      <h2>Answer RFPs fast</h2>
+      <p class="sec-desc">The bid document is 80 pages and the deadline is Friday. These tools read the RFP and draft the response, so a small team can answer like a big one.</p>
+      <div class="hub-grid">
+        <a class="hub-card" href="https://ai-framework.io/tool/wolfia/"><h3>Wolfia</h3><p>Expert-level AI agents to fill your RFP and RFI in seconds.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/rfxai/"><h3>RFxAI</h3><p>AI platform to optimize the RFP process and boost win rates.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/winifyai/"><h3>WinifyAI</h3><p>AI platform automating security questionnaire and RFP responses.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+      </div>
+    </section>
+
+    <section class="hub-section">
+      <h2>Write winning proposals</h2>
+      <p class="sec-desc">The proposal is what the buyer actually judges. Proposal tools that make yours look sharp, complete, and on time.</p>
+      <div class="hub-grid">
+        <a class="hub-card" href="https://ai-framework.io/tool/pandadoc-ai/"><h3>PandaDoc AI</h3><p>Sales · Proposal writing</p><div class="meta"><span class="price">Paid</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/proposify-ai/"><h3>Proposify AI</h3><p>Sales · Proposal writing</p><div class="meta"><span class="price">Paid</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/better-proposals/"><h3>Better Proposals</h3><p>Sales · Proposal writing</p><div class="meta"><span class="price">Paid</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/bidbuilder/"><h3>BidBuilder</h3><p>Create winning proposals with our AI-powered Upwork proposal generator.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/wethos-proposals/"><h3>Wethos Proposals</h3><p>Wethos Proposals is an AI-powered tool that helps freelancers create compelling and personalized job proposals.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/clientli/"><h3>Clientli</h3><p>10X Your Clients with Your Proposal Copilot; for digital transformation consultants.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+      </div>
+    </section>
+
+    <section class="hub-section">
+      <h2>Read the contract before you sign</h2>
+      <p class="sec-desc">Winning the bid is only half of it. Contract tools that flag the risky clauses before you commit your crew and your margin.</p>
+      <div class="hub-grid">
+        <a class="hub-card" href="https://ai-framework.io/tool/lawgeex/"><h3>LawGeex</h3><p>Legal · Contract review</p><div class="meta"><span class="price">Paid</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/spellbook/"><h3>Spellbook</h3><p>Legal · Contract review</p><div class="meta"><span class="price">Paid</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/ironclad-ai/"><h3>Ironclad AI</h3><p>Legal · Contract review</p><div class="meta"><span class="price">Paid</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/law-insider/"><h3>Law Insider</h3><p>AI tools for contract drafting, review, and redlining.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/docjuris/"><h3>DocJuris</h3><p>DocJuris offers AI-powered contract review and negotiation software, streamlining contract management.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+        <a class="hub-card" href="https://ai-framework.io/tool/document-crunch/"><h3>Document Crunch</h3><p>Identify risks and streamline your construction contract process.</p><div class="meta"><span class="price">See site</span><span class="go">View tool →</span></div></a>
+      </div>
+      <p class="hub-more"><a href="https://ai-framework.io/directory/">Browse the full directory →</a> · <a href="https://ai-framework.io/industries/security/">See the Security section →</a> · <a href="https://ai-framework.io/build-my-framework/">Build my framework →</a></p>
+    </section>
+
+    <section class="hub-cta">
+      <div class="hub-cta-inner">
+        <h2>Turn bidding into one working system.</h2>
+        <p>Tell the builder you want to win more contracts and start from the Win bids &amp; contracts template: it finds open bids, reads what each one asks for, drafts strong proposals, and tracks every deadline so nothing slips through.</p>
+        <a class="btn btn-primary" href="https://ai-framework.io/build-my-framework/">Build my bidding system →</a>
+      </div>
+    </section>
+    <p style="max-width:1020px;margin:0 auto;padding:0 20px 48px;color:var(--faint);font-size:14px;">More sections to come.</p>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="https://ai-framework.io/" aria-label="AI Framework home">
+            <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="discgold-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6D47C"/><stop offset=".55" stop-color="#C9A25E"/><stop offset="1" stop-color="#9A741F"/></linearGradient></defs><circle cx="32" cy="32" r="12" fill="url(#discgold-f)"/>
+<path d="M17 22 H5 M15 32 H2 M17 42 H5" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/>
+<path d="M47 22 H59 M49 32 H62 M47 42 H59" stroke="#C9A25E" stroke-width="5" stroke-linecap="round" fill="none"/></svg>
+            AI Framework
+          </a>
+          <p style="margin-top: 16px;">Your AI Operating System. Discover the right tools, build practical workflows, and make AI work for you.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="https://ai-framework.io/build-my-framework/">AI Framework Builder</a>
+          <a href="https://ai-framework.io/directory/">AI Tools Directory</a>
+          <a href="https://ai-framework.io/playbooks/">AI Playbooks</a>
+          <a href="https://ai-framework.io/promptlab">Prompt Lab</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="https://ai-framework.io/disclosure">Editorial &amp; Affiliate Disclosure</a>
+          <a href="https://ai-framework.io/#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:hello@ai-framework.io">hello@ai-framework.io</a>
+          <a href="https://ai-framework.io/playbooks/">The Vault — $39</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> AI Framework LLC. All rights reserved.</span>
+        <span>Some links may earn us a commission. <a href="https://ai-framework.io/disclosure">Read our disclosure →</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/main.js" defer></script>
+  <script src="/static/js/af-auth.js" defer></script>
+</body>
+</html>
