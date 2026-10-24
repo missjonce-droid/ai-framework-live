@@ -26,25 +26,7 @@ tool links, and app routes. `_routes.json` limits Function invocations to
 cache headers to the content-hashed application bundles. API Function
 responses set their own headers.
 
-`/sports-matchup` is a no-data demo that only organizes user-entered team
-names and notes. It does not connect to a sports data provider or predictive
-model, and does not produce scores, odds, probabilities, picks, or betting
-advice.
-
-`/calculator/` converts American odds entered by the visitor to mathematical
-implied probabilities and decimal odds. It is not a win-probability estimate,
-does not remove bookmaker margin, and does not provide picks or a fair line.
-The Sports Data Pack is not for sale until a verified data provider and valid
-payment integration are configured.
-
-`/sports-research/` is a separate college-football market board backed by a
-Cloudflare Worker. GitHub Actions can refresh actual US sportsbook
-moneyline/spread/total markets from The Odds API every six hours. Its
-market-derived implied percentages include vig; the optional Workers AI text
-is only a contextual summary, not a validated forecast. The Odds API does
-not supply the team-statistics datasets often used in sports analysis. See
-[SPORTS-DEPLOYMENT.md](SPORTS-DEPLOYMENT.md) for secrets, Cloudflare
-configuration, provider quota notes, testing, and deployment steps.
+.
 
 Cloudflare Pages builds from GitHub after the selected branch is pushed or
 merged. Connect the domain in Cloudflare Pages and follow Cloudflare's
@@ -74,9 +56,7 @@ redirect limits before writing the file.
 - `/receipt` loads the receipt tool.
 - `/promptlab` and `/api/fix-prompt` work with the Pages secret configured.
 - `/build-my-framework/` and `/api/build-framework` work with the Pages secret.
-- `/sports-matchup` labels the feature as a demo and shows only user-provided details.
 - `/calculator/` converts valid user-entered American odds without claiming to predict an outcome.
-- `/sports-research/` shows sourced sportsbook markets only when the Worker, API key, KV binding, and site Worker URL are configured.
 - A `/tool/...` profile and an outbound `/go/...` link resolve correctly.
 
 There is no working newsletter signup service wired up for Cloudflare Pages.
