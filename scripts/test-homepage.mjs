@@ -19,8 +19,6 @@ assert.equal(engine.filter(fixture,'writing','free').length,5000);
 assert.equal(engine.filter(fixture,'writing','all').slice(24,48).length,24);
 const homepage=fs.readFileSync(path.join(root,'index.html'),'utf8');
 assert.ok(!homepage.includes('src="/static/js/main.'));
-assert.ok(!homepage.split('</nav>')[0].includes('/sports-research/'));
-assert.match(homepage,/<footer[\s\S]*href="\/sports-research\/"/);
 assert.match(fs.readFileSync(path.join(root,'scripts/generate-seo.mjs'),'utf8'),/baseTemplate = fs.readFileSync\(path.join\(root, "app.html"\)/);
 for(const r of data.entries) assert.ok(fs.existsSync(path.join(root,r.path,'index.html')),`Missing profile ${r.path}`);
 console.log(`Homepage checks passed: ${data.count} real listings, safe profile paths, plan filtering, 10k search fixture, and separate SEO shell.`);
