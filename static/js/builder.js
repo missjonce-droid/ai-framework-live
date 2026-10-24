@@ -588,6 +588,7 @@
       });
 
       // Next-action checklist — persisted per framework
+      var next = buildNextActions(res.picks);
       (function () {
         var key = workflowKey(state);
         var total = next.length;
