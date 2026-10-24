@@ -91,6 +91,14 @@
     { id: "win-bids", icon: "✎", title: "Win bids & contracts",
       desc: "Find open bids, understand what each one asks for, and submit strong proposals on time.",
       goal: "I run a service business and want to win more contracts. I want to find open bids for my services, quickly understand what each bid requires and when it's due, draft strong proposals, and track every deadline so nothing slips through.",
+      role: "business", reqs: ["research", "content", "automation"] },
+    { id: "security", icon: "🛡", title: "Protect the business",
+      desc: "Track threats, investigate risks, and stay compliant — without a security team.",
+      goal: "I run a business and want to protect it. I want to track security threats and industry news, investigate risks before they hurt us, monitor my systems, and stay compliant with the rules my clients ask about.",
+      role: "business", reqs: ["research", "automation"] },
+    { id: "recruiting", icon: "👥", title: "Hire great people",
+      desc: "Find strong candidates, screen them faster, and onboard hires without the paper chase.",
+      goal: "I need to hire people for my business. I want to find strong candidates, screen and interview them faster, keep every applicant organized, and onboard new hires smoothly.",
       role: "business", reqs: ["research", "content", "automation"] }
   ];
 
