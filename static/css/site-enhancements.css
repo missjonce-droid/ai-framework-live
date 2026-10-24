@@ -16,9 +16,6 @@
   color: var(--framework-purple) !important;
 }
 
-.sports-research-nav-link {
-  color: var(--framework-brass) !important;
-}
 
 .promptlab-hero-link {
   border-color: var(--framework-purple) !important;
@@ -192,10 +189,7 @@
   order: 4;
 }
 
-.nav-links > a.sports-research-nav-link {
-  order: 5;
-}
-
+.nav-links > a
 /* Homepage hero: headline, search bar (with the Prompt Lab hint), one
    primary CTA. Nothing else above the fold. */
 .clarity-actions a[href="#browse"],
