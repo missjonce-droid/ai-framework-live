@@ -12,7 +12,7 @@
   <link rel="icon" href="https://ai-framework.io/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Anton&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&family=Anton&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/css/main.css">
   <link rel="stylesheet" href="static/css/builder.css">
   <style>
@@ -51,9 +51,16 @@
     .t10-more a{color:var(--accent);font-weight:600;text-decoration:none}
     @media (max-width:760px){.t10-list{grid-template-columns:1fr}}
       /* Disc logo + Anton display (2026-10-22) */
-    .brand{font-family:var(--font-display);letter-spacing:.05em;text-transform:uppercase}
+    .brand{font-family:var(--font-display);letter-spacing:.05em;text-transform:uppercase;text-decoration:none;border:1px solid #C9A25E;border-radius:99px;padding:8px 20px 8px 10px;transition:box-shadow .2s}
+    .brand:hover{box-shadow:0 0 26px rgba(201,162,94,.45)}
     .brand-mark{width:32px;height:32px;vertical-align:-8px;margin-right:9px}
     h1,h2{font-family:var(--font-display);font-weight:400;letter-spacing:.006em}
+    /* Cinematic hero (2026-10-24): pyramid banner + reflective headline */
+    .hero-builder-head{padding:56px 28px 44px;border-radius:18px;overflow:hidden;background-image:url(static/images/hero-pyramid.webp);background-size:cover;background-position:center}
+    .hero-builder-head::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,.55),rgba(11,11,11,.82))}
+    .hero-builder-head>*{position:relative;z-index:1}
+    .hero-builder-head h1{font-family:"Archivo Black",sans-serif;font-size:clamp(46px,6.5vw,84px);line-height:1.02}
+    .hero-builder-head h1 .hl{background:linear-gradient(180deg,#FFF6CF 0%,#F0CE7E 28%,#C9A25E 55%,#8A5A1E 82%,#E8B96A 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(240,206,126,.28))}
   </style>
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-KFZ7N4LF');</script>
   <script type="application/ld+json">
