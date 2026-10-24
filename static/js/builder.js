@@ -87,7 +87,11 @@
     { id: "dev-stack", icon: "⌨", title: "Software development stack",
       desc: "Ship code faster with an AI pair programmer.",
       goal: "I'm a developer and want to ship features faster with fewer bugs — help with boilerplate, debugging, and understanding unfamiliar code.",
-      role: "developer", reqs: ["code", "automation"] }
+      role: "developer", reqs: ["code", "automation"] },
+    { id: "win-bids", icon: "✎", title: "Win bids & contracts",
+      desc: "Find open bids, understand what each one asks for, and submit strong proposals on time.",
+      goal: "I run a service business and want to win more contracts. I want to find open bids for my services, quickly understand what each bid requires and when it's due, draft strong proposals, and track every deadline so nothing slips through.",
+      role: "business", reqs: ["research", "content", "automation"] }
   ];
 
   function applyTemplate(state, tpl) {
