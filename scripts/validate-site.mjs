@@ -43,35 +43,6 @@ const tutorials = fs.readFileSync(
   path.join(root, "tutorials", "index.html"),
   "utf8",
 );
-const sportsMatchup = fs.readFileSync(
-  path.join(root, "sports-matchup.html"),
-  "utf8",
-);
-const sportsMatchupFunction = fs.readFileSync(
-  path.join(root, "functions", "api", "sports-matchup.js"),
-  "utf8",
-);
-const calculator = fs.readFileSync(
-  path.join(root, "calculator", "index.html"),
-  "utf8",
-);
-const oddsFunction = fs.readFileSync(
-  path.join(root, "functions", "api", "american-odds.js"),
-  "utf8",
-);
-const sportsResearch = fs.readFileSync(
-  path.join(root, "sports-research", "index.html"),
-  "utf8",
-);
-const sportsWorker = fs.readFileSync(
-  path.join(root, "worker", "src", "index.ts"),
-  "utf8",
-);
-const sportsFetcher = fs.readFileSync(
-  path.join(root, "data-fetcher", "index.js"),
-  "utf8",
-);
-
 check(
   robots.includes("Sitemap: https://ai-framework.io/sitemap.xml"),
   "robots.txt does not point to the production sitemap.",
@@ -96,15 +67,6 @@ check(
 check(
   index.includes('href="/build-my-framework/"'),
   "The homepage does not contain a no-JavaScript Framework Builder link.",
-);
-check(
-  index.includes('href="/sports-matchup"') &&
-    index.includes('href="/calculator/"') &&
-  index.includes('href="/sports-research/"') &&
-  enhancements.includes('href="/sports-research/"') &&
-  sitemap.includes("<loc>https://ai-framework.io/calculator/</loc>") &&
-  sitemap.includes("<loc>https://ai-framework.io/sports-research/</loc>"),
-  "A new sports tool is not linked from the homepage or a sports tool is missing from the sitemap.",
 );
 check(
   index.includes('property="og:image"'),
@@ -188,61 +150,6 @@ check(
     '<link rel="canonical" href="https://ai-framework.io/tutorials/">',
   ),
   "The tutorials page is missing its canonical URL.",
-);
-check(
-  sportsMatchup.includes('id="matchup-form"') &&
-    sportsMatchup.includes("/api/sports-matchup"),
-  "The sports matchup demo form is incomplete.",
-);
-check(
-  sportsMatchup.includes("No predictions or betting information") &&
-    sportsMatchup.includes("No live data provider or predictive model is connected"),
-  "The sports matchup demo is missing its prominent data and betting disclaimer.",
-);
-check(
-  sportsMatchupFunction.includes('mode: "illustrative-demo"') &&
-    sportsMatchupFunction.includes("modelOutput: null") &&
-    sportsMatchupFunction.includes("bettingOdds: null") &&
-    !sportsMatchupFunction.includes("Math.random"),
-  "The sports matchup endpoint must remain an input-only demo without simulated betting output.",
-);
-check(
-  calculator.includes('id="calculator-form"') &&
-    calculator.includes("/api/american-odds"),
-  "The American odds calculator form is incomplete.",
-);
-check(
-  calculator.toLowerCase().includes("not a prediction or betting recommendation") &&
-    calculator.toLowerCase().includes("no purchase available"),
-  "The calculator is missing its limitations or honest Data Pack status.",
-);
-check(
-  oddsFunction.includes('mode: "user-input-calculation"') &&
-    oddsFunction.includes("modelOutput: null") &&
-    oddsFunction.includes("user-provided American odds"),
-  "The odds endpoint must identify mathematical conversions and exclude model predictions.",
-);
-check(
-  sportsResearch.includes('name="sports-api-base"') &&
-    sportsResearch.includes("/api/college-football/odds") &&
-    sportsResearch.includes("/api/college-football/summary") &&
-    sportsResearch.includes("not a statistically validated forecast"),
-  "The live college-football market board is missing its Worker API or forecast disclaimer.",
-);
-check(
-  sportsWorker.includes('@cf/meta/llama-3.1-8b-instruct-fp8') &&
-    sportsWorker.includes("SPORTS_INGEST_TOKEN") &&
-    sportsWorker.includes("MAX_INGEST_BYTES") &&
-    sportsWorker.includes("access-control-allow-origin"),
-  "The college-sports Worker is missing supported AI, protected ingest, or request size limits.",
-);
-check(
-  sportsFetcher.includes("americanfootball_ncaaf") &&
-    sportsFetcher.includes("ODDS_API_KEY") &&
-    sportsFetcher.includes("h2h") &&
-    sportsFetcher.includes("spreads") &&
-    sportsFetcher.includes("totals"),
-  "The scheduled data fetcher is missing its CFB provider configuration.",
 );
 
 if (failures.length) {

@@ -103,7 +103,6 @@ http://ai-framework.io/*         https://ai-framework.io/:splat        301!
 # Legacy/vanity paths
 /cv        /build-my-framework/        301
 /build     /build-my-framework/        301
-/sports    /sports-research/           301
 
 # Dynamic routes handled by the app shell
 /alternatives/*        /app.html                             200
