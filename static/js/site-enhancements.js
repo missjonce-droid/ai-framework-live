@@ -194,7 +194,6 @@
   function addNavigationLinks() {
     var nav = document.querySelector('.nav-links');
     if (!nav) return;
-    Array.prototype.forEach.call(nav.querySelectorAll('a[href="/sports-research/"]'), function (link) { link.remove(); });
     nav.id = 'framework-navigation';
     nav.setAttribute('aria-label', 'Main navigation');
     var items = [['/build-my-framework/', 'Build a framework'], ['/promptlab', 'Prompt Lab'], ['/tutorials/', 'Tutorials']];
@@ -260,7 +259,6 @@
   }
 
   // Nav: Browse Tools, Build My Framework, Prompt Lab, Playbooks, and the
-  // college-football market board. CSS handles hiding and reordering the
   // remaining links and fixes the "Directory" label text.
   function simplifyNav() {
     var browseLink = document.querySelector('.nav-links > a[href="/browse"]');
