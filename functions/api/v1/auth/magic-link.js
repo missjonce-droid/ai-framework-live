@@ -22,7 +22,7 @@ export async function onRequestPost({ request, env }) {
   const token = crypto.randomUUID().replace(/-/g, '') + crypto.randomUUID().replace(/-/g, '');
   const tokenHash = await sha256Hex(token);
   await db.prepare(
-    "INSERT INTO magic_links (token_hash, email, expires_at) VALUES (?, ?, datetime('now','+15 minutes'))"
+    "INSERT INTO magic_links (token_hash, email, expires_at) VALUES (?, ?, strftime('%Y-%m-%dT%H:%M:%fZ','now','+15 minutes'))"
   ).bind(tokenHash, email).run();
 
   const link = `https://ai-framework.io/api/v1/auth/verify?token=${token}`;
