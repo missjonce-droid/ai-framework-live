@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Framework Money Lab — 50 AI Money Hacks</title>
+<title>AI Money Lab — 50 ways to turn everyday problems into income</title>
 <style>
   body { background:#0B0B0B; color:#F4F1EA; font-family: Georgia, serif; margin:0; padding:0; }
   .wrap { max-width:900px; margin:0 auto; padding:48px 24px 64px; }
@@ -17,11 +17,22 @@
   h3 { font-size:18px; margin:0 0 6px; }
   p, li { font-size:16px; line-height:1.65; color:#D8D2C4; }
   .note { background:#141311; border-left:3px solid #C9A25E; padding:16px 20px; margin:28px 0; font-family: Arial, sans-serif; font-size:15px; line-height:1.6; color:#D8D2C4; }
+  .machine { background:#141311; padding:28px; margin:32px 0; border:1px solid #2B2718; }
+  .machine label { font-family: Arial, sans-serif; font-size:14px; color:#A8A294; display:block; margin:16px 0 6px; }
+  .machine input[type=text], .machine input[type=number], .machine select { width:100%; padding:10px; background:#0B0B0B; color:#F4F1EA; border:1px solid #2B2718; font-size:16px; box-sizing:border-box; }
+  .chips { margin-top:12px; }
+  .chip { display:inline-block; font-family: Arial, sans-serif; font-size:13px; color:#F0CE7E; border:1px solid #C9A25E; padding:6px 10px; margin:0 8px 8px 0; cursor:pointer; border-radius:20px; }
+  .btn { display:inline-block; margin-top:20px; color:#1A1206; background:linear-gradient(#F0CE7E,#C2913B); padding:12px 24px; text-decoration:none; font-family: Arial, sans-serif; font-weight:bold; border-radius:4px; border:none; cursor:pointer; font-size:16px; }
+  .btn.ghost { background:none; color:#F0CE7E; border:1px solid #C9A25E; margin-left:12px; }
+  #machineResult { margin-top:24px; display:none; }
+  #machineResult h3 { font-size:22px; }
+  #machineResult .price { font-family: Arial, sans-serif; color:#F0CE7E; font-size:15px; font-weight:bold; }
+  .calc { margin-top:20px; font-family: Arial, sans-serif; font-size:15px; line-height:1.8; }
+  .calc input { width:110px; padding:8px; background:#0B0B0B; color:#F4F1EA; border:1px solid #2B2718; font-size:15px; }
+  .calc strong { color:#F0CE7E; font-size:20px; }
   .quiz { background:#141311; padding:28px; margin:32px 0; }
   .quiz label { font-family: Arial, sans-serif; font-size:14px; color:#A8A294; display:block; margin:16px 0 6px; }
   .quiz select { width:100%; padding:10px; background:#0B0B0B; color:#F4F1EA; border:1px solid #2B2718; font-size:16px; }
-  .btn { display:inline-block; margin-top:20px; color:#1A1206; background:linear-gradient(#F0CE7E,#C2913B); padding:12px 24px; text-decoration:none; font-family: Arial, sans-serif; font-weight:bold; border-radius:4px; border:none; cursor:pointer; font-size:16px; }
-  .btn.ghost { background:none; color:#F0CE7E; border:1px solid #C9A25E; margin-left:12px; }
   #matches { margin-top:20px; font-family: Arial, sans-serif; font-size:15px; line-height:1.6; }
   #matches a { color:#F0CE7E; }
   .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:20px; }
@@ -30,10 +41,6 @@
   .card .price { font-family: Arial, sans-serif; color:#F0CE7E; font-size:14px; font-weight:bold; }
   .card p { font-size:15px; margin:8px 0 0; }
   .card.hidden { display:none; }
-  .top { font-family: Arial, sans-serif; color:#000; background:#F0CE7E; display:inline-block; padding:2px 8px; font-size:12px; font-weight:bold; border-radius:3px; margin-bottom:8px; }
-  .cta { background:#141311; padding:28px; margin-top:40px; text-align:center; }
-  .cta p { margin:0 0 16px; }
-  .cta a { color:#1A1206; background:linear-gradient(#F0CE7E,#C2913B); padding:12px 24px; text-decoration:none; font-family: Arial, sans-serif; font-weight:bold; border-radius:4px; }
   pre { background:#141311; padding:20px; white-space:pre-wrap; font-size:14px; line-height:1.6; color:#D8D2C4; border:1px solid #1E1B16; }
   .foot { font-family: Arial, sans-serif; font-size:13px; color:#8A8474; margin-top:48px; line-height:1.6; }
 </style>
@@ -41,14 +48,47 @@
 <body>
 <div class="wrap">
   <p class="home"><a href="https://ai-framework.io/">← AI Framework home</a></p>
-  <p class="kicker">AI Framework · The Money Lab</p>
-  <h1>50 AI money hacks <span>that feel like cheat codes.</span></h1>
-  <p class="lede">Find the opportunity. Learn the hack. Test the money. Real, legal ways everyday people use AI to earn — with actual instructions, tools, and first steps you can try today. The secret isn't another list of generic side hustles. It's finding a problem nobody around you has noticed, using AI to do the hard work, and getting your first paying customer.</p>
+  <p class="kicker">AI Money Lab</p>
+  <h1>Turn everyday problems <span>into income.</span></h1>
+  <p class="lede">50 real, legal ways everyday people use AI to earn — with actual instructions, tools, and first steps you can try today. The trick isn't another list of generic side hustles. It's finding a problem nobody around you has noticed, using AI to do the hard work, and getting your first paying customer.</p>
 
   <div class="note"><strong>Honest ground rules:</strong> these are legal business ideas, not guaranteed income. Every price below is an <em>illustrative price to test</em>, not a verified market average. Only verified earnings are ever shown as verified — never let a projection dress up as a result.</div>
 
+  <div class="machine">
+    <h2 style="margin-top:0">The AI Money Machine</h2>
+    <p>Your problems could be worth money. Type in something you hate doing, a problem you have, or something people constantly complain about — and get a business you can test.</p>
+    <p style="font-family:Arial,sans-serif;font-size:14px;color:#A8A294;">Starter version: this matches your problem to real business models from the list below. It doesn't invent a business from scratch yet — that part comes later. Try an example:</p>
+    <div class="chips">
+      <span class="chip" onclick="tryExample('I hate calling contractors for quotes')">I hate calling contractors for quotes</span>
+      <span class="chip" onclick="tryExample('Restaurant menus nobody can read on a phone')">Restaurant menus nobody can read on a phone</span>
+      <span class="chip" onclick="tryExample('Businesses miss calls and lose customers')">Businesses miss calls and lose customers</span>
+    </div>
+    <label>What problem should AI turn into money?</label>
+    <input type="text" id="mProblem" placeholder="e.g. I hate calling contractors for quotes">
+    <label>Starting budget</label>
+    <select id="mBudget"><option>$0–$100</option><option>$100–$500</option><option>$500+</option></select>
+    <label>Hours available each week</label>
+    <select id="mHours"><option>5</option><option>10</option><option>20+</option></select>
+    <button class="btn" onclick="generateMachine()">Generate my money machine</button>
+    <div id="machineResult">
+      <h3 id="rName"></h3>
+      <p id="rDesc"></p>
+      <p class="price" id="rPrice"></p>
+      <p><strong>Your first 5 steps:</strong></p>
+      <ol id="rSteps"></ol>
+      <div class="calc">
+        <p>Try the math yourself — an example, not a forecast:</p>
+        <label style="display:inline">Monthly fee per client $ <input type="number" id="cFee" value="149" oninput="calc()"></label>
+        &nbsp;×&nbsp;
+        <label style="display:inline">Paying clients <input type="number" id="cClients" value="50" oninput="calc()"></label>
+        &nbsp;=&nbsp;<strong id="cOut">$7,450 / month</strong>
+        <p style="font-size:13px;color:#A8A294;">Hypothetical gross revenue before expenses, taxes, and the cost of finding customers. Not a forecast.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="quiz">
-    <h2 style="margin-top:0">Find your AI money move.</h2>
+    <h2 style="margin-top:0">Find your money move.</h2>
     <p>Choose your starting point and discover an idea you can test.</p>
     <label>Starting budget</label>
     <select id="qBudget"><option>$0–$25</option><option>$25–$100</option><option>$100–$500</option></select>
@@ -66,21 +106,9 @@
     <div id="matches"></div>
   </div>
 
-  <h2 id="playbook">Start here: #1 The AI Business Accuracy Detective</h2>
-  <p><span class="top">TOP PICK FOR AI FRAMEWORK</span></p>
-  <p>Find businesses with outdated hours, menus, prices, or online information. Sell a verified correction and maintenance service. <strong>Test price: $99–$399 per audit.</strong></p>
-  <ol>
-    <li>Find 10 businesses and check their public listings against official sources.</li>
-    <li>Build a before/after report showing exactly what's wrong, with evidence.</li>
-    <li>Contact the owners — lead with the proof, not a pitch.</li>
-    <li>Offer a free three-error sample. Charge for fixing and monitoring.</li>
-  </ol>
-  <p><strong>The trick:</strong> charge for fixing and monitoring — never claim control over what ChatGPT or any AI assistant answers. Nobody outside those companies controls their answers. The honest product is corrected sources plus monthly re-checks.</p>
-  <p>Want to see it in action? Read our own accuracy report — 43 claims checked, 67% wrong, stale, or missing: <a href="https://ai-framework.io/accuracy/" style="color:#F0CE7E">ai-framework.io/accuracy/</a></p>
-
   <h2>1 · Businesses don't know they're losing money</h2>
   <div class="grid">
-    <div class="card" data-interest="business"><h3>1. The AI Business Accuracy Detective</h3><p class="price">Test price: $99–$399 per audit</p><p>Find outdated business info, sell a verified correction and maintenance service. See the full playbook above.</p></div>
+    <div class="card" data-interest="business"><h3>1. The Business Accuracy Detective</h3><p class="price">Test price: $99–$399 per audit</p><p>Find businesses with outdated hours, menus, prices, or online information. Sell a verified correction and maintenance service. Offer a free three-error sample. Charge for fixing and monitoring.</p></div>
     <div class="card" data-interest="business"><h3>2. The Dead Listing Makeover</h3><p class="price">Test price: $75–$250 per listing</p><p>Rewrite weak real estate listings and build a sample social post. Sell a full marketing kit, never invent property features.</p></div>
     <div class="card" data-interest="business"><h3>3. The Ugly Menu Rescue</h3><p class="price">Test price: $150–$500</p><p>Turn hard-to-read restaurant menus into polished mobile menus with a QR code. Bundle monthly updates.</p></div>
     <div class="card" data-interest="business"><h3>4. The Missed-Call Money Saver</h3><p class="price">Test price: $150–$600 setup + maintenance</p><p>Automated text-back for businesses that miss calls. Test on a demo number; get proper consent for texts.</p></div>
@@ -117,7 +145,7 @@
     <div class="card" data-interest="data"><h3>27. The Zoning Change Digest</h3><p class="price">Test price: $15–$49/month</p><p>Explain public planning meetings and zoning proposals. Distinguish proposals from adopted changes.</p></div>
     <div class="card" data-interest="data"><h3>28. The Used Equipment Value Scout</h3><p class="price">Test price: $35–$150 per report</p><p>Compare public listings for used commercial equipment. Asking prices are not completed sales.</p></div>
     <div class="card" data-interest="data"><h3>29. The Supplier Shortage Bulletin</h3><p class="price">Test price: $99–$299/month</p><p>Verified lead times, backorder notices, and alternatives for one trade. Confirm with suppliers, don't rely on AI summaries.</p></div>
-    <div class="card" data-interest="data"><h3>30. The AI Tool Change Intelligence Feed</h3><p class="price">Test price: $10–$39/month</p><p>Track features, discontinued plans, API changes, and pricing across AI providers. A signature AI Framework subscription.</p></div>
+    <div class="card" data-interest="data"><h3>30. The AI Tool Change Intelligence Feed</h3><p class="price">Test price: $10–$39/month</p><p>Track features, discontinued plans, API changes, and pricing across AI providers. A recurring subscription readers can build.</p></div>
   </div>
 
   <h2>4 · AI creates the content, you build the audience</h2>
@@ -151,29 +179,74 @@
   <h2>Your first seven days</h2>
   <ol>
     <li><strong>Day 1:</strong> Pick 10 ideas from this page and choose one.</li>
-    <li><strong>Day 2:</strong> Build one complete playbook for it (start with #1 above).</li>
-    <li><strong>Day 3:</strong> Use the match quiz and tell one person what you're testing.</li>
+    <li><strong>Day 2:</strong> Build one complete playbook for it.</li>
+    <li><strong>Day 3:</strong> Use the machine above and tell one person what you're testing.</li>
     <li><strong>Day 4:</strong> Make one short video or post showing the actual workflow.</li>
     <li><strong>Day 5:</strong> Run a real outreach experiment with 10 potential customers.</li>
     <li><strong>Day 6:</strong> Publish results — including costs, failures, and responses.</li>
     <li><strong>Day 7:</strong> Review what moved, then expand the best-performing idea.</li>
   </ol>
 
-  <h2>Reusable prompt for every money hack</h2>
+  <h2>Reusable prompt for every money move</h2>
   <p>Copy this into ChatGPT to generate a complete tutorial for any of the 50 ideas:</p>
   <pre id="masterPrompt">Act as a business opportunity researcher and startup operator. Develop a beginner-friendly, legal, low-cost business playbook for [IDEA]. Include the exact customer problem, who pays, startup budget, tools, five setup steps, a sample deliverable, a script to find the first customer, three AI prompts, realistic pricing experiments, a seven-day validation challenge, and legal or platform risks. Distinguish proven facts from assumptions. Make the result practical enough for someone to attempt today.</pre>
   <button class="btn" onclick="copyPrompt()">Copy master prompt</button>
 
-  <div class="cta">
-    <p><strong>AI doesn't make you rich. Finding problems people will pay to solve might.</strong></p>
-    <p>Start with the accuracy audit — the #1 pick above — and see what AI is getting wrong about real businesses right now.</p>
-    <a href="https://ai-framework.io/accuracy/">See the accuracy report</a>
-  </div>
-
   <p class="foot">AI Framework LLC · hello@ai-framework.io · ai-framework.io<br>
-  All 50 ideas are legal business concepts with illustrative test prices, not guaranteed income and not verified market averages. Verify every claim, price, and regulation yourself before selling. Quiz matches are illustrative starting points, not a live opportunity database.</p>
+  All 50 ideas are legal business concepts with illustrative test prices, not guaranteed income and not verified market averages. Verify every claim, price, and regulation yourself before selling. Machine matches are illustrative starting points from the list above, not a live opportunity database.</p>
 </div>
 <script>
+var MODELS = [
+  { keys:['contractor','quote','calling','call a','phone call'], name:'QuoteHunter', desc:'A service that helps property managers collect, organize, and compare contractor quotes using AI-assisted outreach. You hate calling — so do they. That is the business.', price:'Test price: $149/month per client', fee:149 },
+  { keys:['menu','restaurant'], name:'Menu Rescue', desc:'Turn hard-to-read restaurant menus into polished, mobile-friendly menus with a QR code. One sample menu opens the door.', price:'Test price: $150–$500 per restaurant', fee:150 },
+  { keys:['miss','call','phone'], name:'Missed-Call Saver', desc:'An automated text-back service for businesses that miss calls and lose customers. Set it up once, charge monthly to keep it running.', price:'Test price: $150–$600 setup + monthly upkeep', fee:150 },
+  { keys:['review','reputation'], name:'Review Reply Service', desc:'Customized, AI-assisted replies to customer reviews, approved by the business before anything publishes. Add a monthly reputation report.', price:'Test price: $79–$199/month', fee:79 },
+  { keys:['listing','real estate','realtor','house','property'], name:'Listing Makeover', desc:'Rewrite weak property listings and build a sample social post for the agent. Sell the full marketing kit, never invented features.', price:'Test price: $75–$250 per listing', fee:75 },
+  { keys:['podcast'], name:'Podcast-to-Content Factory', desc:'Turn one podcast episode into short clips, captions, summaries, and newsletter content. Sell the predictable publishing schedule.', price:'Test price: $150–$600 per episode package', fee:150 },
+  { keys:['wedding','speech','vow','toast'], name:'Wedding Speech Studio', desc:'Personalized speeches, vows, and toast coaching from a short story questionnaire, revised until it sounds like the person, not a robot.', price:'Test price: $35–$150', fee:35 },
+  { keys:['pet','dog','cat'], name:'Pet Storybook Studio', desc:'Illustrated digital stories built from customer pet photos and anecdotes. Birthday, adventure, and memorial editions.', price:'Test price: $25–$100', fee:25 },
+  { keys:['template','planner','form'], name:'Hyper-Specific Template Store', desc:'Not generic planners — narrow products for narrow problems: subcontractor trackers, intake forms, document organizers. Specific beats generic.', price:'Test price: $9–$49 each', fee:9 },
+  { keys:['permit','construction'], name:'Permit Opportunity Radar', desc:'Organize public building permit records so contractors spot new projects first. One city, one trade, one weekly digest to start.', price:'Test price: $99–$299/month', fee:99 },
+  { keys:['price','competitor'], name:'Price Change Club', desc:'Track publicly advertised competitor prices in one industry and summarize what actually changed. Permitted collection methods only.', price:'Test price: $49–$199/month', fee:49 }
+];
+var DEFAULT_MODEL = { name:'Outdated Info Fixer', desc:'Find businesses whose public information is wrong — hours, menus, prices, listings — and sell a verified correction. Lead with proof: a free sample showing three real errors, then charge for the fix and monthly monitoring.', price:'Test price: $99–$399 per audit', fee:99 };
+function tryExample(text){
+  document.getElementById('mProblem').value = text;
+  generateMachine();
+}
+function generateMachine(){
+  var problem = (document.getElementById('mProblem').value || '').toLowerCase();
+  var model = DEFAULT_MODEL;
+  for (var i = 0; i < MODELS.length; i++) {
+    var hit = false;
+    for (var j = 0; j < MODELS[i].keys.length; j++) {
+      if (problem.indexOf(MODELS[i].keys[j]) !== -1) { hit = true; break; }
+    }
+    if (hit) { model = MODELS[i]; break; }
+  }
+  document.getElementById('rName').textContent = model.name;
+  document.getElementById('rDesc').textContent = model.desc;
+  document.getElementById('rPrice').textContent = model.price;
+  var steps = [
+    'Find 10 people or businesses with this exact problem.',
+    'Build one sample with AI — a before/after they can see.',
+    'Show the sample to 10 potential customers and listen.',
+    'Offer a small free sample to the first ones who bite.',
+    'Charge for the fix, then monthly to keep it maintained.'
+  ];
+  var list = document.getElementById('rSteps');
+  list.innerHTML = '';
+  steps.forEach(function(s){ var li = document.createElement('li'); li.textContent = s; list.appendChild(li); });
+  document.getElementById('cFee').value = model.fee;
+  calc();
+  document.getElementById('machineResult').style.display = 'block';
+  document.getElementById('machineResult').scrollIntoView({behavior:'smooth'});
+}
+function calc(){
+  var fee = parseFloat(document.getElementById('cFee').value) || 0;
+  var clients = parseFloat(document.getElementById('cClients').value) || 0;
+  document.getElementById('cOut').textContent = '$' + (fee * clients).toLocaleString() + ' / month';
+}
 function matchIdeas(){
   var interest = document.getElementById('qInterest').value;
   var budget = document.getElementById('qBudget').value;
@@ -184,7 +257,7 @@ function matchIdeas(){
     if (c.getAttribute('data-interest') === interest) { c.classList.remove('hidden'); count++; }
     else { c.classList.add('hidden'); }
   });
-  document.getElementById('matches').innerHTML = 'Your starter matches for <b>' + budget + '</b>, launching <b>' + speed.toLowerCase() + '</b>: showing ' + count + ' ideas below. Start with #1 if it appears — it is the fastest path to a first paying customer. <a href="#" onclick="showAll();return false;">Show all 50</a>';
+  document.getElementById('matches').innerHTML = 'Your starter matches for <b>' + budget + '</b>, launching <b>' + speed.toLowerCase() + '</b>: showing ' + count + ' ideas below. <a href="#" onclick="showAll();return false;">Show all 50</a>';
   window.scrollTo({top: document.querySelector('.quiz').offsetTop, behavior:'smooth'});
 }
 function showAll(){
