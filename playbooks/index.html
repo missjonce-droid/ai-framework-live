@@ -743,6 +743,9 @@ function renderIndexGrid(){
         const card = document.getElementById("pb-" + i);
         if(!card) return;
         card.scrollIntoView({behavior:"smooth", block:"center"});
+        var _tg = card.querySelector(".pb-toggle");
+        var _dt = card.querySelector(".pb-detail");
+        if (_tg && _dt && _dt.hidden) _tg.click();
         card.classList.add("flash");
         setTimeout(() => card.classList.remove("flash"), 1400);
       } else {
@@ -914,7 +917,19 @@ window.__PB_TAGLINKS = {"Beehiiv": "beehiiv", "Chatbase": "chatbase", "ElevenLab
     if (text != null) e.textContent = text;
     return e;
   }
-  (window.FREE || []).forEach(function(p){
+  /* ROOT-CAUSE FIX: main script declares `const FREE`, which is a global lexical
+     binding, NOT a window property — so `window.FREE` was always undefined and
+     this loop silently injected nothing. Use the bare global, with a fallback. */
+  var LIST = (typeof FREE !== "undefined" ? FREE : (window.FREE || []));
+  function setOpen(card, detail, toggle, open){
+    if (!card || !detail || !toggle) return;
+    detail.hidden = !open;
+    card.classList.toggle("open", open);
+    toggle.textContent = open ? "Close \u25B4" : "Read the full playbook \u25B8";
+    toggle.setAttribute("aria-expanded", String(open));
+  }
+  LIST.forEach(function(p){
+    try {
     var card = document.getElementById("pb-" + p.n);
     var data = FULL[p.n];
     if (!card || !data) return;
@@ -953,14 +968,20 @@ window.__PB_TAGLINKS = {"Beehiiv": "beehiiv", "Chatbase": "chatbase", "ElevenLab
     toggle.type = "button";
     toggle.setAttribute("aria-expanded", "false");
     toggle.addEventListener("click", function(){
-      var open = detail.hidden;
-      detail.hidden = !open;
-      card.classList.toggle("open", open);
-      toggle.textContent = open ? "Close \u25B4" : "Read the full playbook \u25B8";
-      toggle.setAttribute("aria-expanded", String(open));
+      setOpen(card, detail, toggle, detail.hidden);
     });
     card.appendChild(toggle);
     card.appendChild(detail);
+    card.style.cursor = "pointer";
+    /* Whole card opens/closes its reader, except taps on links/buttons inside it
+       (the toggle itself, tool chips, builder/directory links) and taps inside
+       the expanded detail, which must not collapse it while reading. */
+    card.addEventListener("click", function(e){
+      if (e.target.closest("a, button")) return;
+      if (e.target.closest(".pb-detail")) return;
+      setOpen(card, detail, toggle, detail.hidden);
+    });
+    } catch (err) { /* one bad card must not break the rest or the bindings below */ }
   });
   /* Top 10 strip + deep links: open the reader for a playbook number. */
   function openCard(n){
@@ -980,7 +1001,18 @@ window.__PB_TAGLINKS = {"Beehiiv": "beehiiv", "Chatbase": "chatbase", "ElevenLab
     });
   });
   var hm = (location.hash || "").match(/^#pb-(\d+)$/);
-  if (hm) setTimeout(function(){ openCard(hm[1]); }, 400);
+  if (hm) {
+    /* Open once the card/detail/toggle are actually ready, retrying briefly
+       instead of trusting a single fixed 400ms timeout. */
+    (function tryOpen(n, tries){
+      var card = document.getElementById("pb-" + n);
+      var detail = card && card.querySelector(".pb-detail");
+      var toggle = card && card.querySelector(".pb-toggle");
+      if (card && detail && toggle) { openCard(n); return; }
+      if (tries < 20) setTimeout(function(){ tryOpen(n, tries + 1); }, 100);
+      else if (card) card.scrollIntoView({behavior: "smooth", block: "start"});
+    })(hm[1], 0);
+  }
 })();
 </script>
 </body>
