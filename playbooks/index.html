@@ -1000,19 +1000,29 @@ window.__PB_TAGLINKS = {"Beehiiv": "beehiiv", "Chatbase": "chatbase", "ElevenLab
       history.replaceState(null, "", "#pb-" + n);
     });
   });
-  var hm = (location.hash || "").match(/^#pb-(\d+)$/);
-  if (hm) {
-    /* Open once the card/detail/toggle are actually ready, retrying briefly
-       instead of trusting a single fixed 400ms timeout. */
+  /* Deep link: open the matching card from the URL hash, on load AND on
+     hash changes. A same-document hash navigation does not reload the page,
+     so without a hashchange listener the reader would scroll but never open. */
+  function openFromHash(){
+    var hm = (location.hash || "").match(/^#pb-(\d+)$/);
+    if (!hm) return;
     (function tryOpen(n, tries){
       var card = document.getElementById("pb-" + n);
       var detail = card && card.querySelector(".pb-detail");
       var toggle = card && card.querySelector(".pb-toggle");
-      if (card && detail && toggle) { openCard(n); return; }
+      if (card && detail && toggle) {
+        /* Expand directly instead of via toggle.click, so the deep-link path
+           does not depend on the toggle handler's state. */
+        setOpen(card, detail, toggle, true);
+        card.scrollIntoView({behavior: "smooth", block: "start"});
+        return;
+      }
       if (tries < 20) setTimeout(function(){ tryOpen(n, tries + 1); }, 100);
       else if (card) card.scrollIntoView({behavior: "smooth", block: "start"});
     })(hm[1], 0);
   }
+  openFromHash();
+  window.addEventListener("hashchange", openFromHash);
 })();
 </script>
 </body>
