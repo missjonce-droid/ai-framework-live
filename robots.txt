@@ -1,3 +1,29 @@
+# AI shopping and answer agents are explicitly allowed here. Training-crawler
+# opt-outs are not set in this file and are unchanged by this change.
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Agent
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Kimi-User
+Allow: /
+
+User-agent: Amzn-User
+Allow: /
+
+User-agent: meta-externalfetcher
+Allow: /
+
 User-agent: *
 Allow: /
 Disallow: /admin/
