@@ -192,12 +192,17 @@ for (const resource of publicResources) {
   const description = cleanDescription(resource);
   const isIndexable = indexableResourcePaths.has(route);
   const category = resource.primary_category || "AI Tools";
+  // Thin pages (short or label-only descriptions) must not promise features,
+  // pricing, and alternatives they do not show. The 80-character line matches
+  // the indexable threshold used above.
   const title =
     resource.resource_type === "creator"
       ? `${resource.name} — AI Creator Profile | AI Framework`
       : resource.resource_type === "company"
         ? `${resource.name} — AI Company Profile | AI Framework`
-        : `${resource.name}: Features, Pricing & Alternatives | AI Framework`;
+        : !isIndexable
+          ? `${resource.name} | AI Framework`
+          : `${resource.name}: Features, Pricing & Alternatives | AI Framework`;
   const canonical = `${siteUrl}${route}`;
   const schemaType = resourceType(resource);
   const schema = {
