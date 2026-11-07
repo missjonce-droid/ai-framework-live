@@ -13,9 +13,13 @@
     if (cached) return Promise.resolve(cached);
     if (pending) return pending;
     pending = fetch("/api/v1/me", { credentials: "same-origin" })
-      .then(function (r) { return r.ok ? r.json() : { user: null }; })
+      .then(function (r) { return r.json().catch(function () { return { user: null }; }); })
       .then(function (j) {
-        cached = j && j.user ? j : null;
+        // Keep the response when it carries billing_ready, even signed out:
+        // the pricing buttons need it to flip to "Subscribe". A response
+        // with no user is still signed out everywhere else (slots and
+        // cloud save both check auth.user, not just auth).
+        cached = j && (j.user || typeof j.billing_ready !== "undefined") ? j : null;
         pending = null;
         return cached;
       })
